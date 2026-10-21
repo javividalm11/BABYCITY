@@ -1,0 +1,30 @@
+.living-enabled .hero-product-stage{animation:living-product-float 6s ease-in-out infinite}
+.living-enabled .hero-showcase.is-paused .hero-product-stage{animation-play-state:paused}
+.living-enabled .hero-room{overflow:hidden}
+.living-enabled .hero-room img{will-change:transform}
+.living-enabled .showcase-card,.living-enabled .category-card{transition:transform .4s cubic-bezier(.2,.7,.2,1),box-shadow .4s;transform-style:preserve-3d}
+.living-enabled .living-tilted{transition:transform .12s ease-out,box-shadow .3s;box-shadow:0 20px 35px #075c5a25}
+.living-enabled .community-heart{animation:living-heart-float 5s ease-in-out infinite}
+.living-enabled .heart-two{animation-delay:-2.5s}
+.living-enabled .community-teddy{animation:living-teddy-breathe 6s ease-in-out infinite;transform-origin:center bottom}
+.living-enabled .hero-actions .btn,.living-enabled .catalog-cta,.living-enabled .community-follow{position:relative;overflow:hidden}
+.living-enabled .hero-actions .btn:after,.living-enabled .catalog-cta:after,.living-enabled .community-follow:after{content:'';position:absolute;inset:-70% auto -70% -60%;width:30%;background:linear-gradient(90deg,transparent,#fff3,transparent);transform:rotate(22deg);animation:living-shine 8s ease-in-out infinite;pointer-events:none}
+@keyframes living-product-float{0%,100%{translate:0 0}50%{translate:0 -9px}}
+@keyframes living-heart-float{0%,100%{translate:0 0}50%{translate:2px -9px}}
+@keyframes living-teddy-breathe{0%,100%{scale:1}50%{scale:1.018}}
+@keyframes living-shine{0%,68%{left:-60%}88%,100%{left:140%}}
+@media(max-width:679px){.living-enabled .hero-product-stage{animation-duration:7s}}
+@media(prefers-reduced-motion:reduce){.living-enabled .hero-product-stage,.living-enabled .community-heart,.living-enabled .community-teddy,.living-enabled .hero-actions .btn:after,.living-enabled .catalog-cta:after,.living-enabled .community-follow:after{animation:none}.living-enabled .showcase-card,.living-enabled .category-card{transition:none}}
+
+/* Masked word reveal on first render and reload. */
+.living-enabled .hero-copy h1>span{animation:none}
+.living-enabled .hero-copy h1>em{animation:hero-slogan-drift 6s ease-in-out 2.2s infinite;transform-origin:left center}
+.living-enabled .hero-copy>p{animation:hero-caption-drift 7s ease-in-out 2.4s infinite}
+.living-enabled .hero-copy .hero-word-mask{display:inline-block;vertical-align:bottom;overflow:hidden;overflow:clip;padding:.06em .035em .16em;margin:-.06em -.035em -.16em}
+.living-enabled .hero-copy .hero-word{display:inline-block;animation:hero-word-reveal .95s cubic-bezier(.2,.7,.2,1) var(--word-delay,0s) both;transform-origin:left bottom}
+.living-enabled .hero-showcase.is-paused .hero-copy h1>*,.living-enabled .hero-showcase.is-paused .hero-copy>p,.living-enabled .hero-showcase.is-paused .hero-word,body.living-enabled:not(.hero-in-view) .hero-copy h1>*,body.living-enabled:not(.hero-in-view) .hero-copy>p,body.living-enabled:not(.hero-in-view) .hero-word{animation-play-state:paused}
+@keyframes hero-word-reveal{0%{opacity:0;transform:translate3d(0,110%,0) rotate(2deg);filter:blur(5px)}55%{opacity:.9;filter:blur(1px)}100%{opacity:1;transform:translate3d(0,0,0) rotate(0);filter:blur(0)}}
+@keyframes hero-slogan-drift{0%,100%{translate:0 0;scale:1}50%{translate:0 -3px;scale:1.012}}
+@keyframes hero-caption-drift{0%,100%{translate:0 0}50%{translate:0 -2px}}
+@media(max-width:680px){@keyframes hero-slogan-drift{0%,100%{translate:0 0;scale:1}50%{translate:0 -2px;scale:1.008}}}
+@media(prefers-reduced-motion:reduce){.living-enabled .hero-copy h1>em,.living-enabled .hero-copy>p,.living-enabled .hero-copy .hero-word{animation:none;transform:none;translate:none;scale:1;opacity:1;filter:none}.living-enabled .hero-copy .hero-word-mask{overflow:visible}}

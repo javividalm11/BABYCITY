@@ -32,3 +32,7 @@ body.hero-in-view .contact-float{visibility:hidden;opacity:0;pointer-events:none
 @media(prefers-reduced-motion:reduce){.hero-showcase .hero-slide{animation:none!important;opacity:0}.hero-showcase .hero-slide:first-child{opacity:1}.hero-pause{display:none}}
 
 .header .brand>.navbar-logo{display:block;width:auto;height:64px;max-width:100%;object-fit:contain;object-position:left center}@media(min-width:1600px){.header .brand>.navbar-logo{height:78px}}@media(max-width:680px){.header .brand>.navbar-logo{height:58px}}
+
+.hero.hero-showcase h1{font-family:'Fredoka','Outfit',sans-serif;font-weight:600;line-height:.99;letter-spacing:-.025em;text-shadow:0 -1px 0 #ffffff70,1px 2px 0 #173c3430,2px 4px 7px #173c341a}.hero.hero-showcase h1 em{font-family:inherit;font-weight:600;font-size:1em;line-height:1.08;letter-spacing:-.025em;transform:none;margin:2px 0 14px;text-shadow:0 -1px 0 #ffffff70,1px 2px 0 #7e244b30,2px 4px 7px #7e244b1a}@media(max-width:680px){.hero.hero-showcase h1{font-size:clamp(38px,10.8vw,63px);line-height:1}.hero.hero-showcase h1 em{margin-bottom:14px}}
+
+.hero.hero-showcase .hero-copy>p{font-family:'Fredoka','Outfit',sans-serif;font-weight:600;line-height:1.24;letter-spacing:.005em;text-shadow:none}@media(max-width:680px){.hero.hero-showcase .hero-copy>p{line-height:1.24;font-size:18px}}@media(max-width:360px){.hero.hero-showcase .hero-copy>p{font-size:17px}}

@@ -2,7 +2,7 @@ import {test,expect} from '@playwright/test';
 
 test('reference hero and navbar fit desktop, five images crossfade infinitely',async({page})=>{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));await page.setViewportSize({width:1207,height:679});await page.goto('/');
- await expect(page.getByRole('heading',{name:'Su pequeño mundo, todo en un lugar.'})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'el mundo de tu bebe a un clic'})).toBeVisible();
  await expect(page.locator('.hero-slide')).toHaveCount(5);
  await page.locator('.hero-slide').evaluateAll(images=>Promise.all(images.map(image=>image.decode())));
  expect(await page.locator('.hero-slide').evaluateAll(images=>new Set(images.map(i=>i.src)).size)).toBe(5);

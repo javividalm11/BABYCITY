@@ -14,3 +14,4 @@ Cotizacion_*
 *.docx
 .dev.vars
 .wrangler/
+data/uploads/

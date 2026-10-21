@@ -1,0 +1,12 @@
+node_modules/
+public/vendor/
+public/assets/
+catalogo/
+archive/
+data/*.json
+public/catalogs.json
+package-lock.json
+test-results/
+.wrangler/
+.npm-cache/
+backups/

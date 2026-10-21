@@ -1,25 +1,86 @@
 /* Soft coral pink inspired by the BABY lettering in the original logo. */
-:root{--brand-background:#f2a4a8;--city-accent:#58d8d8;--brand-copy:#214349;--muted:#304d51;--cream:var(--brand-background)}
-html,body,main{background-color:var(--brand-background)}
-.soft,.page-intro,footer{background:var(--brand-background)}
+:root {
+  --brand-background: #f2a4a8;
+  --city-accent: #58d8d8;
+  --brand-copy: #214349;
+  --muted: #304d51;
+  --cream: var(--brand-background);
+}
+html,
+body,
+main {
+  background-color: var(--brand-background);
+}
+.soft,
+.page-intro,
+footer {
+  background: var(--brand-background);
+}
 
-.hero.hero-showcase{background-color:var(--brand-background)}
-.hero-wave path{fill:var(--brand-background)}
-.hero.hero-showcase .hero-copy>p{color:#223d39}
-.hero-showcase h1 em,.discovery h2 em{color:#a52a50}
-.discovery .eyebrow,.showcase-heading .eyebrow{color:#104b50}
-.discovery .category-card small,.discovery .section-heading p,.showcase-heading p{color:var(--brand-copy)}
-.product-showcase{background-color:var(--brand-background);background-blend-mode:multiply;background-size:100% 100%}
+.hero.hero-showcase {
+  background-color: var(--brand-background);
+}
+.hero-wave path {
+  fill: var(--brand-background);
+}
+.hero.hero-showcase .hero-copy > p {
+  color: #223d39;
+}
+.hero-showcase h1 em,
+.discovery h2 em {
+  color: #a52a50;
+}
+.discovery .eyebrow,
+.showcase-heading .eyebrow {
+  color: #104b50;
+}
+.discovery .category-card small,
+.discovery .section-heading p,
+.showcase-heading p {
+  color: var(--brand-copy);
+}
+.product-showcase {
+  background-color: var(--brand-background);
+  background-blend-mode: multiply;
+  background-size: 100% 100%;
+}
 
-.community{background:var(--brand-background)}
-.community-art:after{background:linear-gradient(90deg,transparent 75%,var(--brand-background))}
-.community-eyebrow{color:#104b50}
-.community-copy-header>p,.community-signature div>span{color:var(--brand-copy)}
-.community-copy h2 em{color:#a52a50}
-.community-copy:after,.community-signature i{color:#a52a50}
-.community-copy-actions{background:var(--brand-background)}
-footer p,footer .footer-grid a:not(.brand),.footer-bottom{color:var(--brand-copy)}
+.community {
+  background: var(--brand-background);
+}
+.community-art:after {
+  background: linear-gradient(90deg, transparent 75%, var(--brand-background));
+}
+.community-eyebrow {
+  color: #104b50;
+}
+.community-copy-header > p,
+.community-signature div > span {
+  color: var(--brand-copy);
+}
+.community-copy h2 em {
+  color: #a52a50;
+}
+.community-copy:after,
+.community-signature i {
+  color: #a52a50;
+}
+.community-copy-actions {
+  background: var(--brand-background);
+}
+footer p,
+footer .footer-grid a:not(.brand),
+.footer-bottom {
+  color: var(--brand-copy);
+}
 
-@media(max-width:680px){
- .hero.hero-showcase:after{background:linear-gradient(180deg,var(--brand-background) 0%,var(--brand-background) 39%,#f2a4a800 52%)}
+@media (max-width: 680px) {
+  .hero.hero-showcase:after {
+    background: linear-gradient(
+      180deg,
+      var(--brand-background) 0%,
+      var(--brand-background) 39%,
+      #f2a4a800 52%
+    );
+  }
 }

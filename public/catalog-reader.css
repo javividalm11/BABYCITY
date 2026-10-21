@@ -1,21 +1,271 @@
 /* Paper physics are supplied by the same StPageFlip engine as BOOKS. */
-.book-dialog{width:calc(100vw - 80px);max-width:1600px;height:calc(100dvh - 36px);max-height:calc(100dvh - 36px);padding:30px 38px 22px;overflow:hidden;background:#e9e9df;border-radius:18px}
-.book-dialog::backdrop{background:#183b35a8;backdrop-filter:blur(7px)}
-#bookContent{height:100%;display:flex;flex-direction:column;min-height:0}
-.book-head{flex:none;padding-bottom:15px;min-height:63px;gap:20px}.book-head h2{font-size:25px;margin:4px 0 0}.book-head .eyebrow{font-size:11px}.book-actions{gap:10px}.book-actions button,.book-actions a{padding:10px 15px;font-size:13px;min-height:43px;background:#fffefa;border-color:#cbd2c0}
-.reader-stage{flex:1;min-height:0;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:12px 15px 20px;isolation:isolate;perspective:2400px;touch-action:pan-y}
-.reader-floor{position:absolute;width:62%;height:30px;bottom:8px;left:19%;border-radius:50%;background:#2a3b2833;filter:blur(16px);pointer-events:none;z-index:-1}
-.reader-book{flex:none;position:relative;z-index:1;box-shadow:0 10px 0 #69756415,0 18px 36px #283c2e18}
-.reader-stage[aria-busy=true] .reader-book{visibility:hidden}.reader-stage[aria-busy=true]:after{content:'Preparando tu catálogo…';position:absolute;inset:0;display:grid;place-items:center;color:#5d756a;font-size:13px}
-.reader-sheet{background:#fffdf7;overflow:hidden;backface-visibility:hidden}
-.reader-page-image{width:100%;height:100%;object-fit:contain;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
-.reader-sheet:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#24331c12,transparent 5%,transparent 95%,#24331c15)}
-.reader-sheet.--left:after{background:linear-gradient(90deg,transparent 94%,#24331c25)}
-.reader-sheet.--right:after{background:linear-gradient(90deg,#24331c25,transparent 6%)}
-.reader-stage .stf__item{cursor:grab}.reader-stage.is-turning .stf__item{cursor:grabbing}
-.reader-stage.reader-zoomed{overflow:auto;display:block;overscroll-behavior:contain;touch-action:pan-x pan-y;padding:15px}
-.reader-zoomed .reader-book{margin:0 auto}.reader-zoomed .reader-floor{display:none}
-.book-controls{flex:none;margin:14px 0 0;gap:22px;min-height:45px}.book-controls button{width:43px;height:43px;font-size:21px;flex:none}.book-controls button.reader-edge{width:31px;height:31px;font-size:17px;background:transparent;border-color:transparent;color:#5c756d}.book-controls label{display:flex;align-items:center;gap:9px;font-size:12px;white-space:nowrap}.book-controls input{width:165px}.book-hint{flex:none;margin:12px 0 0;font-size:11px}
-.book-dialog:fullscreen{width:100vw;max-width:none;height:100dvh;max-height:none;border-radius:0}
-@media(max-width:800px){.book-dialog{width:calc(100vw - 30px);height:calc(100dvh - 28px);max-height:calc(100dvh - 28px);padding:20px}.book-head h2{font-size:21px}.book-actions{gap:6px}.book-actions button,.book-actions a{font-size:11px;padding:8px 10px}.book-controls{gap:13px}.book-controls input{width:115px}}
-@media(max-width:560px){.book-dialog{width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);padding:15px 10px;border-radius:12px}.book-head{min-height:70px;gap:8px;padding:0 4px 12px;align-items:start}.book-head h2{font-size:18px;max-width:145px}.book-head .eyebrow{font-size:9px}.book-actions{gap:4px;max-width:190px}.book-actions button,.book-actions a{min-height:33px;padding:6px 9px;font-size:10px}.reader-stage{padding:10px 0 20px}.book-controls{gap:9px;margin-top:8px;flex-wrap:wrap}.book-controls button{width:36px;height:36px}.book-controls button.reader-edge{width:24px;height:30px}.book-controls label{font-size:10px;gap:5px}.book-controls input{width:85px}.book-controls .fine{font-size:10px;min-width:47px;text-align:center}.book-hint{font-size:10px;margin-top:9px;padding:0 10px}.reader-stage.reader-zoomed{padding:10px}}
+.book-dialog {
+  width: calc(100vw - 80px);
+  max-width: 1600px;
+  height: calc(100dvh - 36px);
+  max-height: calc(100dvh - 36px);
+  padding: 30px 38px 22px;
+  overflow: hidden;
+  background: #e9e9df;
+  border-radius: 18px;
+}
+.book-dialog::backdrop {
+  background: #183b35a8;
+  backdrop-filter: blur(7px);
+}
+#bookContent {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.book-head {
+  flex: none;
+  padding-bottom: 15px;
+  min-height: 63px;
+  gap: 20px;
+}
+.book-head h2 {
+  font-size: 25px;
+  margin: 4px 0 0;
+}
+.book-head .eyebrow {
+  font-size: 11px;
+}
+.book-actions {
+  gap: 10px;
+}
+.book-actions button,
+.book-actions a {
+  padding: 10px 15px;
+  font-size: 13px;
+  min-height: 43px;
+  background: #fffefa;
+  border-color: #cbd2c0;
+}
+.reader-stage {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 12px 15px 20px;
+  isolation: isolate;
+  perspective: 2400px;
+  touch-action: pan-y;
+}
+.reader-floor {
+  position: absolute;
+  width: 62%;
+  height: 30px;
+  bottom: 8px;
+  left: 19%;
+  border-radius: 50%;
+  background: #2a3b2833;
+  filter: blur(16px);
+  pointer-events: none;
+  z-index: -1;
+}
+.reader-book {
+  flex: none;
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 10px 0 #69756415,
+    0 18px 36px #283c2e18;
+}
+.reader-stage[aria-busy='true'] .reader-book {
+  visibility: hidden;
+}
+.reader-stage[aria-busy='true']:after {
+  content: 'Preparando tu catálogo…';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #5d756a;
+  font-size: 13px;
+}
+.reader-sheet {
+  background: #fffdf7;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+.reader-page-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-width: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+.reader-sheet:after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, #24331c12, transparent 5%, transparent 95%, #24331c15);
+}
+.reader-sheet.--left:after {
+  background: linear-gradient(90deg, transparent 94%, #24331c25);
+}
+.reader-sheet.--right:after {
+  background: linear-gradient(90deg, #24331c25, transparent 6%);
+}
+.reader-stage .stf__item {
+  cursor: grab;
+}
+.reader-stage.is-turning .stf__item {
+  cursor: grabbing;
+}
+.reader-stage.reader-zoomed {
+  overflow: auto;
+  display: block;
+  overscroll-behavior: contain;
+  touch-action: pan-x pan-y;
+  padding: 15px;
+}
+.reader-zoomed .reader-book {
+  margin: 0 auto;
+}
+.reader-zoomed .reader-floor {
+  display: none;
+}
+.book-controls {
+  flex: none;
+  margin: 14px 0 0;
+  gap: 22px;
+  min-height: 45px;
+}
+.book-controls button {
+  width: 43px;
+  height: 43px;
+  font-size: 21px;
+  flex: none;
+}
+.book-controls button.reader-edge {
+  width: 31px;
+  height: 31px;
+  font-size: 17px;
+  background: transparent;
+  border-color: transparent;
+  color: #5c756d;
+}
+.book-controls label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.book-controls input {
+  width: 165px;
+}
+.book-hint {
+  flex: none;
+  margin: 12px 0 0;
+  font-size: 11px;
+}
+.book-dialog:fullscreen {
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  border-radius: 0;
+}
+@media (max-width: 800px) {
+  .book-dialog {
+    width: calc(100vw - 30px);
+    height: calc(100dvh - 28px);
+    max-height: calc(100dvh - 28px);
+    padding: 20px;
+  }
+  .book-head h2 {
+    font-size: 21px;
+  }
+  .book-actions {
+    gap: 6px;
+  }
+  .book-actions button,
+  .book-actions a {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+  .book-controls {
+    gap: 13px;
+  }
+  .book-controls input {
+    width: 115px;
+  }
+}
+@media (max-width: 560px) {
+  .book-dialog {
+    width: calc(100vw - 12px);
+    height: calc(100dvh - 12px);
+    max-height: calc(100dvh - 12px);
+    padding: 15px 10px;
+    border-radius: 12px;
+  }
+  .book-head {
+    min-height: 70px;
+    gap: 8px;
+    padding: 0 4px 12px;
+    align-items: start;
+  }
+  .book-head h2 {
+    font-size: 18px;
+    max-width: 145px;
+  }
+  .book-head .eyebrow {
+    font-size: 9px;
+  }
+  .book-actions {
+    gap: 4px;
+    max-width: 190px;
+  }
+  .book-actions button,
+  .book-actions a {
+    min-height: 33px;
+    padding: 6px 9px;
+    font-size: 10px;
+  }
+  .reader-stage {
+    padding: 10px 0 20px;
+  }
+  .book-controls {
+    gap: 9px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .book-controls button {
+    width: 36px;
+    height: 36px;
+  }
+  .book-controls button.reader-edge {
+    width: 24px;
+    height: 30px;
+  }
+  .book-controls label {
+    font-size: 10px;
+    gap: 5px;
+  }
+  .book-controls input {
+    width: 85px;
+  }
+  .book-controls .fine {
+    font-size: 10px;
+    min-width: 47px;
+    text-align: center;
+  }
+  .book-hint {
+    font-size: 10px;
+    margin-top: 9px;
+    padding: 0 10px;
+  }
+  .reader-stage.reader-zoomed {
+    padding: 10px;
+  }
+}

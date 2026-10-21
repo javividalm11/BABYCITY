@@ -1,10 +1,17 @@
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import {mkdirSync,writeFileSync} from 'node:fs';
-import {scryptSync} from 'node:crypto';
-mkdirSync('test-results',{recursive:true});
-writeFileSync('test-results/browser-server.pid',String(process.pid));
-process.env.DB_PATH=path.resolve('test-results/browser.sqlite');
-const {db,server}=await import('../server.mjs');
-db.exec('DELETE FROM orders; DELETE FROM leads; DELETE FROM claims; DELETE FROM admins; DELETE FROM sessions;');
-db.prepare('INSERT INTO admins VALUES (?,?,?)').run('browser-test','test-only',scryptSync('test-only-password-123','test-only',64).toString('hex'));
-server.listen(3001,'127.0.0.1',()=>console.log('Browser test server: http://127.0.0.1:3001'));
+import { createNodeServer } from '../src/adapters/node/server.js';
+
+// Servidor aislado para las pruebas de navegador: base de datos nueva en cada ejecución.
+const dir = path.resolve('test-results');
+mkdirSync(dir, { recursive: true });
+writeFileSync(path.join(dir, 'browser-server.pid'), String(process.pid));
+for (const suffix of ['', '-shm', '-wal'])
+  rmSync(path.join(dir, `browser.sqlite${suffix}`), { force: true });
+
+const { server } = createNodeServer({
+  dbPath: path.join(dir, 'browser.sqlite'),
+  uploadDir: path.join(dir, 'uploads'),
+  env: { ADMIN_USER: 'browser-test', ADMIN_PASSWORD: 'test-only-password-123' },
+});
+server.listen(3001, '127.0.0.1', () => console.log('Servidor de pruebas: http://127.0.0.1:3001'));

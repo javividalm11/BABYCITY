@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 
 const root=path.dirname(fileURLToPath(import.meta.url));
 const dbPath=process.env.DB_PATH || path.join(root,'data/babycity.sqlite');
+const uploadDir=process.env.UPLOAD_DIR||path.join(root,'public/assets/uploads');
 mkdirSync(path.dirname(dbPath),{recursive:true});
 export const db=new DatabaseSync(dbPath);
 db.exec(`PRAGMA journal_mode=WAL; PRAGMA foreign_keys=ON;
@@ -22,6 +23,10 @@ if(!db.prepare('SELECT count(*) n FROM products').get().n){
   for(const p of JSON.parse(readFileSync(path.join(root,'data/products.json'),'utf8'))) insert.run(p.id,JSON.stringify(p));
 }
 db.prepare('INSERT OR IGNORE INTO settings VALUES (1,?)').run(JSON.stringify({lima:null,province:null}));
+if(process.env.ADMIN_PASSWORD?.length>=14){ // Cuenta admin desde variables de entorno (ADMIN_USER / ADMIN_PASSWORD); cambiar la clave restablece la contraseña.
+  const user=process.env.ADMIN_USER||'admin',row=db.prepare('SELECT * FROM admins WHERE username=?').get(user);
+  if(!row||!timingSafeEqual(scryptSync(process.env.ADMIN_PASSWORD,row.salt,64),Buffer.from(row.hash,'hex'))){const salt=randomBytes(32).toString('hex');db.exec('DELETE FROM admins; DELETE FROM sessions');db.prepare('INSERT INTO admins VALUES (?,?,?)').run(user,salt,scryptSync(process.env.ADMIN_PASSWORD,salt,64).toString('hex'));}
+}
 const allProducts=()=>db.prepare('SELECT data FROM products ORDER BY id').all().map(r=>JSON.parse(r.data));
 const settings=()=>JSON.parse(db.prepare('SELECT data FROM settings WHERE id=1').get().data);
 const sha=s=>createHash('sha256').update(s).digest('hex');
@@ -83,7 +88,7 @@ export const server=http.createServer(async(req,res)=>{
     const b=await body(req);if(typeof b.base64!=='string'||b.base64.length>1_500_000)throw fail(400,'Imagen demasiado grande (máximo 1 MB).');
     const bytes=Buffer.from(b.base64,'base64');const ext=bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))?'png':bytes[0]===255&&bytes[1]===216&&bytes[2]===255?'jpg':bytes.subarray(0,4).toString()==='RIFF'&&bytes.subarray(8,12).toString()==='WEBP'?'webp':null;
     if(!ext||bytes.length>1_048_576)throw fail(400,'Usa una imagen PNG, JPG o WebP de hasta 1 MB.');
-    const dir=path.join(root,'public/assets/uploads');mkdirSync(dir,{recursive:true});const file=randomBytes(16).toString('hex')+'.'+ext;writeFileSync(path.join(dir,file),bytes);return send(res,201,{image:'/assets/uploads/'+file});
+    const dir=uploadDir;mkdirSync(dir,{recursive:true});const file=randomBytes(16).toString('hex')+'.'+ext;writeFileSync(path.join(dir,file),bytes);return send(res,201,{image:'/assets/uploads/'+file});
   }
   if(route==='/api/admin/products'&&['PUT','POST'].includes(method)){
     const b=await body(req);const id=method==='POST'?(db.prepare('SELECT coalesce(max(id),0)+1 id FROM products').get().id):Number(b.id);
@@ -109,6 +114,7 @@ export const server=http.createServer(async(req,res)=>{
   if(route==='/sitemap.xml'){const origin=process.env.SITE_URL;if(!origin)throw fail(503,'Configura SITE_URL para generar el sitemap del dominio definitivo.');res.writeHead(200,{'Content-Type':mime['.xml']});return res.end('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+['/','/tienda','/catalogos','/nosotros','/contacto','/legal/terminos','/legal/privacidad','/legal/devoluciones',...allProducts().filter(p=>p.active).map(p=>'/producto/'+p.id)].map(p=>'<url><loc>'+origin.replace(/\/$/,'').replace(/&/g,'&amp;')+p+'</loc></url>').join('')+'</urlset>');}
   let base=path.join(root,'public'),rel=decodeURIComponent(route);
   if(route.startsWith('/catalogo/')){base=path.join(root,'catalogo');rel=rel.slice('/catalogo'.length);}
+  else if(route.startsWith('/assets/uploads/')){base=uploadDir;rel=rel.slice('/assets/uploads'.length);}
   let file=path.resolve(base,'.'+rel);
   if(!file.startsWith(base+path.sep)&&file!==base)throw fail(403,'Acceso denegado.');
   if(!existsSync(file)||statSync(file).isDirectory()){

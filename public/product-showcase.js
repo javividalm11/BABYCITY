@@ -14,8 +14,15 @@ let cleanup=()=>{};
 export function destroyProductShowcase(){cleanup();cleanup=()=>{};}
 export function mountProductShowcase(root,products,getFavorites){
  destroyProductShowcase();const section=root?.querySelector('.product-showcase');if(!section)return;
- let filter='all',page=0,count=window.innerWidth>=1080?4:window.innerWidth>=680?2:1,touch=null;
+ let filter='all',page=0,count=window.innerWidth>=1080?4:window.innerWidth>=680?2:1,touch=null,timer=null,inView=false,hovered=false,disposed=false,autoplay=!window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const grid=section.querySelector('.showcase-grid'),viewport=section.querySelector('.showcase-viewport');
+ function schedule(){
+  clearTimeout(timer);timer=null;if(disposed)return;
+  const pages=Math.ceil(items().length/count);
+  section.querySelector('.showcase-status').setAttribute('aria-live',autoplay?'off':'polite');
+  if(!autoplay||!inView||hovered||touch||document.hidden||section.contains(document.activeElement)||document.querySelector('dialog[open]')||pages<=1)return;
+  timer=setTimeout(()=>{if(document.querySelector('dialog[open]')){schedule();return;}page=(page+1)%pages;draw();},5000);
+ }
  const items=()=>{
   const group=filters.find(f=>f.id===filter);
   const list=products.filter(p=>p.active!==false&&p.stock!==0&&(filter==='all'||group.categories.includes(p.category)));
@@ -30,14 +37,21 @@ export function mountProductShowcase(root,products,getFavorites){
   section.querySelector('.showcase-dots').innerHTML=pages>1?Array.from({length:pages},(_,i)=>`<button type="button" data-showcase-page="${i}" aria-label="Ver grupo de productos ${i+1}" ${page===i?'aria-current="page"':''}></button>`).join(''):'';
   section.querySelector('.showcase-status').textContent=list.length?`Productos ${page*count+1} a ${Math.min((page+1)*count,list.length)} de ${list.length}.`:'No hay productos para esta categoría.';
   section.querySelectorAll('[data-showcase-filter]').forEach(b=>{const active=b.dataset.showcaseFilter===filter;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active));});
+  schedule();
  }
  function changePage(next){const pages=Math.ceil(items().length/count);if(next<0||next>=pages)return;page=next;draw();}
  function click(event){const button=event.target.closest('button');if(!button)return;if(button.dataset.showcaseFilter){filter=button.dataset.showcaseFilter;page=0;draw();}else if(button.dataset.showcaseStep)changePage(page+Number(button.dataset.showcaseStep));else if(button.hasAttribute('data-showcase-page'))changePage(Number(button.dataset.showcasePage));}
  function keys(event){if(event.target!==viewport)return;if(event.key==='ArrowRight'){event.preventDefault();changePage(page+1);}if(event.key==='ArrowLeft'){event.preventDefault();changePage(page-1);}}
- function start(event){touch={x:event.changedTouches[0].clientX,y:event.changedTouches[0].clientY};}
- function end(event){if(!touch)return;const dx=event.changedTouches[0].clientX-touch.x,dy=event.changedTouches[0].clientY-touch.y;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.3)changePage(page+(dx<0?1:-1));touch=null;}
+ function start(event){touch={x:event.changedTouches[0].clientX,y:event.changedTouches[0].clientY};schedule();}
+ function end(event){if(!touch)return;const dx=event.changedTouches[0].clientX-touch.x,dy=event.changedTouches[0].clientY-touch.y;if(Math.abs(dx)>45&&Math.abs(dx)>Math.abs(dy)*1.3)changePage(page+(dx<0?1:-1));touch=null;schedule();}
+ function enter(event){if(event.pointerType==='mouse'){hovered=true;schedule();}}
+ function leave(){hovered=false;schedule();}
+ function focusChanged(){queueMicrotask(schedule);}
+ function cancelTouch(){touch=null;schedule();}
  section.addEventListener('click',click);viewport.addEventListener('keydown',keys);viewport.addEventListener('touchstart',start,{passive:true});viewport.addEventListener('touchend',end,{passive:true});
+ section.addEventListener('pointerenter',enter);section.addEventListener('pointerleave',leave);section.addEventListener('focusin',focusChanged);section.addEventListener('focusout',focusChanged);document.addEventListener('visibilitychange',schedule);document.addEventListener('close',schedule,true);viewport.addEventListener('touchcancel',cancelTouch);
+ const visibility=new IntersectionObserver(entries=>{inView=entries[0].isIntersecting;schedule();});visibility.observe(section);
  const observer=new ResizeObserver(()=>{const next=window.innerWidth>=1080?4:window.innerWidth>=680?2:1;if(next===count)return;const first=page*count;count=next;page=Math.floor(first/count);draw();});observer.observe(section);
- cleanup=()=>{observer.disconnect();section.removeEventListener('click',click);viewport.removeEventListener('keydown',keys);viewport.removeEventListener('touchstart',start);viewport.removeEventListener('touchend',end);};
+ cleanup=()=>{disposed=true;clearTimeout(timer);observer.disconnect();visibility.disconnect();section.removeEventListener('click',click);viewport.removeEventListener('keydown',keys);viewport.removeEventListener('touchstart',start);viewport.removeEventListener('touchend',end);viewport.removeEventListener('touchcancel',cancelTouch);section.removeEventListener('pointerenter',enter);section.removeEventListener('pointerleave',leave);section.removeEventListener('focusin',focusChanged);section.removeEventListener('focusout',focusChanged);document.removeEventListener('visibilitychange',schedule);document.removeEventListener('close',schedule,true);};
  draw();
 }

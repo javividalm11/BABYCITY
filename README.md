@@ -120,3 +120,15 @@ El hero reproduce la composición compartida por el cliente: titular en tres lí
 Cinco fotografías originales de los catálogos alternan sobre el fondo de ambientación. El ciclo dura 30 segundos, con un desvanecido de 1,2 segundos entre imágenes. Incluye pausa y respeta movimiento reducido. Las imágenes decorativas del hero no dependen de que un producto esté publicado en el inventario.
 
 Fondo generado con la herramienta integrada ImageGen. Original PNG y versión WebP optimizada en `public/assets/hero/`. Prompt completo y procedencia de las cinco imágenes: `data/hero-assets.json`.
+
+## Despliegue en Cloudflare Workers
+
+`worker/index.js` es la versión para Cloudflare del servidor (`server.mjs` se conserva para desarrollo local con Node). Usa **D1** (productos, pedidos, consultas, reclamos y sesiones), **R2** (imágenes subidas desde el panel y PDF de catálogos) y sirve `public/` como assets estáticos. La base se crea y se carga con `data/products.json` sola en la primera visita.
+
+1. En Cloudflare: *Workers & Pages → Create → Import a repository* → repositorio `BABYCITY`. Comando de build: vacío. Comando de deploy: `npx wrangler deploy` (valor por defecto).
+2. En el primer deploy Cloudflare crea el D1 `babycity-db` y el bucket R2 `babycity-files` (R2 debe estar activado en la cuenta).
+3. En *Settings → Variables and Secrets* agregar los **secretos** `ADMIN_USER` y `ADMIN_PASSWORD` (mínimo 14 caracteres). Cambiar `ADMIN_PASSWORD` restablece la contraseña e invalida las sesiones. Nunca guardarlos en el repositorio.
+4. En `wrangler.jsonc`, definir `SITE_URL` con el dominio definitivo (sitemap, canonical y datos estructurados) y conectar el dominio en *Settings → Domains & Routes*.
+5. Subir los PDF de catálogos a R2 (no caben en assets por el límite de 25 MiB): `npx wrangler login` y luego `npm run cf:upload-pdfs`.
+
+Prueba local: crear `.dev.vars` (ignorado por git) con `ADMIN_USER` y `ADMIN_PASSWORD` y ejecutar `npm run cf:dev`. Las contraseñas del Worker usan PBKDF2-SHA256 (scrypt no existe en Workers).

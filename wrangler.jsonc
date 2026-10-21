@@ -1,0 +1,19 @@
+{
+  "name": "babycity",
+  "main": "worker/index.js",
+  "compatibility_date": "2025-09-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  // Cloudflare crea estos recursos solos en el primer deploy (sin IDs).
+  "d1_databases": [{ "binding": "DB", "database_name": "babycity-db" }],
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "babycity-files" }],
+  "vars": {
+    // Dominio definitivo, sin barra final. Ej: "https://babycity.pe"
+    "SITE_URL": ""
+  }
+}

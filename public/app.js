@@ -1,21 +1,20 @@
-import {renderCommunity} from './community.js';
-import {renderAdmin} from './admin.js';
+import {renderCommunity} from './community.js?v=tiktok-captures-2';
+import {renderAdmin} from './admin.js?v=shared-1';
 import {CatalogReader} from './catalog-reader.js';
-import {renderProductShowcase,mountProductShowcase,destroyProductShowcase} from './product-showcase.js';
+import {renderProductShowcase,mountProductShowcase,destroyProductShowcase} from './product-showcase.js?v=autoplay-3';
 import './hero-slideshow.js';
 const $=s=>document.querySelector(s);
-export const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-export const money=n=>new Intl.NumberFormat('es-PE',{style:'currency',currency:'PEN'}).format(n);
-export async function api(url,method='GET',data){const r=await fetch(url,{method,headers:data?{'Content-Type':'application/json'}:{},body:data?JSON.stringify(data):undefined});const b=await r.json();if(!r.ok)throw new Error(b.error||'No se pudo completar la solicitud.');return b;}
+import {api,esc,money,notify} from './shared.js';
+export {api,esc,money,notify};
 const paths={search:'M21 21l-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0',heart:'M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z',bag:'M5 7h14l2 14H3L5 7Zm3 0V5a4 4 0 0 1 8 0v2',truck:'M1 4h13v12H1V4Zm13 5h5l3 4v3h-8M8 18a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm12 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z',shield:'M12 2l8 4v6c0 5-8 10-8 10S4 17 4 12V6l8-4Zm-4 10 3 3 5-6',chat:'M21 11a9 9 0 0 1-9 9 10 10 0 0 1-4-.9L2 21l1.8-5.4A9 9 0 1 1 21 11ZM8 8c0 4 2 6 6 7l2-2-3-2-1 1-2-2 1-1-2-3-1 2',store:'M3 10v11h18V10M2 3h20l-2 7H4L2 3Zm6 18v-7h8v7',arrow:'M4 12h16m-6-6 6 6-6 6',check:'M20 6 9 17l-5-5',book:'M12 5v16M3 3c4 0 6 0 9 2 3-2 5-2 9-2v16c-4 0-6 0-9 2-3-2-5-2-9-2V3'};
 export const icon=name=>`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${paths[name]||paths.heart}"/></svg>`;
-$('#searchButton').innerHTML=icon('search');$('#wishButton').innerHTML=icon('heart');$('#cartButton').insertAdjacentHTML('afterbegin',icon('bag'));$('#waIcon').innerHTML=icon('chat');
+$('#searchButton').innerHTML=icon('search');$('#wishButton').innerHTML=icon('heart');$('#cartButton').innerHTML=icon('bag')+'<span id="cartCount">0</span>';$('#waIcon').innerHTML=icon('chat');
 const stored=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))||fallback;}catch{return fallback;}};
 let cart=stored('bc-cart-v2',[]).filter(i=>Number.isInteger(i.id)&&Number.isInteger(i.quantity)&&i.quantity>0&&i.quantity<=99);
 let favorites=stored('bc-favorites',[]);if(!Array.isArray(favorites))favorites=[];
 let products=[],catalogs=[],shipping={lima:null,province:null},shopPage=1;
 const bookReader=new CatalogReader($('#bookDialog'));
-export const notify=message=>{const t=$('#toast');t.textContent=message;t.classList.add('show');clearTimeout(notify.timer);notify.timer=setTimeout(()=>t.classList.remove('show'),3200);};
+
 function persist(){try{localStorage.setItem('bc-cart-v2',JSON.stringify(cart));localStorage.setItem('bc-favorites',JSON.stringify(favorites));}catch{}$('#cartCount').textContent=cart.reduce((s,i)=>s+i.quantity,0);}
 function add(id){const p=products.find(p=>p.id===id);if(!p||p.stock===0)return notify('Este producto está agotado.');const item=cart.find(i=>i.id===id);if(item){if(item.quantity>=99||(p.stock!==null&&item.quantity>=p.stock))return notify('Alcanzaste la cantidad disponible.');item.quantity++;}else cart.push({id,quantity:1});persist();notify('Agregado a tu carrito ♡');}
 function productCard(p){return `<article class="product-card reveal"><button class="wish ${favorites.includes(p.id)?'saved':''}" data-wish="${p.id}" aria-label="${favorites.includes(p.id)?'Quitar de':'Guardar en'} favoritos" aria-pressed="${favorites.includes(p.id)}">${icon('heart')}</button><a href="/producto/${p.id}" data-link class="product-picture"><span class="product-label">${esc(p.category)}</span><img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy" width="260" height="256"></a><div class="product-info"><small>Selección BabyCity</small><a href="/producto/${p.id}" data-link><h3>${esc(p.name)}</h3></a><p>${p.stock===null?'Disponibilidad por confirmar':p.stock===0?'Agotado':`${p.stock} ${p.stock===1?'unidad disponible':'unidades disponibles'}`}</p><div class="price-line"><strong>${money(p.price)}</strong><button class="add" data-add="${p.id}" aria-label="Agregar ${esc(p.name)}" ${p.stock===0?'disabled':''}>+</button></div></div></article>`;}

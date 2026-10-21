@@ -1,4 +1,4 @@
-import {api,esc,money,notify} from './app.js';
+import {api,esc,money,notify} from './shared.js';
 let dashboard,tab='products',main,query='',editor;
 const statusLabels={solicitud:'Solicitud recibida',contactado:'Cliente contactado',confirmado:'Pedido confirmado',enviado:'Enviado',completado:'Completado',cancelado:'Cancelado'};
 export async function renderAdmin(target){main=target;try{dashboard=await api('/api/admin/dashboard');draw();}catch{login();}}

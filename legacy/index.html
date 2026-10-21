@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#fff8f3" />
+  <meta name="description" content="Baby City: productos y accesorios para tu bebé con envíos a todo el Perú y pago contra entrega." />
+  <title>Baby City | El mundo de tu bebé, a un clic</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="nav container">
+      <a class="brand" href="#inicio" aria-label="Baby City, inicio">
+        <img class="site-logo" src="assets/logo.jpeg" alt="Baby City — El mundo de tu bebé, a un clic">
+      </a>
+      <nav class="desktop-nav" aria-label="Navegación principal">
+        <a href="#inicio">Inicio</a><a href="#categorias">Categorías</a><a href="#productos">Productos</a><a href="#nosotros">Nosotros</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="phone" href="tel:+51937473120"><span>☎</span><span><small>¿Necesitas ayuda?</small>937 473 120</span></a>
+        <button class="cart-button" id="cartOpen" aria-label="Abrir carrito"><svg viewBox="0 0 24 24"><path d="M3 3h2l2.2 10.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L20 7H7"/><circle cx="10" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg><span id="cartCount">0</span></button>
+        <button class="menu-button" id="menuButton" aria-label="Abrir menú">☰</button>
+      </div>
+    </div>
+    <nav class="mobile-nav" id="mobileNav"><a href="#inicio">Inicio</a><a href="#categorias">Categorías</a><a href="#productos">Productos</a><a href="#nosotros">Nosotros</a></nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-image" role="img" aria-label="Coche, cuna, bañera y silla para bebé"></div>
+      <div class="container hero-content">
+        <h1>Todo para tu bebé,<br><em>a un clic.</em></h1>
+        <p>Productos elegidos con amor para acompañar cada etapa de su crecimiento.</p>
+        <div class="hero-actions"><a class="btn primary" href="#productos">Ver productos <span>→</span></a><a class="btn whatsapp" href="https://wa.me/51937473120?text=Hola%20Baby%20City,%20quisiera%20información%20sobre%20sus%20productos" target="_blank" rel="noopener">◉ Comprar por WhatsApp</a></div>
+        <div class="hero-note"><span>✓</span><div><strong>Compra con confianza</strong><small>Te asesoramos antes y después de tu compra</small></div></div>
+      </div>
+    </section>
+
+    <section class="section categories" id="categorias">
+      <div class="container">
+        <div class="section-heading"><div><span class="eyebrow">Encuentra lo que necesitas</span><h2>Compra por categoría</h2></div></div>
+        <div class="category-grid">
+          <a href="#productos" data-filter-link="Coches" class="category-card peach"><div class="category-photo"><img src="assets/products/product-01.webp" alt="Coche Moisés Sundance" loading="lazy"></div><div><h3>Coches</h3><p>Moisés, maleta y travel</p><b>Ver productos →</b></div></a>
+          <a href="#productos" data-filter-link="Mecedoras" class="category-card sky"><div class="category-photo"><img src="assets/products/product-02.webp" alt="Mecedora Melody para bebé" loading="lazy"></div><div><h3>Mecedoras</h3><p>Descanso y alimentación</p><b>Ver productos →</b></div></a>
+          <a href="#productos" data-filter-link="Portabebés" class="category-card mint"><div class="category-photo"><img src="assets/products/product-04.webp" alt="Canguro portabebé Love" loading="lazy"></div><div><h3>Portabebés</h3><p>Comodidad en cada salida</p><b>Ver productos →</b></div></a>
+          <a href="#productos" data-filter-link="Juguetes" class="category-card butter"><div class="category-photo"><img src="assets/products/product-07.webp" alt="Peluche arrullador para bebé" loading="lazy"></div><div><h3>Juguetes</h3><p>Compañeros para soñar</p><b>Ver productos →</b></div></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section products-section" id="productos">
+      <div class="container">
+        <div class="section-heading product-heading"><div><span class="eyebrow">Catálogo Baby Store</span><h2>Nuestros 14 productos</h2></div><a href="#productos">Ver todos <span>→</span></a></div>
+        <div class="filters" role="group" aria-label="Filtrar productos"><button class="active" data-filter="Todos">Todos</button><button data-filter="Coches">Coches</button><button data-filter="Mecedoras">Mecedoras</button><button data-filter="Cunas">Cunas</button><button data-filter="Triciclos">Triciclos</button><button data-filter="Portabebés">Portabebés</button><button data-filter="Juguetes">Juguetes</button></div>
+        <div class="product-grid" id="productGrid"></div>
+      </div>
+    </section>
+
+    <section class="story section" id="nosotros">
+      <div class="container story-card">
+        <div class="story-visual"><div class="heart heart-one">♥</div><div class="heart heart-two">♥</div><div class="story-circle"><img src="assets/logo.jpeg" alt="Baby City — El mundo de tu bebé, a un clic"></div></div>
+        <div class="story-copy"><span class="eyebrow">Una tienda creada con amor</span><h2>Acompañamos tus momentos más bonitos</h2><p>Sabemos que elegir para tu bebé es una decisión muy especial. Por eso seleccionamos productos prácticos, seguros y lindos, y te asesoramos personalmente para que compres tranquila.</p><div class="story-stats"><div><b>+10 mil</b><small>familias felices</small></div><div><b>Todo Perú</b><small>cobertura nacional</small></div><div><b>Directo</b><small>por WhatsApp</small></div></div><a class="text-link" href="https://wa.me/51937473120" target="_blank" rel="noopener">Conócenos y conversemos →</a></div>
+      </div>
+    </section>
+
+    <section class="reviews section">
+      <div class="container"><div class="center-heading"><span class="eyebrow">Mamás felices</span><h2>Gracias por confiar en nosotros</h2></div><div class="review-grid">
+        <article><div class="stars">★★★★★</div><p>“Mi coche llegó rapidísimo y tal como lo vi. Me ayudaron a elegirlo por WhatsApp con mucha paciencia.”</p><footer><span>MC</span><div><b>María C.</b><small>Mamá de Thiago</small></div></footer></article>
+        <article><div class="stars">★★★★★</div><p>“La cunita es hermosa y súper práctica. Me encantó que pude pagar al recibirla. Volvería a comprar.”</p><footer><span>AS</span><div><b>Andrea S.</b><small>Mamá primeriza</small></div></footer></article>
+        <article><div class="stars">★★★★★</div><p>“Excelente atención y productos lindos. Resolvieron todas mis dudas antes de hacer el pedido.”</p><footer><span>LP</span><div><b>Lucía P.</b><small>Mamá de Emma</small></div></footer></article>
+      </div></div>
+    </section>
+
+  </main>
+
+  <footer class="footer"><div class="container footer-grid"><div><a class="brand footer-brand" href="#inicio"><img class="site-logo footer-logo" src="assets/logo-transparent.png" alt="Baby City — El mundo de tu bebé, a un clic"></a><div class="social"><a href="#" aria-label="Instagram">◎</a><a href="#" aria-label="TikTok">♪</a><a href="https://wa.me/51937473120" aria-label="WhatsApp">◉</a></div></div><div><h4>Explora</h4><a href="#inicio">Inicio</a><a href="#productos">Productos</a><a href="#categorias">Categorías</a><a href="#nosotros">Nosotros</a></div><div><h4>Ayuda</h4><a href="#">Envíos y entregas</a><a href="#">Cambios y devoluciones</a><a href="#">Preguntas frecuentes</a><a href="#">Términos y condiciones</a></div><div><h4>Contáctanos</h4><a href="tel:+51937473120">☎ 937 473 120</a><p>Lunes a sábado<br>9:00 am – 7:00 pm</p><span class="secure">✓ Compra segura</span></div></div><div class="copyright container">© 2026 Baby City. Hecho con amor para las familias del Perú ♡</div></footer>
+
+  <a class="float-wa" href="https://wa.me/51937473120" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">◉<span>¿Te ayudamos?</span></a>
+
+  <div class="overlay" id="overlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Carrito de compras"><div class="cart-head"><div><small>Tu selección</small><h2>Mi carrito</h2></div><button id="cartClose" aria-label="Cerrar">×</button></div><div class="cart-items" id="cartItems"></div><div class="cart-empty" id="cartEmpty"><span>♡</span><h3>Tu carrito está esperando</h3><p>Agrega tus favoritos y envía tu pedido por WhatsApp.</p></div><div class="cart-footer" id="cartFooter"><div><span>Subtotal</span><b id="cartTotal">S/ 0</b></div><button class="btn whatsapp" id="checkout">Finalizar por WhatsApp →</button><small>El precio final y envío se confirman por WhatsApp.</small></div></aside>
+
+  <div class="modal product-modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+    <button class="modal-close" data-close-modal aria-label="Cerrar">×</button>
+    <div class="product-modal-grid">
+      <div class="modal-product-image"><img id="modalProductImage" src="" alt=""></div>
+      <div class="modal-product-copy">
+        <span class="product-modal-brand" id="modalProductBrand"></span>
+        <h2 id="productModalTitle"></h2>
+        <div class="modal-price"><strong id="modalProductPrice"></strong><del id="modalProductOld"></del><span id="modalProductDiscount"></span></div>
+        <p id="modalProductDescription"></p>
+        <ul id="modalProductFeatures"></ul>
+        <div class="modal-product-actions">
+          <button class="btn primary" id="modalAddCart">Agregar al carrito</button>
+          <button class="btn whatsapp" id="buyNow">Comprar ahora →</button>
+        </div>
+        <small class="modal-help">¿Tienes dudas? Llámanos al <a href="tel:+51937473120">937 473 120</a></small>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal customer-modal" id="customerModal" role="dialog" aria-modal="true" aria-labelledby="customerModalTitle">
+    <button class="modal-close" data-close-modal aria-label="Cerrar">×</button>
+    <div class="form-heading"><span>Último paso ♡</span><h2 id="customerModalTitle">Datos para tu pedido</h2><p>Completa la información y una asesora confirmará disponibilidad, envío y total por WhatsApp.</p></div>
+    <div class="order-summary" id="orderSummary"></div>
+    <form id="customerForm">
+      <div class="form-grid">
+        <label class="field full"><span>Nombre y apellido *</span><input name="name" type="text" autocomplete="name" required placeholder="Ej. María López"></label>
+        <label class="field"><span>Celular / WhatsApp *</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel" required pattern="[0-9+ ]{7,15}" placeholder="Ej. 987 654 321"></label>
+        <label class="field"><span>DNI</span><input name="dni" type="text" inputmode="numeric" maxlength="8" placeholder="Opcional"></label>
+        <label class="field"><span>Departamento / ciudad *</span><input name="city" type="text" required placeholder="Ej. Lima"></label>
+        <label class="field"><span>Distrito *</span><input name="district" type="text" required placeholder="Ej. San Miguel"></label>
+        <label class="field full"><span>Dirección de entrega *</span><input name="address" type="text" autocomplete="street-address" required placeholder="Av., calle, número y urbanización"></label>
+        <label class="field full"><span>Referencia</span><input name="reference" type="text" placeholder="Ej. Frente al parque"></label>
+        <label class="field"><span>Forma de entrega *</span><select name="delivery" required><option value="">Seleccionar</option><option>Envío a domicilio</option><option>Recojo coordinado</option></select></label>
+        <label class="field"><span>Forma de pago *</span><select name="payment" required><option value="">Seleccionar</option><option>Pago contra entrega</option><option>Yape / Plin</option><option>Transferencia bancaria</option></select></label>
+        <label class="field full"><span>Indicaciones adicionales</span><textarea name="notes" rows="3" placeholder="Color preferido, horario u otra consulta"></textarea></label>
+      </div>
+      <label class="form-consent"><input type="checkbox" required> <span>Acepto ser contactada para coordinar este pedido.</span></label>
+      <button class="btn whatsapp form-submit" type="submit">Enviar pedido por WhatsApp →</button>
+    </form>
+  </div>
+
+  <div class="toast" id="toast">Producto agregado a tu carrito ♡</div>
+  <script src="app.js"></script>
+</body>
+</html>

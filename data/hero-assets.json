@@ -1,0 +1,15 @@
+{
+  "tool": "image_gen.imagegen (built-in)",
+  "generatedSource": "public/assets/hero/nursery-background.png",
+  "webAsset": "public/assets/hero/nursery-background.webp",
+  "reference": "Imagen del navbar y hero adjunta por el cliente",
+  "prompt": "Use case: photorealistic-natural. Asset type: website hero background image only, NOT a screenshot, no interface. Use the user's attached BabyCity screenshot only as a reference for the warm nursery atmosphere and photo composition. Generate a high quality photorealistic wide 3:2 image of that same cozy baby nursery: cream plaster walls, golden afternoon sunlight through sheer linen curtains at right, honey oak wooden crib occupying the rightmost third, overhead hanging mobile with soft clouds, stars and bunny, cream chunky knit blanket over crib rail, soft cream circular rug foreground, beige plush bunny at far lower right, small pastel wooden stacking rings near right. Keep the foreground center-left and center (40%-75% of width) EMPTY floor and rug, ready for overlaying a real baby stroller product. LEFT third must be quiet pale cream empty wall with subtle natural sun shadows. Camera eye level about 80cm, realistic soft contact shadows, elegant warm beige/pink palette matching the attached reference. No stroller, no high chair, no text, no letters, no logo, no watermark, no website elements. Produce a standalone photographic background, not a mockup.",
+  "catalogProductImages": [
+    "public/assets/catalogs/catalog-01/product-2.webp",
+    "public/assets/catalogs/catalog-01/product-3.webp",
+    "public/assets/catalogs/catalog-05/product-29.webp",
+    "public/assets/catalogs/catalog-06/product-30.webp",
+    "public/assets/catalogs/catalog-07/product-36.webp"
+  ],
+  "animation": {"cycleSeconds": 30, "crossfadeSeconds": 1.2, "imageCount": 5, "repeats": "infinite", "reducedMotion": "first image, static", "pauseControl": true}
+}

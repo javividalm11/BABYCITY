@@ -1,0 +1,14 @@
+node_modules/
+.env
+data/*.sqlite*
+backups/
+data/sample.png
+data/catalog-extraction.json
+test-results/
+.npm-cache/
+playwright-report/
+
+# Contratos y documentos comerciales (no se suben)
+Contrato_*
+Cotizacion_*
+*.docx

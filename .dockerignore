@@ -1,0 +1,12 @@
+**
+!package.json
+!server.mjs
+!public/
+!public/**
+!catalogo/
+!catalogo/**
+!data/
+!data/products.json
+!scripts/
+!scripts/setup-admin.mjs
+!scripts/backup.mjs

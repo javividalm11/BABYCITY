@@ -1,0 +1,10 @@
+import path from 'node:path';
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {scryptSync} from 'node:crypto';
+mkdirSync('test-results',{recursive:true});
+writeFileSync('test-results/browser-server.pid',String(process.pid));
+process.env.DB_PATH=path.resolve('test-results/browser.sqlite');
+const {db,server}=await import('../server.mjs');
+db.exec('DELETE FROM orders; DELETE FROM leads; DELETE FROM claims; DELETE FROM admins; DELETE FROM sessions;');
+db.prepare('INSERT INTO admins VALUES (?,?,?)').run('browser-test','test-only',scryptSync('test-only-password-123','test-only',64).toString('hex'));
+server.listen(3001,'127.0.0.1',()=>console.log('Browser test server: http://127.0.0.1:3001'));

@@ -19,6 +19,7 @@ import {
 } from '../views/sections/product-showcase.js';
 import { mountLivingEffects, destroyLivingEffects } from '../effects/living-effects.js';
 import { openBook } from './catalog-viewer.js';
+import { closeNavbarMenus } from './navbar.js';
 
 export async function navigate(url, { replace = false, scroll = true } = {}) {
   closeDialogs();
@@ -53,8 +54,7 @@ export async function render() {
     if (a.pathname === route) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
   });
-  $('#mobileMenu').hidden = true;
-  $('#menuButton').setAttribute('aria-expanded', 'false');
+  closeNavbarMenus();
   const title =
     route === '/tienda'
       ? 'Tienda'

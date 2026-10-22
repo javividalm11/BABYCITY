@@ -12,6 +12,7 @@ import { shop } from '../views/shop.js';
 import { checkout, openCart, renderCart } from './cart.js';
 import { openBook } from './catalog-viewer.js';
 import { navigate, render } from './navigation.js';
+import { toggleMobileNavigation } from './navbar.js';
 
 const withParam = (name, value, { drop = false } = {}) => {
   const params = new URLSearchParams(location.search);
@@ -56,8 +57,7 @@ async function runAction(button) {
     case 'contact':
       return $('#contactDialog').showModal();
     case 'menu':
-      $('#mobileMenu').hidden = !$('#mobileMenu').hidden;
-      return button.setAttribute('aria-expanded', !$('#mobileMenu').hidden);
+      return toggleMobileNavigation();
     case 'checkout':
       return checkout();
     case 'back-cart':

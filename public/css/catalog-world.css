@@ -29,6 +29,25 @@ main[data-view='shop'] > .page-intro {
   position: relative;
   isolation: isolate;
 }
+/* Entre categorías y productos las nubes son una sola: cada sección dibuja la mitad que le toca. */
+.discovery {
+  background-image: var(--paper-cloud-top), url('/assets/catalogs/clouds-join-upper.svg');
+  background-position:
+    center top,
+    center bottom;
+  background-size:
+    100% 150px,
+    100% 130px;
+}
+.product-showcase {
+  background-image: url('/assets/catalogs/clouds-join-lower.svg'), var(--paper-cloud-bottom);
+  background-position:
+    center top,
+    center bottom;
+  background-size:
+    100% 150px,
+    100% 130px;
+}
 .discovery {
   padding: 96px 0 102px;
 }

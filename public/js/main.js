@@ -7,15 +7,18 @@ import { loadInitialData } from './state/loaders.js';
 import { bindEvents } from './features/events.js';
 import { bindForms } from './features/forms.js';
 import { render } from './features/navigation.js';
+import { initializeNavbar } from './features/navbar.js';
 
 function paintStaticIcons() {
   $('#searchButton').innerHTML = icon('search');
-  $('#wishButton').innerHTML = icon('heart');
-  $('#cartButton').innerHTML = icon('bag') + '<span id="cartCount">0</span>';
+  $('#wishButton').innerHTML = icon('heart') + '<small>Favoritos</small>';
+  $('#cartButton').innerHTML = icon('cart') + '<span id="cartCount">0</span><small>Carrito</small>';
+  $('#menuButton').innerHTML = icon('menu');
   $('#waIcon').innerHTML = icon('chat');
 }
 
 async function start() {
+  initializeNavbar();
   paintStaticIcons();
   bindEvents();
   bindForms();

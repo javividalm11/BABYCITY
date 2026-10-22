@@ -4,6 +4,6 @@ export default async function () {
     const pid = Number(readFileSync('test-results/browser-server.pid', 'utf8'));
     if (Number.isInteger(pid) && pid > 0) process.kill(pid);
   } catch {
-    // El servidor ya había terminado.
+    // Si el servidor ya terminó, no hago nada.
   }
 }

@@ -6,7 +6,7 @@ const { server, repo } = createNodeServer();
 
 server.listen(port, host, () => console.log(`BabyCity: http://${host}:${port}`));
 
-// Cierro el servidor y la base de datos de forma ordenada al recibir la señal de apagado.
+// Cierro el servidor y la base de datos de forma ordenada al apagar.
 function shutdown() {
   server.close(() => {
     repo.close();

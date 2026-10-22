@@ -1,4 +1,4 @@
-/* Paper physics are supplied by the same StPageFlip engine as BOOKS. */
+/* Doy estilo al visor de páginas con efecto de papel. */
 .book-dialog {
   width: calc(100vw - 80px);
   max-width: 1600px;

@@ -1,6 +1,6 @@
 import { encoder, randomHex, safeEqual, toHex } from './crypto.js';
 
-// Uso el máximo de iteraciones que aceptan ambos entornos de ejecución.
+// Uso el máximo de iteraciones que acepta cada entorno.
 const ITERATIONS = 100_000;
 const DUMMY_SALT = 'sin-usuario';
 

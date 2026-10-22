@@ -1,6 +1,5 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
-// Keep the BOOKS project's engine local and move its injected CSS into a file
-// so it works with BabyCity's Content Security Policy without an inline exception.
+// Copio el motor al proyecto y saco su CSS a un archivo para cumplir la política de seguridad sin excepciones.
 const source = readFileSync('node_modules/page-flip/dist/js/page-flip.module.js', 'utf8');
 const start = source.indexOf('!function(t,e){void 0===e');
 const end = source.indexOf('class x extends class', start);
@@ -9,8 +8,7 @@ if (start < 0 || end < 0 || !match)
   throw new Error('Unexpected page-flip bundle; review before updating.');
 mkdirSync('public/vendor', { recursive: true });
 let bundle = source.slice(0, start) + source.slice(end);
-// Upstream 2.0.7 leaves the render RAF running after destroy(). Stop that
-// loop so opening more catalogs or resizing does not retain closed books.
+// Detengo el bucle de dibujo al destruir el visor para no retener libros cerrados.
 const loop =
   'start(){this.update();const t=e=>{this.render(e),requestAnimationFrame(t)};requestAnimationFrame(t)}';
 const destroy = 'destroy(){this.ui.destroy(),this.block.remove()}';

@@ -108,7 +108,7 @@
   }
 }
 
-/* Masked word reveal on first render and reload. */
+/* Revelo cada palabra con una máscara en la primera carga. */
 .living-enabled .hero-copy h1 > span {
   animation: none;
 }

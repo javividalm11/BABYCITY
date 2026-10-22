@@ -1,7 +1,7 @@
 const PDF = 'application/pdf';
 const BY_EXTENSION = { png: 'image/png', jpg: 'image/jpeg', webp: 'image/webp', pdf: PDF };
 
-// Almacén de archivos sobre R2. Las claves llevan el prefijo "uploads/" o "catalogo/".
+// Guardo y leo archivos en R2 con claves "uploads/..." y "catalogo/...".
 export class R2Storage {
   constructor(bucket) {
     this.bucket = bucket;

@@ -2,7 +2,7 @@ import { fail } from '../http/errors.js';
 import { renderPage, SPA_ROUTE } from '../seo/render-page.js';
 import { renderSitemap } from '../seo/sitemap.js';
 
-// Los archivos con nombre fijo se revalidan siempre; los subidos tienen nombre único y no cambian.
+// Reviso siempre los archivos de nombre fijo; los subidos tienen nombre único.
 const REVALIDATE = /\.(?:html|js|css|json|xml|txt)$/;
 const CACHE = {
   revalidate: 'no-cache',
@@ -26,7 +26,7 @@ async function storedFile(files, key, cache) {
 
 const upload = ({ files, params }) => storedFile(files, `uploads/${params.name}`, CACHE.immutable);
 
-// Los PDF del catálogo llevan espacios y tildes; rechazo cualquier intento de salir de la carpeta.
+// Los PDF llevan espacios y tildes; rechazo cualquier ruta que salga de la carpeta.
 function catalogPdf({ files, params }) {
   let name;
   try {
@@ -54,7 +54,7 @@ async function page({ assets, repo, config, url }) {
   });
 }
 
-// Cualquier otra ruta GET se sirve desde la carpeta pública.
+// Cualquier otra ruta GET la sirvo desde la carpeta pública.
 export async function serveAsset({ assets, request, url }) {
   const res = await assets.fetch(request);
   if (res.status === 404) throw fail(404, 'Archivo no encontrado.');

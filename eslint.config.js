@@ -2,7 +2,15 @@ import js from '@eslint/js';
 import globals from 'globals';
 
 export default [
-  { ignores: ['node_modules/**', 'public/vendor/**', 'archive/**', 'test-results/**', '.wrangler/**'] },
+  {
+    ignores: [
+      'node_modules/**',
+      'public/vendor/**',
+      'archive/**',
+      'test-results/**',
+      '.wrangler/**',
+    ],
+  },
   js.configs.recommended,
   {
     rules: {

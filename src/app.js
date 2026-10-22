@@ -16,7 +16,7 @@ function errorResponse(error) {
   return json(500, { error: 'No pudimos procesar la solicitud.' });
 }
 
-// Armo la aplicación a partir de puertos (repo, files, assets); no conoce el entorno donde corre.
+// Armo la aplicación con dependencias inyectadas; no sé dónde se ejecuta.
 export function createApp({ config, repo, files, assets, seedProducts }) {
   const match = createRouter([...publicApiRoutes, ...adminApiRoutes, ...siteRoutes]);
   let ready;

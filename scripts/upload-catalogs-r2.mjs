@@ -1,4 +1,4 @@
-// Sube los PDF de catalogo/ al bucket R2 (se sirven en /catalogo/...). Uso: npm run cf:upload-pdfs
+// Subo los PDF de catalogo/ al almacén de archivos. Uso: npm run cf:upload-pdfs
 import { readdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 const bucket = process.env.R2_BUCKET || 'babycity-files';

@@ -8,7 +8,7 @@ const first = (value) =>
     .split(',')[0]
     .trim();
 
-// Con proxy de confianza uso el último valor de X-Forwarded-For, el que añadió el proxy.
+// Con proxy de confianza tomo la IP que añadió el proxy, la última de la lista.
 function clientIpOf(req, trustProxy) {
   const forwarded = String(req.headers['x-forwarded-for'] ?? '').split(',');
   const proxied = forwarded[forwarded.length - 1].trim();
@@ -28,7 +28,7 @@ async function readBody(req, maxBytes) {
   return Buffer.concat(chunks);
 }
 
-// Convierto la petición de Node en una Request estándar con origen y URL verificados.
+// Traduzco la petición de Node a una Request estándar con URL y host validados.
 export async function toWebRequest(req, { trustProxy, maxBodyBytes }) {
   const proto = trustProxy
     ? first(req.headers['x-forwarded-proto']) || 'http'

@@ -9,11 +9,11 @@
     "html_handling": "none",
     "not_found_handling": "none"
   },
-  // Cloudflare crea estos recursos solos en el primer deploy (sin IDs).
+  // Creo estos recursos en el primer despliegue; no necesito IDs.
   "d1_databases": [{ "binding": "DB", "database_name": "babycity-db" }],
   "r2_buckets": [{ "binding": "FILES", "bucket_name": "babycity-files" }],
   "vars": {
-    // Dominio definitivo, sin barra final. Ej: "https://babycity.pe"
+    // Escribo aquí el dominio definitivo, sin barra final.
     "SITE_URL": ""
   }
 }

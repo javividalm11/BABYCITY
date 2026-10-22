@@ -39,7 +39,7 @@ for ci,(match,category,entries) in enumerate(groups):
         prices=re.findall(r'[Ss]\s*/\s*(\d+(?:\.\d{1,2})?)',text)
         if not prices: raise ValueError(f'Precio no encontrado: {name}')
         pid=len(products)+1; image=f'/assets/catalogs/{slug}/product-{pid}.webp'
-        # Exclude tiny decorative elements; the largest raster is the main product.
+        # Descarto elementos decorativos pequeños; la imagen más grande es el producto.
         candidates=[x for x in page.get_images(full=True) if x[2]>300 and x[3]>300]
         if candidates:
             best=max(candidates,key=lambda x:max((r.width*r.height for r in page.get_image_rects(x[0])),default=0)); pix=fitz.Pixmap(doc,best[0])
@@ -48,7 +48,7 @@ for ci,(match,category,entries) in enumerate(groups):
             im=Image.open(io.BytesIO(pix.tobytes('png'))); im.thumbnail((850,850)); im.save(ROOT/'public'/image.lstrip('/'),'WEBP',quality=90)
         else: image=pages[page_num-1]
         if category=='Combos': image=pages[page_num-1]
-        # Keep literal catalog copy for provenance; no invented certifications/ages.
+        # Conservo el texto literal del catálogo; no invento certificaciones ni edades.
         clean=' '.join(line.strip() for line in text.splitlines() if not any(k in line for k in ['www.','+51','S/','s/']))
         products.append(dict(id=pid,sku=f'BC-{pid:04}',name=name,category=category,price=float(prices[0]),stock=None,active=True,image=image,description=clean[:1800],catalogId=slug,sourcePage=page_num))
 (ROOT/'data'/'products.json').write_text(json.dumps(products,ensure_ascii=False,indent=2),encoding='utf-8')

@@ -1,134 +1,147 @@
 # BabyCity Perú
 
-Plataforma e-commerce en español: Node.js (HTTP nativo), SQLite persistente y una interfaz responsive sin dependencias de ejecución. Se conservó el material original; la aplicación actual está en `public/`.
+Tienda en línea para BabyCity: catálogo de productos, carrito con solicitud de compra por WhatsApp, visor de catálogos, Libro de Reclamaciones y panel de administración autogestionable.
 
-## Ejecutar en Windows
+## Arquitectura
 
-Requiere Node.js 22.13 o posterior (recomendado: Node.js 24 LTS).
+Un **núcleo único** (`src/`) atiende todas las peticiones con la API estándar `Request`/`Response`. No conoce dónde corre: recibe sus dependencias por inyección y dos adaptadores delgados lo conectan con cada entorno.
 
-```powershell
-cd C:\websites\BABYCITY
-npm.cmd start
+```
+                  ┌──────────────── src/app.js ────────────────┐
+ Request ───────► │ seguridad → rutas → dominio → repositorio  │ ───────► Response
+                  └──────▲───────────────▲───────────────▲─────┘
+                         │ repo          │ files         │ assets
+            ┌────────────┴───┐   ┌───────┴────────┐  ┌───┴────────────┐
+ Node       │ SQLite         │   │ Disco          │  │ public/ (fs)   │
+ Cloudflare │ D1             │   │ R2             │  │ Static Assets  │
+            └────────────────┘   └────────────────┘  └────────────────┘
 ```
 
-Abrir http://127.0.0.1:3000. No abrir `public/index.html` directamente: productos, administración y formularios necesitan el servidor.
+```
+src/
+  app.js                 Ensambla enrutador, seguridad y manejo de errores
+  config.js              Lee el entorno y lo congela
+  constants.js           Estados de pedido, métodos de entrega, datos del negocio
+  http/                  Enrutador, errores, respuestas, cabeceras de seguridad, lectura de JSON
+  security/              Contraseñas, sesiones, límites de intentos, alta del administrador
+  domain/                Validaciones, cálculo de pedidos, detección de imágenes
+  routes/                API pública, API de administración, sitio (páginas, archivos, sitemap)
+  seo/                   Título, descripción y datos estructurados por ruta; sitemap
+  adapters/
+    schema.js            Esquema SQL compartido
+    node/                Servidor HTTP, SQLite, archivos en disco, carpeta pública
+    cloudflare/          Worker, D1, R2
+public/
+  index.html             Documento base de la aplicación de página única
+  css/                   Hojas de estilo
+  js/
+    main.js              Punto de entrada
+    lib/                 Utilidades: API, formato y escape, avisos, DOM, íconos
+    state/               Carrito, favoritos y datos de la tienda
+    components/          Piezas de interfaz reutilizables
+    views/               Una vista por página; views/sections/ para secciones de la portada
+    features/            Navegación, carrito, eventos, formularios, visor de catálogos
+    effects/             Animaciones de la portada
+    content/             Textos legales
+  vendor/                Motor del visor de catálogos con su licencia
+data/products.json       Catálogo inicial (50 productos)
+catalogo/                PDF originales de los catálogos
+scripts/                 Respaldo, importación de catálogos, subida de PDF
+tests/                   Pruebas de API (tests/api) y de navegador (tests/browser)
+archive/                 Material del sitio original, solo de consulta
+```
 
-Para desarrollo con reinicio automático: `npm.cmd run dev`.
+## Requisitos y arranque
 
-## Configurar administración
-
-La ruta es `/admin`. No hay usuario con contraseña predeterminada. Desde PowerShell:
+Node.js 22.13 o superior (recomendado 24 LTS).
 
 ```powershell
+npm install
 $env:ADMIN_USER = 'babycity'
-$adminSecret = Read-Host 'Contraseña nueva (mínimo 14 caracteres)' -AsSecureString
-$env:ADMIN_PASSWORD = [System.Net.NetworkCredential]::new('', $adminSecret).Password
-npm.cmd run admin:setup
-Remove-Item Env:ADMIN_PASSWORD
+$env:ADMIN_PASSWORD = 'una-clave-de-14-caracteres-o-mas'
+npm start
 ```
 
-El comando también permite restablecer la contraseña e invalida las sesiones anteriores. Las contraseñas se guardan con scrypt y sal aleatoria. Las sesiones duran ocho horas, se almacenan con hash y usan cookies HttpOnly y SameSite=Strict. No publicar contraseñas en el código ni en el repositorio.
+Abre http://127.0.0.1:3000. No abras `public/index.html` directamente: productos, administración y formularios necesitan el servidor. Para recarga automática usa `npm run dev`.
 
-El panel permite crear/editar/ocultar productos; cambiar precio, descripción y cantidades; subir imágenes de hasta 1 MB; revisar solicitudes, consultas y reclamaciones; actualizar estados de pedidos; configurar tarifas y exportar datos.
+## Configuración
 
-## Catálogos y carga inicial
+| Variable         | Uso                                                                                 |
+| ---------------- | ----------------------------------------------------------------------------------- |
+| `ADMIN_USER`     | Usuario del panel (por defecto `admin`).                                            |
+| `ADMIN_PASSWORD` | Clave del panel, mínimo 14 caracteres. Al cambiarla se cierran todas las sesiones.  |
+| `SITE_URL`       | Dominio público sin barra final; habilita sitemap, canonical y datos estructurados. |
+| `TRUST_PROXY`    | `true` detrás de un proxy: usa su protocolo, host e IP de cliente.                  |
+| `DB_PATH`        | Ruta de la base SQLite (por defecto `data/babycity.sqlite`).                        |
+| `UPLOAD_DIR`     | Carpeta de las imágenes subidas (por defecto `data/uploads`).                       |
+| `HOST` / `PORT`  | Dirección y puerto de escucha.                                                      |
 
-- **50 productos**, dentro del alcance inicial del contrato.
-- **12 catálogos**, **195 páginas**, con animación de giro, zoom, navegación por teclado, deslizado móvil y descarga del PDF original.
-- El visor comparte el motor StPageFlip 2.0.7 del proyecto `C:\JAVI-PROYECTOS\BOOKS`: hojas con curvatura y sombras, arrastre de esquinas, dos páginas en escritorio, una en móvil, pantalla completa e inicio/final. La librería se sirve localmente desde `public/vendor/`, junto con su licencia MIT; no requiere CDN. `node scripts/vendor-pageflip.mjs` regenera los archivos desde la dependencia fijada en `package-lock.json`, separa la hoja CSS para respetar CSP y detiene la animación al destruir cada instancia.
-- Imágenes y precios extraídos del material del cliente. `data/products.json` conserva catálogo y página de procedencia.
-- Los PDF no especifican cantidades de inventario. `stock: null` significa **por confirmar**, `0` significa **agotado**, y un entero positivo indica unidades disponibles.
-- Las variantes del mismo modelo se agruparon; algunas propuestas del catálogo no están entre los 50 productos iniciales y siguen disponibles en el lector completo.
-- Las imágenes del hero son ambientación. Las fichas utilizan el material de los PDF. No se incorporaron testimonios, descuentos ni métricas ficticias.
+No hay contraseña predeterminada: sin `ADMIN_PASSWORD` no existe cuenta administradora. Nunca guardes claves en el repositorio.
 
-Reimportación reproducible (solo cuando cambie el material):
+## Seguridad
+
+- **Cabeceras en todas las respuestas:** política de contenido estricta (`default-src 'none'`, solo recursos propios, sin scripts ni estilos en línea), `frame-ancestors 'none'`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, aislamiento de origen y HSTS en HTTPS.
+- **Escrituras:** solo desde el mismo sitio (`Origin` o `Sec-Fetch-Site`), con `Content-Type: application/json` y tamaño limitado.
+- **Administración:** sesión de 8 horas con cookie `HttpOnly`, `SameSite=Strict` y `Secure`; solo se guarda el hash del token. Las rutas `/api/admin/*` y `/admin` no se cachean ni se indexan.
+- **Contraseñas:** PBKDF2-SHA256 con sal propia y comparación en tiempo constante, también cuando el usuario no existe.
+- **Límite de intentos:** por IP y por usuario en inicio de sesión, pedidos, consultas y reclamos.
+- **Entradas:** validación estricta de tipos y rangos; los importes siempre se recalculan en el servidor.
+- **Imágenes subidas:** se identifican por su firma real (PNG, JPG, WebP), máximo 1 MB y nombre aleatorio.
+- **Archivos:** solo extensiones conocidas, sin archivos ocultos y sin salir de las carpetas públicas.
+- **Interfaz:** todo texto dinámico se escapa antes de insertarse en el HTML.
+
+## Pruebas y calidad
 
 ```powershell
-python -m pip install pymupdf Pillow
-python scripts/import_catalogs.py
+npm test               # API y seguridad, en memoria y sin red
+npm run test:browser   # Navegador con Playwright (Chrome instalado en Windows)
+npm run lint           # ESLint
+npm run format:check   # Prettier
+npm run check          # lint + formato + pruebas de API
 ```
 
-Esto regenera imágenes, páginas y el JSON inicial. **No sobrescribe productos de una base de datos existente**. La base se inicializa desde el JSON únicamente cuando no contiene productos. Los cambios posteriores se realizan desde el panel.
+Las pruebas de navegador levantan su propio servidor en el puerto 3001 con una base nueva. En otro sistema: `npx playwright install chromium`. La integración continua ejecuta `npm run check` en cada cambio.
 
-## Pedidos e inventario
+## Catálogos, pedidos e inventario
 
-El flujo registra una **solicitud de compra**, devuelve un código y permite enviarla por WhatsApp. No realiza cargos ni confirma pagos. Los importes se recalculan en el servidor usando precios vigentes; nunca se aceptan totales del navegador. Las cantidades se validan contra el stock conocido.
+- 12 catálogos y 195 páginas con visor de páginas que se doblan, zoom, teclado y vista móvil. El motor se sirve desde `public/vendor/`; `node scripts/vendor-pageflip.mjs` lo regenera.
+- 50 productos iniciales en `data/products.json`. `stock: null` significa **por confirmar**, `0` **agotado** y un entero positivo, unidades disponibles. La base se carga desde el JSON solo cuando está vacía; después se gestiona desde el panel.
+- Para reimportar el material: `python -m pip install pymupdf Pillow` y `python scripts/import_catalogs.py`. No sobrescribe productos de una base existente.
+- Un pedido es una **solicitud**: no cobra, no reserva ni descuenta stock. El equipo confirma disponibilidad, variante y envío por WhatsApp y actualiza el stock al cerrar la venta.
+- Recojo en tienda: S/ 0. Lima y provincias: «por cotizar» hasta definir la tarifa en el panel.
 
-Una solicitud no reserva ni descuenta stock. El operador confirma producto, variante y envío por WhatsApp y actualiza existencias al cerrar la venta, incluyendo ventas de tienda física y otros canales.
+## Despliegue
 
-Recojo en tienda: S/ 0. Lima y provincias: tarifa por cotizar hasta configurarla en administración. Cuando falta una tarifa se informa el subtotal y se deja el total pendiente, sin presentar el envío como gratuito.
+### Contenedor (Railway u otro servicio con disco persistente)
 
-## Persistencia y respaldo
+El `Dockerfile` ejecuta el servidor Node. Necesita un volumen para la base y las imágenes subidas:
 
-`data/babycity.sqlite` guarda productos, cuentas, sesiones, solicitudes, consultas, reclamaciones y tarifas. No está en la carpeta pública. Las imágenes nuevas se guardan en `public/assets/uploads/`.
+| Variable                        | Valor                                |
+| ------------------------------- | ------------------------------------ |
+| `DB_PATH`                       | `/data/babycity.sqlite`              |
+| `UPLOAD_DIR`                    | `/data/uploads`                      |
+| `TRUST_PROXY`                   | `true` (ya viene en el `Dockerfile`) |
+| `ADMIN_USER` / `ADMIN_PASSWORD` | credenciales del panel               |
+| `SITE_URL`                      | `https://dominio-del-cliente`        |
 
-```powershell
-npm.cmd run backup
-```
+Monta el volumen en `/data` y, si el servicio lo monta como root, define `RAILWAY_RUN_UID=0`. Usa una sola instancia mientras la base sea SQLite. Respaldo: `npm run backup` genera una copia consistente en `backups/`; respalda también el volumen de imágenes.
 
-Se genera una instantánea consistente SQLite en `backups/`. Respaldar también `public/assets/uploads/`, `public/assets/catalogs/`, `catalogo/` y `data/products.json`. El archivo JSON del panel es una exportación de negocio, no sustituye al respaldo íntegro de SQLite. Para restaurar, detener el servidor y recuperar una copia de la base junto con sus imágenes. Los respaldos contienen datos personales y deben tener acceso restringido.
+### Cloudflare Workers
 
-## Verificación
+`src/adapters/cloudflare/worker.js` usa **D1** para los datos, **R2** para imágenes y PDF, y sirve `public/` como archivos estáticos. La base se crea y se carga sola en la primera visita.
 
-```powershell
-npm.cmd install --cache .npm-cache
-npm.cmd test
-npm.cmd run test:browser
-```
+1. _Workers & Pages → Create → Import a repository_ con comando de build vacío y deploy `npx wrangler deploy`.
+2. Crea el bucket R2 `babycity-files` (R2 debe estar activado en la cuenta). El D1 `babycity-db` se crea solo.
+3. En _Settings → Variables and Secrets_ agrega los secretos `ADMIN_USER` y `ADMIN_PASSWORD`.
+4. Define `SITE_URL` en `wrangler.jsonc` y conecta el dominio en _Domains & Routes_.
+5. Sube los PDF (superan el límite de 25 MiB de los archivos estáticos): `npx wrangler login` y `npm run cf:upload-pdfs`.
 
-Las pruebas de API usan una base temporal independiente. Las pruebas de navegador inician su propio servidor en el puerto 3001 y una base de pruebas; la cuenta `browser-test` existe únicamente en esa base aislada. Playwright usa Chrome instalado en Windows. En otro sistema: `npx playwright install chromium`.
+Prueba local: crea `.dev.vars` (ignorado por Git) con `ADMIN_USER` y `ADMIN_PASSWORD` y ejecuta `npm run cf:dev`.
 
-Se comprueban autenticación, edición de precios/stock, privacidad de archivos, consentimiento, cálculo de pedidos, tarifas, rechazo de solicitudes entre orígenes, persistencia de reclamaciones, búsqueda, favoritos, carrito, checkout, lector, vista móvil y SEO.
+## Alcance y servicios externos
 
-## Publicación y dominio
+Incluye diseño responsive, catálogo, carrito, solicitud por WhatsApp con consentimiento, panel autogestionable, SEO por producto, sitemap, datos estructurados, textos legales y Libro de Reclamaciones con constancia descargable.
 
-Esta entrega se ejecuta localmente. No se ha configurado dominio, hosting, SSL ni cuentas de terceros del cliente. Es una aplicación con servidor y disco persistente; publicar únicamente `public/` en un hosting estático no habilita el panel ni los formularios.
+Quedan para después del lanzamiento, con las cuentas del cliente: pasarela de pago (Izipay, Yape, Plin), WhatsApp Business API, chatbot con IA, analítica y Meta Pixel. Las reclamaciones se registran en el sistema; la respuesta y los plazos legales son responsabilidad del operador. No se envía correo automático.
 
-Se incluye un `Dockerfile` para desplegar en un servidor o servicio de contenedores con volúmenes persistentes. En producción:
-
-- `HOST=0.0.0.0`, `PORT=3000`.
-- `SITE_URL=https://DOMINIO-DEL-CLIENTE` genera URLs canónicas y `/sitemap.xml` con el dominio real.
-- `COOKIE_SECURE=true` cuando el acceso sea por HTTPS.
-- Terminar HTTPS en el proxy/hosting y conservar el encabezado Host original para las validaciones de origen.
-- Conservar la base de datos y los archivos subidos en volúmenes persistentes. Utilizar una sola instancia con SQLite; para múltiples instancias se requiere migrar a una base compartida.
-- Configurar cuenta administrativa y comprobar un pedido, un respaldo y su restauración en el entorno definitivo.
-
-Los archivos privados del contrato no son servidos por HTTP y se excluyen del contenedor. El backend solo expone recursos de `public/`, PDF de `catalogo/` y las rutas de API definidas.
-
-## Alcance contractual y servicios externos
-
-Implementado localmente: diseño responsive, productos iniciales, carrito con importes y envíos, formulario WhatsApp con consentimiento, panel autogestionable, persistencia, SEO por producto, sitemap dinámico, robots, Schema.org, textos legales y Libro de Reclamaciones con constancia descargable.
-
-Para la puesta en producción faltan el dominio y hosting del cliente, SSL y la configuración de su cuenta administrativa. El responsable debe confirmar inventario, variantes, tarifas, condiciones comerciales y que los textos describan su operación real.
-
-Las integraciones post-lanzamiento del contrato quedan pendientes de las cuentas y configuración del cliente: Izipay/Yape/Plin, WhatsApp Business API, chatbot IA, GA4, Search Console, Meta Pixel y servicios de mensajería. El historial de solicitudes y sus estados ya está disponible en el panel. No se presenta una pasarela de pago ni un chatbot ficticio.
-
-La atención de reclamaciones se registra en el sistema; la respuesta y el cumplimiento de los plazos corresponden al operador, que debe revisar el panel. No se envía correo automático.
-
-## Referencias consultadas
-
-- Diseño de referencia: https://www.carestino.com.pe/
-- Protección de datos: https://www.gob.pe/institucion/anpd/campa%C3%B1as/128319-nuevo-reglamento-de-proteccion-de-datos-personales
-- Libro de Reclamaciones: https://www.gob.pe/institucion/indecopi/campa%C3%B1as/65149-libro-de-reclamaciones-todo-lo-que-debe-saber-antes-de-solicitarlo
-
-Los términos del contrato y datos de cobro del desarrollador no se incluyen en el contenido comercial de la tienda.
-
-## Hero y navbar de referencia
-
-El hero reproduce la composición compartida por el cliente: titular en tres líneas, remate rosa, superficie curva y fotografía de habitación cálida. El navbar integra búsqueda real, atención personalizada, favoritos y carrito. Las tipografías Outfit y DM Sans se sirven localmente desde `public/assets/fonts/`, con sus licencias.
-
-Cinco fotografías originales de los catálogos alternan sobre el fondo de ambientación. El ciclo dura 30 segundos, con un desvanecido de 1,2 segundos entre imágenes. Incluye pausa y respeta movimiento reducido. Las imágenes decorativas del hero no dependen de que un producto esté publicado en el inventario.
-
-Fondo generado con la herramienta integrada ImageGen. Original PNG y versión WebP optimizada en `public/assets/hero/`. Prompt completo y procedencia de las cinco imágenes: `data/hero-assets.json`.
-
-## Despliegue en Cloudflare Workers
-
-`worker/index.js` es la versión para Cloudflare del servidor (`server.mjs` se conserva para desarrollo local con Node). Usa **D1** (productos, pedidos, consultas, reclamos y sesiones), **R2** (imágenes subidas desde el panel y PDF de catálogos) y sirve `public/` como assets estáticos. La base se crea y se carga con `data/products.json` sola en la primera visita.
-
-1. En Cloudflare: _Workers & Pages → Create → Import a repository_ → repositorio `BABYCITY`. Comando de build: vacío. Comando de deploy: `npx wrangler deploy` (valor por defecto).
-2. En el primer deploy Cloudflare crea el D1 `babycity-db` y el bucket R2 `babycity-files` (R2 debe estar activado en la cuenta).
-3. En _Settings → Variables and Secrets_ agregar los **secretos** `ADMIN_USER` y `ADMIN_PASSWORD` (mínimo 14 caracteres). Cambiar `ADMIN_PASSWORD` restablece la contraseña e invalida las sesiones. Nunca guardarlos en el repositorio.
-4. En `wrangler.jsonc`, definir `SITE_URL` con el dominio definitivo (sitemap, canonical y datos estructurados) y conectar el dominio en _Settings → Domains & Routes_.
-5. Subir los PDF de catálogos a R2 (no caben en assets por el límite de 25 MiB): `npx wrangler login` y luego `npm run cf:upload-pdfs`.
-
-Prueba local: crear `.dev.vars` (ignorado por git) con `ADMIN_USER` y `ADMIN_PASSWORD` y ejecutar `npm run cf:dev`. Las contraseñas del Worker usan PBKDF2-SHA256 (scrypt no existe en Workers).
+Marco normativo: [protección de datos personales](https://www.gob.pe/institucion/anpd/campa%C3%B1as/128319-nuevo-reglamento-de-proteccion-de-datos-personales) y [Libro de Reclamaciones](https://www.gob.pe/institucion/indecopi/campa%C3%B1as/65149-libro-de-reclamaciones-todo-lo-que-debe-saber-antes-de-solicitarlo).

@@ -10,7 +10,7 @@ const BY_EXTENSION = {
   '.pdf': 'application/pdf',
 };
 
-// Almacén de archivos en disco. Las claves son "uploads/<archivo>" o "catalogo/<archivo>".
+// Guardo y leo archivos en disco con claves "uploads/..." y "catalogo/...".
 export class FileStorage {
   constructor({ uploads, catalogo }) {
     this.dirs = { uploads: path.resolve(uploads), catalogo: path.resolve(catalogo) };

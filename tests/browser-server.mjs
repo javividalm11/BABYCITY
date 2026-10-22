@@ -2,7 +2,7 @@ import { mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { createNodeServer } from '../src/adapters/node/server.js';
 
-// Servidor aislado para las pruebas de navegador: base de datos nueva en cada ejecución.
+// Levanto un servidor aislado con base de datos nueva en cada ejecución.
 const dir = path.resolve('test-results');
 mkdirSync(dir, { recursive: true });
 writeFileSync(path.join(dir, 'browser-server.pid'), String(process.pid));

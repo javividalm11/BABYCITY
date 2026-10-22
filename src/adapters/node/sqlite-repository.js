@@ -3,7 +3,7 @@ import { DEFAULT_SETTINGS, parseRecord, RATE_LIMIT_SQL, SCHEMA } from '../schema
 
 const parse = (row) => (row ? JSON.parse(row.data) : null);
 
-// Repositorio sobre SQLite local. Los métodos son asíncronos para respetar el mismo contrato que D1.
+// Implemento el contrato del repositorio sobre SQLite.
 export class SqliteRepository {
   constructor(path) {
     this.db = new DatabaseSync(path);

@@ -106,7 +106,7 @@ export class CatalogReader {
   mount() {
     const host = this.root.querySelector('#readerBook');
     if (this.engine) this.engine.destroy();
-    // The engine removes its host on destruction; keep a fresh mount in the stage.
+    // El motor elimina su contenedor al destruirse; recreo uno limpio.
     const book = host?.isConnected ? host : document.createElement('div');
     book.id = 'readerBook';
     book.className = 'reader-book';
@@ -129,8 +129,7 @@ export class CatalogReader {
         return sheet;
       }),
     );
-    // Fixed page dimensions fit the available height as well as width. Portrait
-    // mode is controlled by stage width, so zoom never changes the page pairing.
+    // Ajusto las páginas por alto y ancho; el modo vertical depende del ancho para que el zoom no cambie el emparejado.
     this.engine = new PageFlip(book, {
       width: pageWidth,
       height: pageHeight,
@@ -225,7 +224,7 @@ export class CatalogReader {
       if (document.fullscreenElement) await document.exitFullscreen();
       else await this.dialog.requestFullscreen();
     } catch {
-      /* Native fullscreen is optional; the fitted dialog stays available. */
+      // La pantalla completa es opcional; el diálogo ajustado sigue disponible.
     }
   }
   dispose() {

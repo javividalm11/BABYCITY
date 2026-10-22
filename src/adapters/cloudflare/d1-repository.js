@@ -2,7 +2,7 @@ import { DEFAULT_SETTINGS, parseRecord, RATE_LIMIT_SQL, SCHEMA } from '../schema
 
 const parse = (row) => (row ? JSON.parse(row.data) : null);
 
-// Repositorio sobre D1 con el mismo contrato que el de SQLite.
+// Implemento el contrato del repositorio sobre D1.
 export class D1Repository {
   constructor(db) {
     this.db = db;

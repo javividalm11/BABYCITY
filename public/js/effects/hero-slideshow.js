@@ -1,5 +1,4 @@
-// CSS supplies the seamless five-image loop. This button gives visitors a
-// persistent pause without introducing timers that survive SPA navigation.
+// El CSS hace el bucle de imágenes; aquí solo pauso, sin temporizadores que sobrevivan a la navegación.
 document.addEventListener('click', (event) => {
   const button = event.target.closest('[data-hero-pause]');
   if (!button) return;

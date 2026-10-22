@@ -6,7 +6,7 @@ import { R2Storage } from './r2-storage.js';
 
 let app;
 
-// Construyo la aplicación una vez por instancia con los recursos que Cloudflare inyecta.
+// Creo la aplicación una sola vez por instancia con los recursos inyectados.
 function getApp(env) {
   app ||= createApp({
     config: loadConfig(env),

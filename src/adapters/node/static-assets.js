@@ -3,7 +3,7 @@ import { stat } from 'node:fs/promises';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 
-// Solo sirvo extensiones conocidas; cualquier otra cosa queda fuera.
+// Sirvo solo extensiones conocidas.
 const MIME = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -21,7 +21,7 @@ const MIME = {
 
 const notFound = () => new Response('Not found', { status: 404 });
 
-// Entrega archivos de la carpeta pública con la misma interfaz que el binding de assets de Cloudflare.
+// Sirvo la carpeta pública con la misma interfaz que usan los demás adaptadores.
 export class StaticAssets {
   constructor(root) {
     this.root = path.resolve(root);
@@ -42,7 +42,7 @@ export class StaticAssets {
     }
     const info = await stat(file).catch(() => null);
     if (!info?.isFile()) return notFound();
-    // El ETag permite que el navegador revalide y reciba 304 si nada cambió.
+    // Con el ETag el navegador revalida y recibe 304 si nada cambió.
     const etag = `W/"${info.size}-${Math.floor(info.mtimeMs)}"`;
     if (request.headers.get('if-none-match') === etag) {
       return new Response(null, { status: 304, headers: { ETag: etag } });

@@ -21,7 +21,7 @@ function failure(res, status, message) {
   res.end(JSON.stringify({ error: message }));
 }
 
-// Ensamblo la aplicación sobre SQLite y disco local. Las opciones permiten aislar las pruebas.
+// Ensamblo la aplicación sobre disco local; las opciones permiten aislar las pruebas.
 export function createNodeServer({ env = process.env, dbPath, uploadDir, publicDir } = {}) {
   const config = loadConfig(env);
   const repo = new SqliteRepository(

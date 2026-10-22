@@ -1,4 +1,4 @@
-/* Hero and navigation matched to the supplied BabyCity art direction. */
+/* Defino el encabezado principal y la navegación. */
 .announcement {
   height: 32px;
   padding: 0 max(6.25vw, calc((100vw - 1440px) / 2));

@@ -1,14 +1,5 @@
-const escape = (value) =>
-  String(value ?? '').replace(
-    /[&<>"']/g,
-    (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
-  );
-const price = (value) =>
-  new Intl.NumberFormat('es-PE', {
-    style: 'currency',
-    currency: 'PEN',
-    minimumFractionDigits: 2,
-  }).format(value);
+import { esc as escape, money as price } from '../../lib/format.js';
+
 const paths = {
   grid: 'M3 3h7v7H3V3Zm11 0h7v7h-7V3ZM3 14h7v7H3v-7Zm11 0h7v7h-7v-7Z',
   stroller: 'M5 3h7a7 7 0 0 1 7 7H5V3Zm0 7 3 8h10l3-8M2 3h3M9 21h.01M18 21h.01',
@@ -83,8 +74,8 @@ export function mountProductShowcase(root, products, getFavorites) {
     timer = null,
     inView = false,
     hovered = false,
-    disposed = false,
-    autoplay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    disposed = false;
+  const autoplay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const grid = section.querySelector('.showcase-grid'),
     viewport = section.querySelector('.showcase-viewport');
   function schedule() {

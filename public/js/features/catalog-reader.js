@@ -1,4 +1,4 @@
-import { PageFlip } from './vendor/page-flip.js';
+import { PageFlip } from '../../vendor/page-flip.js';
 
 const escape = (s) =>
   String(s).replace(

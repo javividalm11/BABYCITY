@@ -1,0 +1,5 @@
+import { intro, cta } from '../components/layout.js';
+
+export function about() {
+  return `${intro('Mucho más que una tienda', 'A tu lado, desde el comienzo', 'Sabemos que detrás de cada elección hay una familia que quiere dar lo mejor.')}<section class="section"><div class="container info-grid"><div class="detail-image"><img src="/assets/logo-transparent.png" alt="BabyCity Perú"></div><div><span class="eyebrow">Hola, somos BabyCity</span><h2>Su mundo empieza<br>con tus cuidados.</h2><p>Somos una tienda física y virtual de productos para bebés. Reunimos coches, cunas, mecedoras, sillas y accesorios para acompañar los momentos cotidianos de tu familia.</p><p>Nos gusta escucharte, mostrarte cada detalle y ayudarte a comparar opciones. Por eso estamos cerca: en La Victoria, por WhatsApp y en nuestros lives de TikTok.</p><p>También encuentras nuestra tienda BABY STORE en Falabella Perú.</p><div class="tag-row"><span class="tag">Asesoría cercana</span><span class="tag">Tienda física y virtual</span><span class="tag">Envíos a todo el Perú</span></div><a href="/contacto" data-link class="btn primary">Ven a conocernos →</a></div></div></section>${cta()}`;
+}

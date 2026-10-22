@@ -42,8 +42,13 @@ export class StaticAssets {
     }
     const info = await stat(file).catch(() => null);
     if (!info?.isFile()) return notFound();
+    // El ETag permite que el navegador revalide y reciba 304 si nada cambió.
+    const etag = `W/"${info.size}-${Math.floor(info.mtimeMs)}"`;
+    if (request.headers.get('if-none-match') === etag) {
+      return new Response(null, { status: 304, headers: { ETag: etag } });
+    }
     return new Response(Readable.toWeb(createReadStream(file)), {
-      headers: { 'Content-Type': type, 'Content-Length': String(info.size) },
+      headers: { 'Content-Type': type, 'Content-Length': String(info.size), ETag: etag },
     });
   }
 }

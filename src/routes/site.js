@@ -1,9 +1,14 @@
 import { fail } from '../http/errors.js';
-import { json } from '../http/responses.js';
 import { renderPage, SPA_ROUTE } from '../seo/render-page.js';
 import { renderSitemap } from '../seo/sitemap.js';
 
-const CACHE_FILES = 'public, max-age=3600';
+// Los archivos con nombre fijo se revalidan siempre; los subidos tienen nombre único y no cambian.
+const REVALIDATE = /\.(?:html|js|css|json|xml|txt)$/;
+const CACHE = {
+  revalidate: 'no-cache',
+  daily: 'public, max-age=86400',
+  immutable: 'public, max-age=31536000, immutable',
+};
 
 async function sitemap({ config, repo }) {
   if (!config.siteUrl) throw fail(503, 'Configura SITE_URL para generar el sitemap.');
@@ -11,15 +16,15 @@ async function sitemap({ config, repo }) {
   return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
 }
 
-async function storedFile(files, key) {
+async function storedFile(files, key, cache) {
   const file = await files.get(key);
   if (!file) throw fail(404, 'Archivo no encontrado.');
   return new Response(file.body, {
-    headers: { 'Content-Type': file.contentType, 'Cache-Control': CACHE_FILES },
+    headers: { 'Content-Type': file.contentType, 'Cache-Control': cache },
   });
 }
 
-const upload = ({ files, params }) => storedFile(files, `uploads/${params.name}`);
+const upload = ({ files, params }) => storedFile(files, `uploads/${params.name}`, CACHE.immutable);
 
 // Los PDF del catálogo llevan espacios y tildes; rechazo cualquier intento de salir de la carpeta.
 function catalogPdf({ files, params }) {
@@ -30,7 +35,7 @@ function catalogPdf({ files, params }) {
     throw fail(404, 'Archivo no encontrado.');
   }
   if (/[\\/]|\.\./.test(name)) throw fail(404, 'Archivo no encontrado.');
-  return storedFile(files, `catalogo/${name}`);
+  return storedFile(files, `catalogo/${name}`, CACHE.daily);
 }
 
 async function page({ assets, repo, config, url }) {
@@ -50,15 +55,13 @@ async function page({ assets, repo, config, url }) {
 }
 
 // Cualquier otra ruta GET se sirve desde la carpeta pública.
-export async function serveAsset({ assets, request }) {
+export async function serveAsset({ assets, request, url }) {
   const res = await assets.fetch(request);
   if (res.status === 404) throw fail(404, 'Archivo no encontrado.');
   const out = new Response(res.body, res);
-  out.headers.set('Cache-Control', CACHE_FILES);
+  out.headers.set('Cache-Control', REVALIDATE.test(url.pathname) ? CACHE.revalidate : CACHE.daily);
   return out;
 }
-
-export const notFound = () => json(404, { error: 'Ruta no encontrada.' });
 
 export const siteRoutes = [
   { method: 'GET', path: '/sitemap.xml', handler: sitemap },

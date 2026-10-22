@@ -5,7 +5,7 @@ test('navbar has one cart icon and each click adds exactly one product', async (
     modules = [];
   page.on('pageerror', (e) => errors.push(e.message));
   page.on('request', (r) => {
-    if (/\/app\.js(?:\?|$)/.test(r.url())) modules.push(r.url());
+    if (/\/js\/main\.js(?:\?|$)/.test(r.url())) modules.push(r.url());
   });
   await page.goto('/');
   await expect(page.locator('.showcase-card')).toHaveCount(4);

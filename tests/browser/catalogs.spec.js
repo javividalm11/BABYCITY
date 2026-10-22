@@ -8,8 +8,7 @@ test('reader opens all twelve catalogs with fitted double pages and paper engine
       request = window.requestAnimationFrame.bind(window),
       cancel = window.cancelAnimationFrame.bind(window);
     window.requestAnimationFrame = (callback) => {
-      let id;
-      id = request((time) => {
+      const id = request((time) => {
         pending.delete(id);
         callback(time);
       });

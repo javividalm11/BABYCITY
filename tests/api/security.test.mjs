@@ -5,10 +5,8 @@ import { ensureAdmin } from '../../src/security/admin-bootstrap.js';
 import { ADMIN, createTestApp } from '../helpers/test-app.mjs';
 
 let t;
-let cookie;
 before(async () => {
   t = createTestApp();
-  cookie = (await t.login()).cookie;
 });
 after(() => t.close());
 

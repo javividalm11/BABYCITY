@@ -37,8 +37,7 @@ export function mountLivingEffects(main) {
   let disposed = false,
     frame = 0,
     scanFrame = 0,
-    scroll = scrollY,
-    observer;
+    scroll = scrollY;
   const animations = new Set(),
     observed = new WeakSet(),
     pointer = { x: 0.5, y: 0.5 };
@@ -76,7 +75,7 @@ export function mountLivingEffects(main) {
     scroll = scrollY;
     requestUpdate();
   }
-  observer = new IntersectionObserver(
+  const observer = new IntersectionObserver(
     (entries) =>
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;

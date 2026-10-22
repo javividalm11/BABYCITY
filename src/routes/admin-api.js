@@ -39,7 +39,7 @@ async function dashboard({ repo }) {
   return json(200, { products, settings, orders, leads, claims });
 }
 
-async function uploadImage({ repo, files, config, body }) {
+async function uploadImage({ files, config, body }) {
   const { base64 } = await body();
   if (typeof base64 !== 'string' || base64.length > config.maxImageBytes * 1.5) {
     throw fail(400, 'Imagen demasiado grande (máximo 1 MB).');

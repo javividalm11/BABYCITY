@@ -1,0 +1,45 @@
+/* Estilos propios del panel administrativo. */
+.admin-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  flex: 1;
+}
+.admin-filters select {
+  max-width: 260px;
+}
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+.admin-record textarea {
+  width: 100%;
+  margin-bottom: 10px;
+}
+.badge.warn {
+  background: #ffe9c7;
+  color: #7a4b00;
+}
+.badge.done {
+  background: #d8f0e0;
+  color: #1d5a35;
+}
+.btn.danger {
+  background: #fff;
+  color: #b3261e;
+  border: 1px solid #b3261e;
+}
+.btn.danger:hover,
+.btn.danger:focus-visible {
+  background: #b3261e;
+  color: #fff;
+}
+@media (max-width: 700px) {
+  .admin-filters select {
+    max-width: none;
+    width: 100%;
+  }
+}

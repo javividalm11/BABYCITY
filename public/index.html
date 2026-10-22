@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#f2a4a8" />
+    <meta name="theme-color" content="#f4f1ff" />
     <meta
       name="description"
       content="El mundo de tu bebé, a un clic. Descubre coches, cunas, mecedoras y accesorios en BabyCity Perú. Tienda física en La Victoria y atención personalizada."
@@ -19,6 +19,7 @@
       crossorigin
     />
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/admin.css" />
     <link rel="stylesheet" href="/css/showcase.css" />
     <link rel="stylesheet" href="/css/discovery.css" />
     <link rel="stylesheet" href="/css/product-showcase.css" />
@@ -31,6 +32,7 @@
     <link rel="stylesheet" href="/css/footer.css" />
     <link rel="stylesheet" href="/css/catalog-world.css" />
     <link rel="stylesheet" href="/css/navbar.css" />
+    <link rel="stylesheet" href="/css/cart.css" />
     <script type="module" src="/js/main.js"></script>
   </head>
   <body>
@@ -356,7 +358,9 @@
     <button class="contact-float" data-action="contact" aria-label="Contactar con BabyCity">
       <span>Conversemos</span><span id="waIcon"></span>
     </button>
-    <dialog id="cartDialog" class="drawer"><div id="cartContent"></div></dialog>
+    <dialog id="cartDialog" class="drawer" aria-label="Tu carrito">
+      <div id="cartContent"></div>
+    </dialog>
     <dialog id="contactDialog" class="contact-dialog">
       <button class="close" data-close aria-label="Cerrar">×</button
       ><span class="eyebrow">De mamá a mamá</span>

@@ -1,9 +1,9 @@
 import { $ } from '../lib/dom.js';
-import { esc, money } from '../lib/format.js';
+import { money } from '../lib/format.js';
 import { notify } from '../lib/notify.js';
-import { cart, products, shipping, setStoreData, pruneCart } from '../state/store.js';
+import { cart, products, shipping, favorites, setStoreData, pruneCart } from '../state/store.js';
 import { loadStoreData } from '../state/loaders.js';
-import { empty } from '../components/layout.js';
+import { renderCartContent } from '../components/cart-content.js';
 
 export function cartEntries() {
   return cart
@@ -21,9 +21,12 @@ function totalMarkup(delivery = 'pickup') {
   return `<div class="cart-totals"><p><span>Subtotal</span><b>${money(t.subtotal)}</b></p><p><span>${delivery === 'pickup' ? 'Recojo en tienda' : 'Envío'}</span><b>${t.fee === null ? 'Por cotizar' : t.fee === 0 ? 'Sin costo' : money(t.fee)}</b></p><p class="total"><span>${t.total === null ? 'Subtotal sin envío' : 'Total'}</span><b>${money(t.total ?? t.subtotal)}</b></p>${t.total === null ? '<p class="fine">El total final se confirma al cotizar el envío.</p>' : ''}</div>`;
 }
 export function renderCart() {
-  const list = cartEntries();
-  $('#cartContent').innerHTML =
-    `<button class="close" data-close aria-label="Cerrar carrito">×</button><span class="eyebrow">Pequeñas elecciones, mucho amor</span><h2>Tu carrito <small>(${cart.reduce((s, i) => s + i.quantity, 0)})</small></h2>${list.length ? `<div class="cart-items">${list.map(({ product: p, quantity }) => `<article class="cart-item"><img src="${esc(p.image)}" alt="${esc(p.name)}"><div><h3>${esc(p.name)}</h3><small>${money(p.price)} · ${p.stock === null ? 'Por confirmar' : p.stock === 0 ? 'Agotado' : 'Disponible'}</small><div><div class="quantity"><button data-quantity="${p.id}" data-delta="-1" aria-label="Reducir cantidad de ${esc(p.name)}">−</button><span>${quantity}</span><button data-quantity="${p.id}" data-delta="1" aria-label="Aumentar cantidad de ${esc(p.name)}">+</button></div><button class="remove" data-remove="${p.id}">Quitar</button></div></div></article>`).join('')}</div>${totalMarkup()}<button class="btn primary" data-action="checkout">Continuar con mi pedido →</button><p class="fine">Puedes elegir envío o recojo en el siguiente paso. Confirmaremos la disponibilidad antes del pago.</p>` : empty('Hay un mundo por descubrir', 'Agrega algo especial para tu bebé y lo encontrarás aquí.')}`;
+  $('#cartContent').innerHTML = renderCartContent({
+    entries: cartEntries(),
+    count: cart.reduce((sum, item) => sum + item.quantity, 0),
+    subtotal: totals().subtotal,
+    favorites,
+  });
 }
 export async function openCart() {
   try {

@@ -80,8 +80,8 @@ test('admin signs in, edits product stock and manages requests', async ({ page }
     '8',
   );
   await page.getByRole('button', { name: 'Pedidos', exact: true }).click();
-  await expect(page.locator('.admin-record')).toHaveCount(1);
-  await page.locator('[data-order]').selectOption('contactado');
+  await expect(page.locator('.admin-record').first()).toBeVisible();
+  await page.locator('[data-order]').first().selectOption('contactado');
   await page.getByRole('button', { name: 'Cerrar sesión' }).click();
   await expect(page.getByRole('heading', { name: 'Hola de nuevo.' })).toBeVisible();
   expect(errors).toEqual([]);

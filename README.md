@@ -82,13 +82,27 @@ No hay contraseña predeterminada: sin `ADMIN_PASSWORD` no existe cuenta adminis
 
 - **Cabeceras en todas las respuestas:** política de contenido estricta (`default-src 'none'`, solo recursos propios, sin scripts ni estilos en línea), `frame-ancestors 'none'`, `nosniff`, `Referrer-Policy`, `Permissions-Policy`, aislamiento de origen y HSTS en HTTPS.
 - **Escrituras:** solo desde el mismo sitio (`Origin` o `Sec-Fetch-Site`), con `Content-Type: application/json` y tamaño limitado.
-- **Administración:** sesión de 8 horas con cookie `HttpOnly`, `SameSite=Strict` y `Secure`; solo se guarda el hash del token. Las rutas `/api/admin/*` y `/admin` no se cachean ni se indexan.
+- **Administración:** la sesión se cierra tras 30 minutos sin actividad y siempre a las 8 horas; la cookie es `HttpOnly`, `SameSite=Strict` y `Secure`, y solo se guarda el hash del token. Cada acción del panel queda en un registro de actividad (con la IP sin su último tramo) que se conserva 6 meses. Las rutas `/api/admin/*` y `/admin` no se cachean ni se indexan.
 - **Contraseñas:** PBKDF2-SHA256 con sal propia y comparación en tiempo constante, también cuando el usuario no existe.
 - **Límite de intentos:** por IP y por usuario en inicio de sesión, pedidos, consultas y reclamos.
 - **Entradas:** validación estricta de tipos y rangos; los importes siempre se recalculan en el servidor.
 - **Imágenes subidas:** se identifican por su firma real (PNG, JPG, WebP), máximo 1 MB y nombre aleatorio.
 - **Archivos:** solo extensiones conocidas, sin archivos ocultos y sin salir de las carpetas públicas.
 - **Interfaz:** todo texto dinámico se escapa antes de insertarse en el HTML.
+
+## Panel de administración
+
+Se abre en `/admin`. Pestañas:
+
+- **Productos:** crear, editar, ocultar y eliminar; subir imágenes; buscar y filtrar por estado (publicados, ocultos, por confirmar, agotados).
+- **Pedidos:** buscar por código, nombre o celular; filtrar por estado; cambiar el estado; guardar una nota interna que el cliente no ve; exportar a CSV (compatible con Excel).
+- **Consultas y Reclamaciones:** ver pendientes, marcarlas como atendidas o reabrirlas; los reclamos muestran cuántos días pasaron desde su registro.
+- **Actividad:** quién hizo qué y cuándo, incluidos los intentos fallidos de ingreso.
+- **Envíos y respaldo:** tarifas de envío y descarga de un respaldo en JSON.
+
+Código en `public/js/views/admin/`: `index.js` (entrada), `shell.js` (marco y pestañas), `tabs/` (una por pestaña), `product-editor.js`, `idle.js` (cierre por inactividad) y utilidades de formato y CSV. La API correspondiente está en `src/routes/admin-api.js`.
+
+La contraseña del panel se cambia con la variable `ADMIN_PASSWORD`; no se cambia desde el panel porque cada arranque la sincroniza con esa variable.
 
 ## Pruebas y calidad
 

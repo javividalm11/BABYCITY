@@ -12,7 +12,7 @@ import { contact } from '../views/contact.js';
 import { about } from '../views/about.js';
 import { legal } from '../views/legal.js';
 import { claims } from '../views/claims.js';
-import { renderAdmin } from '../views/admin.js';
+import { leaveAdmin, renderAdmin } from '../views/admin/index.js';
 import {
   mountProductShowcase,
   destroyProductShowcase,
@@ -78,6 +78,7 @@ export async function render() {
   document.title = title
     ? `${title} · BabyCity Perú`
     : 'BabyCity Perú · El mundo de tu bebé, a un clic';
+  if (route !== '/admin') leaveAdmin();
   if (route === '/admin') {
     await renderAdmin(main);
     return;

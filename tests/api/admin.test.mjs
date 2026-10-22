@@ -72,6 +72,20 @@ test('eliminar un producto lo quita de la tienda y queda registrado', async () =
   assert.ok(data.some((entry) => entry.action === 'producto.eliminar' && entry.target === '#50'));
 });
 
+test('un pedido se elimina por su código y queda registrado', async () => {
+  const order = await createOrder();
+  const route = `/api/admin/orders/${order.id}`;
+  assert.equal((await t.call(route, { method: 'DELETE' })).status, 401);
+  assert.equal((await admin('/api/admin/orders/BC-NOEXISTE1', { method: 'DELETE' })).status, 404);
+  assert.equal((await admin('/api/admin/orders/abc', { method: 'DELETE' })).status, 404);
+  assert.equal((await admin(route, { method: 'DELETE' })).status, 200);
+  assert.equal((await admin(route, { method: 'DELETE' })).status, 404);
+  const { data } = await admin('/api/admin/dashboard');
+  assert.ok(!data.orders.some((o) => o.id === order.id));
+  const log = (await admin('/api/admin/activity')).data;
+  assert.ok(log.some((e) => e.action === 'pedido.eliminar' && e.target === order.id));
+});
+
 test('las notas internas y el estado de un pedido se guardan por separado', async () => {
   const order = await createOrder();
   const patch = (data) => admin('/api/admin/orders', { method: 'PATCH', data });

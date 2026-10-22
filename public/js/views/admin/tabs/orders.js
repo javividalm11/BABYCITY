@@ -40,7 +40,7 @@ function card(order) {
   const { data } = order;
   const shipping = data.shipping === null ? 'Por cotizar' : money(data.shipping);
   const total = data.total === null ? 'Total por confirmar' : `Total: ${money(data.total)}`;
-  return `<article class="admin-record"><div class="admin-top"><h3>${esc(order.id)}</h3><span class="badge">${esc(formatDateTime(order.created))}</span></div><p><b>${esc(data.customer.name)}</b> · ${esc(data.customer.phone)}<br>${esc(data.customer.email)}<br>Entrega: ${esc(DELIVERY_LABELS[data.delivery] ?? data.delivery)} · ${esc(data.customer.address || 'Recojo en tienda')}</p><p>${lines(data.items)}</p><p>Subtotal: ${money(data.subtotal)} · Envío: ${shipping} · ${total}</p><p>${esc(data.notes)}</p><label>Estado<select data-order="${esc(order.id)}">${statusOptions(order.status)}</select></label><label>Nota interna (solo la ves tú)<textarea data-note="${esc(order.id)}" maxlength="1000" rows="2">${esc(data.internalNote ?? '')}</textarea></label><button class="btn secondary" data-save-note="${esc(order.id)}">Guardar nota</button><p class="fine">Confirmar o completar una solicitud no descuenta inventario automáticamente. Actualiza el stock del producto al cerrar la venta.</p></article>`;
+  return `<article class="admin-record"><div class="admin-top"><h3>${esc(order.id)}</h3><span class="badge">${esc(formatDateTime(order.created))}</span></div><p><b>${esc(data.customer.name)}</b> · ${esc(data.customer.phone)}<br>${esc(data.customer.email)}<br>Entrega: ${esc(DELIVERY_LABELS[data.delivery] ?? data.delivery)} · ${esc(data.customer.address || 'Recojo en tienda')}</p><p>${lines(data.items)}</p><p>Subtotal: ${money(data.subtotal)} · Envío: ${shipping} · ${total}</p><p>${esc(data.notes)}</p><label>Estado<select data-order="${esc(order.id)}">${statusOptions(order.status)}</select></label><label>Nota interna (solo la ves tú)<textarea data-note="${esc(order.id)}" maxlength="1000" rows="2">${esc(data.internalNote ?? '')}</textarea></label><div class="admin-actions"><button class="btn secondary" data-save-note="${esc(order.id)}">Guardar nota</button><button class="btn danger" data-delete-order="${esc(order.id)}">Eliminar pedido</button></div><p class="fine">Confirmar o completar una solicitud no descuenta inventario automáticamente. Actualiza el stock del producto al cerrar la venta.</p></article>`;
 }
 
 function visibleOrders() {
@@ -88,6 +88,9 @@ function bindList(list) {
       }
     };
   });
+  list.querySelectorAll('[data-delete-order]').forEach((button) => {
+    button.onclick = () => removeOrder(button.dataset.deleteOrder);
+  });
   list.querySelectorAll('[data-save-note]').forEach((button) => {
     button.onclick = async () => {
       const id = button.dataset.saveNote;
@@ -100,6 +103,19 @@ function bindList(list) {
       }
     };
   });
+}
+
+async function removeOrder(id) {
+  const question = `¿Eliminar el pedido ${id}? Se borran también los datos del cliente y no se puede deshacer.`;
+  if (!window.confirm(question)) return;
+  try {
+    await request(`/api/admin/orders/${id}`, 'DELETE');
+    admin.dashboard.orders = admin.dashboard.orders.filter((o) => o.id !== id);
+    notify('Pedido eliminado');
+    admin.redraw();
+  } catch (error) {
+    notify(error.message);
+  }
 }
 
 function drawList(panel) {

@@ -1,6 +1,6 @@
-/* Comparto el fondo lavanda del catalogo en todas las paginas. */
+/* El rosa Baby del logo es el fondo compartido de toda la web. */
 :root {
-  --brand-background: var(--paper-lilac, #f4f1ff);
+  --brand-background: #f2a4a8;
   --city-accent: #58d8d8;
   --brand-copy: #214349;
   --muted: #304d51;
@@ -80,7 +80,7 @@ footer .footer-grid a:not(.brand),
       180deg,
       var(--brand-background) 0%,
       var(--brand-background) 39%,
-      #f4f1ff00 52%
+      #f2a4a800 52%
     );
   }
 }

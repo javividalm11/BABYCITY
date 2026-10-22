@@ -121,6 +121,10 @@ export class SqliteRepository {
     return this.db.prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, id).changes > 0;
   }
 
+  async deleteOrder(id) {
+    return this.db.prepare('DELETE FROM orders WHERE id = ?').run(id).changes > 0;
+  }
+
   async setOrderNote(id, note) {
     const sql = "UPDATE orders SET data = json_set(data, '$.internalNote', ?) WHERE id = ?";
     return this.db.prepare(sql).run(note, id).changes > 0;

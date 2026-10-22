@@ -123,6 +123,12 @@ async function updateOrder({ repo, body, session }) {
   return json(200, { ok: true });
 }
 
+async function deleteOrder({ repo, params, session }) {
+  if (!(await repo.deleteOrder(params.id))) throw fail(404, 'Pedido no encontrado.');
+  await audit(repo, session.username, 'pedido.eliminar', params.id);
+  return json(200, { ok: true });
+}
+
 async function markHandled({ repo, body, session }) {
   const data = await body();
   const id = text(data.id, 50);
@@ -154,5 +160,11 @@ export const adminApiRoutes = [
   },
   { method: 'PUT', path: '/api/admin/settings', admin: true, handler: updateSettings },
   { method: 'PATCH', path: '/api/admin/orders', admin: true, handler: updateOrder },
+  {
+    method: 'DELETE',
+    path: /^\/api\/admin\/orders\/(?<id>BC-[A-F0-9]{10})$/,
+    admin: true,
+    handler: deleteOrder,
+  },
   { method: 'PATCH', path: '/api/admin/records', admin: true, handler: markHandled },
 ];

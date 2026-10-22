@@ -22,8 +22,8 @@ test('ninguna página incumple la política de seguridad de contenido', async ({
   });
   page.on('pageerror', (error) => problems.push(error.message));
   for (const route of ROUTES) {
-    await page.goto(route);
-    await page.waitForLoadState('networkidle');
+    await page.goto(route, { waitUntil: 'load' });
+    await page.waitForTimeout(500);
   }
   expect(problems).toEqual([]);
 });

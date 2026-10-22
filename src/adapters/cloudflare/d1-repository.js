@@ -139,6 +139,10 @@ export class D1Repository {
     return result.meta.changes > 0;
   }
 
+  async deleteOrder(id) {
+    return (await this.#run('DELETE FROM orders WHERE id = ?', id)).meta.changes > 0;
+  }
+
   async setOrderNote(id, note) {
     const sql = "UPDATE orders SET data = json_set(data, '$.internalNote', ?) WHERE id = ?";
     return (await this.#run(sql, note, id)).meta.changes > 0;

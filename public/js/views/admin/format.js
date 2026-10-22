@@ -17,6 +17,7 @@ export const ACTION_LABELS = {
   'tarifas.editar': 'Tarifas editadas',
   'pedido.estado': 'Estado de pedido',
   'pedido.nota': 'Nota de pedido',
+  'pedido.eliminar': 'Pedido eliminado',
   'consulta.atendido': 'Consulta atendida',
   'reclamo.atendido': 'Reclamo atendido',
 };

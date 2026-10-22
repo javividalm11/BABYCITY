@@ -9,6 +9,7 @@ import { navigate } from './navigation.js';
 const FORM_IDS = [
   'checkoutForm',
   'contactForm',
+  'contactPageForm',
   'searchForm',
   'navbarSearchForm',
   'shopSearch',
@@ -48,6 +49,7 @@ async function submitCheckout(fields) {
 }
 
 async function submitContact(fields, form, status) {
+  if (fields.category) fields.message = `${fields.category}: ${fields.message}`;
   await api('/api/leads', 'POST', fields);
   const text = `Hola BabyCity. Soy ${fields.name} (${fields.phone}). ${fields.message}`;
   status.innerHTML = `Tu consulta quedó registrada. <a class="text-link" target="_blank" rel="noopener noreferrer" href="${WHATSAPP}?text=${encodeURIComponent(text)}">Abrir WhatsApp y enviar ↗</a>`;
@@ -92,7 +94,8 @@ async function onSubmit(e) {
   }
   try {
     if (form.id === 'checkoutForm') await submitCheckout(fields);
-    else if (form.id === 'contactForm') await submitContact(fields, form, status);
+    else if (form.id === 'contactForm' || form.id === 'contactPageForm')
+      await submitContact(fields, form, status);
     else await submitClaim(fields, form);
   } catch (error) {
     if (status) {

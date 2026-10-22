@@ -16,7 +16,7 @@
 .product-showcase,
 main[data-view='catalogs'] > .page-intro,
 main[data-view='shop'] > .page-intro {
-  background-color: var(--paper-lilac);
+  background-color: var(--brand-background);
   background-image: var(--paper-cloud-top), var(--paper-cloud-bottom);
   background-position:
     center top,
@@ -202,7 +202,7 @@ main[data-view='shop'] > .page-intro {
   border-color: #e6dff0;
 }
 .catalog-feature.catalog-promo {
-  background-color: var(--paper-lilac);
+  background-color: var(--brand-background);
   background-image:
     url('/assets/catalogs/clouds-promo-top-2.svg'), url('/assets/catalogs/clouds-promo-bottom.svg');
   background-size:
@@ -231,7 +231,7 @@ main[data-view='shop'] > .page-intro {
 }
 main[data-view='catalogs'],
 main[data-view='shop'] {
-  background: var(--paper-lilac);
+  background: var(--brand-background);
 }
 main[data-view='catalogs'] > .page-intro,
 main[data-view='shop'] > .page-intro {

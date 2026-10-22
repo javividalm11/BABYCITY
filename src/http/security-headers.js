@@ -5,6 +5,7 @@ const CSP = [
   "font-src 'self'",
   "img-src 'self' data:",
   "connect-src 'self'",
+  'frame-src https://www.google.com',
   "manifest-src 'self'",
   "base-uri 'none'",
   "form-action 'self'",

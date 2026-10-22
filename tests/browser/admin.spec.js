@@ -67,6 +67,24 @@ test('los pedidos se filtran, guardan una nota interna y se exportan', async ({ 
   await expect(page.locator(`[data-note="${id}"]`)).toHaveValue('Llamar mañana por la tarde');
 });
 
+test('un pedido se puede eliminar desde el panel', async ({ page }) => {
+  const created = await post(page, '/api/orders', {
+    ...CUSTOMER,
+    delivery: 'pickup',
+    items: [{ id: 1, quantity: 1 }],
+  });
+  const { id } = await created.json();
+  await login(page);
+  await page.getByRole('button', { name: 'Pedidos', exact: true }).click();
+  await page.getByLabel('Buscar pedidos').fill(id);
+  await expect(page.locator('.admin-record')).toHaveCount(1);
+  page.once('dialog', (dialog) => dialog.accept());
+  await page.getByRole('button', { name: 'Eliminar pedido' }).click();
+  await expect(page.locator('.admin-record')).toHaveCount(0);
+  await page.getByRole('button', { name: 'Actividad' }).click();
+  await expect(page.getByRole('cell', { name: 'Pedido eliminado' }).first()).toBeVisible();
+});
+
 test('las consultas pendientes se marcan como atendidas y se pueden reabrir', async ({ page }) => {
   await post(page, '/api/leads', { ...CUSTOMER, message: 'Consulta para marcar como atendida' });
   await login(page);

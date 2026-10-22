@@ -8,7 +8,7 @@ import { publicApiRoutes } from './routes/public-api.js';
 import { serveAsset, siteRoutes } from './routes/site.js';
 import { ensureAdmin } from './security/admin-bootstrap.js';
 import { enforceRateLimit } from './security/rate-limit.js';
-import { hasValidSession } from './security/sessions.js';
+import { getSession } from './security/sessions.js';
 
 function errorResponse(error) {
   if (error instanceof HttpError) return json(error.status, { error: error.message });
@@ -55,12 +55,14 @@ export function createApp({ config, repo, files, assets, seedProducts }) {
     }
     if (found.allowed) throw fail(405, 'Método no permitido.');
     const { route, params } = found;
-    if (route.admin && !(await hasValidSession(repo, request, config.cookieName))) {
-      throw fail(401, 'Inicia sesión para continuar.');
+    let session = null;
+    if (route.admin) {
+      session = await getSession(repo, request, config);
+      if (!session) throw fail(401, 'Inicia sesión para continuar.');
     }
     if (route.limit)
       await enforceRateLimit(repo, `${clientIp}:${route.limit.bucket}`, route.limit.max);
-    return route.handler({ ...ctx, params });
+    return route.handler({ ...ctx, params, session });
   }
 
   return {

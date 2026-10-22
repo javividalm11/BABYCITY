@@ -22,7 +22,7 @@ async function prepare(page, width = 1355) {
   await page.goto('/');
   const section = page.locator('.product-showcase');
   await section.scrollIntoViewIfNeeded();
-  await page.mouse.move(0, 0);
+  await page.mouse.move(-10, -10);
   await section.evaluate(
     (el) =>
       new Promise((resolve) => {
@@ -54,7 +54,7 @@ test('products advance every five seconds and loop from the last group to the fi
   }
   await section.getByRole('button', { name: 'Coches', exact: true }).click();
   await page.locator('h1').click();
-  await page.mouse.move(0, 0);
+  await page.mouse.move(-10, -10);
   await section.scrollIntoViewIfNeeded();
   await visible(section);
   await page.clock.runFor(5000);
@@ -66,6 +66,16 @@ test('products advance every five seconds and loop from the last group to the fi
   ).toBe(true);
   const errors = [];
   page.on('pageerror', (e) => errors.push(e.message));
+  await page.evaluate(
+    () =>
+      new Promise((resolve) => {
+        if (scrollY === 0) return resolve();
+        window.addEventListener('scroll', resolve, { once: true });
+        window.scrollTo({ top: 0, behavior: 'instant' });
+      }),
+  );
+  await page.clock.runFor(350);
+  await expect(page.locator('.site-header')).not.toHaveClass(/is-scroll-hidden/);
   await page.locator('.desktop-nav a[href="/tienda"]').click();
   await page.clock.runFor(20000);
   await expect(page.locator('.product-showcase')).toHaveCount(0);
@@ -78,14 +88,14 @@ test('hover and keyboard focus hold the products in place', async ({ page }) => 
   await section.locator('.showcase-card').first().hover();
   await page.clock.runFor(20000);
   await expect(active).toHaveAttribute('data-showcase-page', '0');
-  await page.mouse.move(0, 0);
+  await page.mouse.move(-10, -10);
   await page.clock.runFor(5000);
   await expect(active).toHaveAttribute('data-showcase-page', '1');
   await section.locator('.showcase-viewport').focus();
   await page.clock.runFor(20000);
   await expect(active).toHaveAttribute('data-showcase-page', '1');
   await page.locator('h1').click();
-  await page.mouse.move(0, 0);
+  await page.mouse.move(-10, -10);
   await section.scrollIntoViewIfNeeded();
   await visible(section);
   await page.clock.runFor(5000);

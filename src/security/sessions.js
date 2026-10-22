@@ -2,17 +2,20 @@ import { randomHex, sha256Hex } from './crypto.js';
 import { readCookie } from '../http/request.js';
 
 // Guardo solo el hash del token; el valor original vive únicamente en la cookie.
-export async function startSession(repo, ttlMs) {
+export async function startSession(repo, config, username) {
   const token = randomHex(32);
   const now = Date.now();
-  await repo.purgeSessions(now);
-  await repo.createSession(await sha256Hex(token), now + ttlMs);
+  await repo.purgeExpired(now);
+  const idle = now + config.sessionIdleMs;
+  await repo.createSession(await sha256Hex(token), username, idle, now + config.sessionTtlMs);
   return token;
 }
 
-export async function hasValidSession(repo, request, cookieName) {
-  const token = readCookie(request, cookieName);
-  return Boolean(token && (await repo.findSession(await sha256Hex(token), Date.now())));
+// Valido la sesión y, si sigue viva, renuevo su ventana de inactividad.
+export async function getSession(repo, request, config) {
+  const token = readCookie(request, config.cookieName);
+  if (!token) return null;
+  return repo.touchSession(await sha256Hex(token), Date.now(), config.sessionIdleMs);
 }
 
 export async function endSession(repo, request, cookieName) {

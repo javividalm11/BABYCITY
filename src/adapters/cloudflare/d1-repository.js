@@ -1,4 +1,13 @@
-import { DEFAULT_SETTINGS, parseRecord, RATE_LIMIT_SQL, SCHEMA } from '../schema.js';
+import {
+  AUDIT_RETENTION_MS,
+  DEFAULT_SETTINGS,
+  HANDLED_SQL,
+  HANDLED_TABLES,
+  parseRecord,
+  RATE_LIMIT_SQL,
+  SCHEMA,
+  TOUCH_SESSION_SQL,
+} from '../schema.js';
 
 const parse = (row) => (row ? JSON.parse(row.data) : null);
 
@@ -15,6 +24,14 @@ export class D1Repository {
       .run();
   }
 
+  async #all(sql, ...values) {
+    const { results } = await this.db
+      .prepare(sql)
+      .bind(...values)
+      .all();
+    return results;
+  }
+
   async init(seedProducts) {
     await this.db.batch(SCHEMA.map((sql) => this.db.prepare(sql)));
     const { n } = await this.db.prepare('SELECT count(*) n FROM products').first();
@@ -26,8 +43,7 @@ export class D1Repository {
   }
 
   async listProducts() {
-    const { results } = await this.db.prepare('SELECT data FROM products ORDER BY id').all();
-    return results.map(parse);
+    return (await this.#all('SELECT data FROM products ORDER BY id')).map(parse);
   }
 
   async getProduct(id) {
@@ -47,6 +63,10 @@ export class D1Repository {
     );
   }
 
+  async deleteProduct(id) {
+    return (await this.#run('DELETE FROM products WHERE id = ?', id)).meta.changes > 0;
+  }
+
   async getSettings() {
     return parse(await this.db.prepare('SELECT data FROM settings WHERE id = 1').first());
   }
@@ -63,30 +83,40 @@ export class D1Repository {
     await this.db.batch([
       this.db.prepare('DELETE FROM admins'),
       this.db.prepare('INSERT INTO admins VALUES (?, ?, ?)').bind(username, salt, hash),
-      this.db.prepare('DELETE FROM sessions'),
+      this.db.prepare('DELETE FROM admin_sessions'),
     ]);
   }
 
-  async createSession(hash, expires) {
-    await this.#run('INSERT INTO sessions VALUES (?, ?)', hash, expires);
+  async createSession(hash, username, idleExpires, absoluteExpires) {
+    await this.#run(
+      'INSERT INTO admin_sessions VALUES (?, ?, ?, ?)',
+      hash,
+      username,
+      idleExpires,
+      absoluteExpires,
+    );
   }
 
-  async findSession(hash, now) {
+  async touchSession(hash, now, idleMs) {
     const row = await this.db
-      .prepare('SELECT hash FROM sessions WHERE hash = ? AND expires > ?')
-      .bind(hash, now)
+      .prepare(TOUCH_SESSION_SQL)
+      .bind(now + idleMs, hash, now, now)
       .first();
-    return Boolean(row);
+    return row ? { username: row.username } : null;
   }
 
   async removeSession(hash) {
-    await this.#run('DELETE FROM sessions WHERE hash = ?', hash);
+    await this.#run('DELETE FROM admin_sessions WHERE hash = ?', hash);
   }
 
-  async purgeSessions(now) {
+  async purgeExpired(now) {
+    const limit = new Date(now - AUDIT_RETENTION_MS).toISOString();
     await this.db.batch([
-      this.db.prepare('DELETE FROM sessions WHERE expires < ?').bind(now),
+      this.db
+        .prepare('DELETE FROM admin_sessions WHERE idle_expires < ? OR absolute_expires < ?')
+        .bind(now, now),
       this.db.prepare('DELETE FROM rate_limits WHERE until < ?').bind(now),
+      this.db.prepare('DELETE FROM audit_log WHERE at < ?').bind(limit),
     ]);
   }
 
@@ -101,8 +131,7 @@ export class D1Repository {
   }
 
   async listOrders() {
-    const { results } = await this.db.prepare('SELECT * FROM orders ORDER BY created DESC').all();
-    return results.map(parseRecord);
+    return (await this.#all('SELECT * FROM orders ORDER BY created DESC')).map(parseRecord);
   }
 
   async setOrderStatus(id, status) {
@@ -110,13 +139,17 @@ export class D1Repository {
     return result.meta.changes > 0;
   }
 
+  async setOrderNote(id, note) {
+    const sql = "UPDATE orders SET data = json_set(data, '$.internalNote', ?) WHERE id = ?";
+    return (await this.#run(sql, note, id)).meta.changes > 0;
+  }
+
   async addLead(id, created, data) {
     await this.#run('INSERT INTO leads VALUES (?, ?, ?)', id, created, JSON.stringify(data));
   }
 
   async listLeads() {
-    const { results } = await this.db.prepare('SELECT * FROM leads ORDER BY created DESC').all();
-    return results.map(parseRecord);
+    return (await this.#all('SELECT * FROM leads ORDER BY created DESC')).map(parseRecord);
   }
 
   async addClaim(id, created, data) {
@@ -124,13 +157,33 @@ export class D1Repository {
   }
 
   async listClaims() {
-    const { results } = await this.db.prepare('SELECT * FROM claims ORDER BY created DESC').all();
-    return results.map(parseRecord);
+    return (await this.#all('SELECT * FROM claims ORDER BY created DESC')).map(parseRecord);
+  }
+
+  async setHandled(kind, id, handled, at) {
+    const table = HANDLED_TABLES[kind];
+    if (!table) throw new Error('Tipo de registro no permitido');
+    return (await this.#run(HANDLED_SQL(table), String(handled), at, id)).meta.changes > 0;
   }
 
   async hitRateLimit(key, now, windowMs) {
     const until = now + windowMs;
     const row = await this.db.prepare(RATE_LIMIT_SQL).bind(key, until, now, now, until).first();
     return row.n;
+  }
+
+  async addAudit(at, actor, action, target, detail) {
+    await this.#run(
+      'INSERT INTO audit_log(at, actor, action, target, detail) VALUES (?, ?, ?, ?, ?)',
+      at,
+      actor,
+      action,
+      target,
+      detail,
+    );
+  }
+
+  async listAudit(limit) {
+    return this.#all('SELECT * FROM audit_log ORDER BY id DESC LIMIT ?', limit);
   }
 }

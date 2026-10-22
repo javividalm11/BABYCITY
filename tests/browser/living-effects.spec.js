@@ -19,6 +19,8 @@ test('quiet animations work without creating a WebGL context or canvas', async (
   await card.scrollIntoViewIfNeeded();
   await card.hover();
   await expect(card).toHaveClass(/living-tilted/);
+  await page.mouse.wheel(0, -160);
+  await expect(page.locator('.site-header')).not.toHaveClass(/is-scroll-hidden/);
   await page.locator('.desktop-nav a[href="/tienda"]').click();
   await expect(page.locator('body')).not.toHaveClass(/living-enabled/);
   expect(errors).toEqual([]);

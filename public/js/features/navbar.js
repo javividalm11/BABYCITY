@@ -27,10 +27,37 @@ export function initializeNavbar() {
   let lastY = Math.max(0, scrollY);
   let direction = 0;
   let distance = 0;
+  let keyboardFocus = false;
 
   function reveal() {
     header.classList.remove('is-scroll-hidden');
     header.inert = false;
+  }
+  function scrollChanged() {
+    scrollFrame = 0;
+    const nextY = Math.max(0, scrollY);
+    const delta = nextY - lastY;
+    lastY = nextY;
+    if (Math.abs(delta) < 1) return;
+    const nextDirection = Math.sign(delta);
+    distance = nextDirection === direction ? distance + Math.abs(delta) : Math.abs(delta);
+    direction = nextDirection;
+    if (nextY < 20 || (nextDirection < 0 && distance >= 6)) {
+      reveal();
+    } else if (
+      nextDirection > 0 &&
+      nextY > header.offsetHeight + 30 &&
+      distance >= 12 &&
+      !(keyboardFocus && header.contains(document.activeElement))
+    ) {
+      close();
+      if (header.contains(document.activeElement)) document.activeElement.blur();
+      header.classList.add('is-scroll-hidden');
+      header.inert = true;
+    }
+  }
+  function scrollRequested() {
+    if (!scrollFrame) scrollFrame = requestAnimationFrame(scrollChanged);
   }
   function close() {
     clearTimeout(closeTimer);
@@ -55,27 +82,6 @@ export function initializeNavbar() {
       if (!mega.contains(document.activeElement) && !shop.contains(document.activeElement)) close();
     }, 160);
   }
-  function scrollChanged() {
-    scrollFrame = 0;
-    const nextY = Math.max(0, scrollY);
-    const delta = nextY - lastY;
-    lastY = nextY;
-    if (Math.abs(delta) < 1) return;
-    const nextDirection = Math.sign(delta);
-    distance = nextDirection === direction ? distance + Math.abs(delta) : Math.abs(delta);
-    direction = nextDirection;
-    if (nextY < 20 || nextDirection < 0 && distance >= 6) {
-      reveal();
-    } else if (nextY > header.offsetHeight + 30 && distance >= 12 && !header.contains(document.activeElement)) {
-      close();
-      header.classList.add('is-scroll-hidden');
-      header.inert = true;
-    }
-  }
-  function scrollRequested() {
-    if (!scrollFrame) scrollFrame = requestAnimationFrame(scrollChanged);
-  }
-
   closeMenus = () => {
     close();
     reveal();
@@ -95,29 +101,73 @@ export function initializeNavbar() {
     }
   };
 
-  shop.addEventListener('pointerenter', (event) => { if (event.pointerType === 'mouse') openMega(); }, { signal });
+  shop.querySelector('a').addEventListener(
+    'pointerenter',
+    (event) => {
+      if (event.pointerType === 'mouse') openMega();
+    },
+    { signal },
+  );
   shop.addEventListener('pointerleave', delayedClose, { signal });
   mega.addEventListener('pointerenter', () => clearTimeout(closeTimer), { signal });
   mega.addEventListener('pointerleave', delayedClose, { signal });
-  trigger.addEventListener('click', () => { if (mega.hidden) openMega(); else close(); }, { signal });
-  shop.addEventListener('keydown', (event) => {
-    if (event.key !== 'ArrowDown') return;
-    event.preventDefault();
-    openMega();
-    mega.querySelector('a')?.focus();
-  }, { signal });
-  document.addEventListener('keydown', (event) => {
-    if (event.key !== 'Escape' || mega.hidden && mobile.hidden) return;
-    const focus = mobile.hidden ? trigger : menuButton;
-    close();
-    focus.focus({ preventScroll: true });
-  }, { signal });
-  document.addEventListener('click', (event) => { if (!header.contains(event.target)) close(); }, { signal, capture: true });
+  trigger.addEventListener(
+    'click',
+    () => {
+      if (mega.hidden) openMega();
+      else close();
+    },
+    { signal },
+  );
+  shop.addEventListener(
+    'keydown',
+    (event) => {
+      if (event.key !== 'ArrowDown') return;
+      event.preventDefault();
+      openMega();
+      mega.querySelector('a')?.focus();
+    },
+    { signal },
+  );
+  document.addEventListener(
+    'keydown',
+    (event) => {
+      if (event.key === 'Tab' || event.key.startsWith('Arrow')) keyboardFocus = true;
+      if (event.key !== 'Escape' || (mega.hidden && mobile.hidden)) return;
+      const focus = mobile.hidden ? trigger : menuButton;
+      close();
+      focus.focus({ preventScroll: true });
+    },
+    { signal },
+  );
+  document.addEventListener(
+    'click',
+    (event) => {
+      if (
+        !header.contains(event.target) ||
+        event.target.closest('[data-action="contact"], [data-action="cart"]')
+      )
+        close();
+    },
+    { signal, capture: true },
+  );
+  document.addEventListener(
+    'pointerdown',
+    () => {
+      keyboardFocus = false;
+    },
+    { signal, capture: true },
+  );
   header.addEventListener('focusin', reveal, { signal });
-  header.addEventListener('focusout', () => {
-    queueMicrotask(() => { if (!header.contains(document.activeElement)) close(); });
-  }, { signal });
   window.addEventListener('scroll', scrollRequested, { passive: true, signal });
+  header.addEventListener('submit', close, { signal });
+  header.addEventListener(
+    'focusout',
+    (event) => {
+      if (!header.contains(event.relatedTarget)) close();
+    },
+    { signal },
+  );
   desktop.addEventListener('change', closeNavbarMenus, { signal });
   dispose = () => {
     controller.abort();

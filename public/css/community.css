@@ -116,6 +116,29 @@
   font-size: 15px;
   display: block;
 }
+/* Figures supplied in the profile screenshot; these are not live TikTok data. */
+.phone-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 10px 0;
+  gap: 4px;
+  color: #111;
+}
+.phone-stats > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 3px;
+}
+.phone-stats dt {
+  font-size: 9px;
+  color: #666;
+  white-space: nowrap;
+}
+.phone-stats dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+}
 .phone-profile-note {
   font-size: 11px !important;
   color: #333 !important;
@@ -1139,5 +1162,17 @@
   .community-video:focus-visible,
   .community-follow:hover {
     transform: none;
+  }
+}
+
+@media (max-width: 1199px) {
+  .phone-stats {
+    margin: 7px 0;
+  }
+  .phone-stats dt {
+    font-size: 8px;
+  }
+  .phone-stats dd {
+    font-size: 12px;
   }
 }

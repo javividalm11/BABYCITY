@@ -1,5 +1,14 @@
 import { DatabaseSync } from 'node:sqlite';
-import { DEFAULT_SETTINGS, parseRecord, RATE_LIMIT_SQL, SCHEMA } from '../schema.js';
+import {
+  AUDIT_RETENTION_MS,
+  DEFAULT_SETTINGS,
+  HANDLED_SQL,
+  HANDLED_TABLES,
+  parseRecord,
+  RATE_LIMIT_SQL,
+  SCHEMA,
+  TOUCH_SESSION_SQL,
+} from '../schema.js';
 
 const parse = (row) => (row ? JSON.parse(row.data) : null);
 
@@ -50,6 +59,10 @@ export class SqliteRepository {
       .run(product.id, JSON.stringify(product));
   }
 
+  async deleteProduct(id) {
+    return this.db.prepare('DELETE FROM products WHERE id = ?').run(id).changes > 0;
+  }
+
   async getSettings() {
     return parse(this.db.prepare('SELECT data FROM settings WHERE id = 1').get());
   }
@@ -66,27 +79,32 @@ export class SqliteRepository {
     this.#transaction(() => {
       this.db.exec('DELETE FROM admins');
       this.db.prepare('INSERT INTO admins VALUES (?, ?, ?)').run(username, salt, hash);
-      this.db.exec('DELETE FROM sessions');
+      this.db.exec('DELETE FROM admin_sessions');
     });
   }
 
-  async createSession(hash, expires) {
-    this.db.prepare('INSERT INTO sessions VALUES (?, ?)').run(hash, expires);
+  async createSession(hash, username, idleExpires, absoluteExpires) {
+    this.db
+      .prepare('INSERT INTO admin_sessions VALUES (?, ?, ?, ?)')
+      .run(hash, username, idleExpires, absoluteExpires);
   }
 
-  async findSession(hash, now) {
-    return Boolean(
-      this.db.prepare('SELECT hash FROM sessions WHERE hash = ? AND expires > ?').get(hash, now),
-    );
+  async touchSession(hash, now, idleMs) {
+    const row = this.db.prepare(TOUCH_SESSION_SQL).get(now + idleMs, hash, now, now);
+    return row ? { username: row.username } : null;
   }
 
   async removeSession(hash) {
-    this.db.prepare('DELETE FROM sessions WHERE hash = ?').run(hash);
+    this.db.prepare('DELETE FROM admin_sessions WHERE hash = ?').run(hash);
   }
 
-  async purgeSessions(now) {
-    this.db.prepare('DELETE FROM sessions WHERE expires < ?').run(now);
+  async purgeExpired(now) {
+    this.db
+      .prepare('DELETE FROM admin_sessions WHERE idle_expires < ? OR absolute_expires < ?')
+      .run(now, now);
     this.db.prepare('DELETE FROM rate_limits WHERE until < ?').run(now);
+    const limit = new Date(now - AUDIT_RETENTION_MS).toISOString();
+    this.db.prepare('DELETE FROM audit_log WHERE at < ?').run(limit);
   }
 
   async addOrder(id, created, status, data) {
@@ -101,6 +119,11 @@ export class SqliteRepository {
 
   async setOrderStatus(id, status) {
     return this.db.prepare('UPDATE orders SET status = ? WHERE id = ?').run(status, id).changes > 0;
+  }
+
+  async setOrderNote(id, note) {
+    const sql = "UPDATE orders SET data = json_set(data, '$.internalNote', ?) WHERE id = ?";
+    return this.db.prepare(sql).run(note, id).changes > 0;
   }
 
   async addLead(id, created, data) {
@@ -119,9 +142,25 @@ export class SqliteRepository {
     return this.db.prepare('SELECT * FROM claims ORDER BY created DESC').all().map(parseRecord);
   }
 
+  async setHandled(kind, id, handled, at) {
+    const table = HANDLED_TABLES[kind];
+    if (!table) throw new Error('Tipo de registro no permitido');
+    return this.db.prepare(HANDLED_SQL(table)).run(String(handled), at, id).changes > 0;
+  }
+
   async hitRateLimit(key, now, windowMs) {
     const until = now + windowMs;
     return this.db.prepare(RATE_LIMIT_SQL).get(key, until, now, now, until).n;
+  }
+
+  async addAudit(at, actor, action, target, detail) {
+    this.db
+      .prepare('INSERT INTO audit_log(at, actor, action, target, detail) VALUES (?, ?, ?, ?, ?)')
+      .run(at, actor, action, target, detail);
+  }
+
+  async listAudit(limit) {
+    return this.db.prepare('SELECT * FROM audit_log ORDER BY id DESC LIMIT ?').all(limit);
   }
 
   close() {

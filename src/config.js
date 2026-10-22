@@ -7,6 +7,7 @@ export function loadConfig(env = {}) {
     adminPassword: String(env.ADMIN_PASSWORD || ''),
     cookieName: 'bc_session',
     sessionTtlMs: 8 * 60 * 60 * 1000,
+    sessionIdleMs: 30 * 60 * 1000,
     maxBodyBytes: 2_000_000,
     maxImageBytes: 1_048_576,
   });

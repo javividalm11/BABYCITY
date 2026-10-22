@@ -3,10 +3,30 @@ import { esc } from '../lib/format.js';
 import { categoryLink } from './layout.js';
 
 const categories = [
-  { name: 'Coches', icon: 'stroller', image: 'catalog-01/product-2.webp', copy: 'Pequeñas aventuras' },
-  { name: 'Cunas y colechos', icon: 'crib', image: 'catalog-05/product-29.webp', copy: 'Dulces sueños' },
-  { name: 'Mecedoras', icon: 'rocker', image: 'catalog-06/product-30.webp', copy: 'Momentos de calma' },
-  { name: 'Sillas de comer', icon: 'chair', image: 'catalog-07/product-36.webp', copy: 'Nuevos sabores' },
+  {
+    name: 'Coches',
+    icon: 'stroller',
+    image: 'catalog-01/product-2.webp',
+    copy: 'Pequeñas aventuras',
+  },
+  {
+    name: 'Cunas y colechos',
+    icon: 'crib',
+    image: 'catalog-05/product-29.webp',
+    copy: 'Dulces sueños',
+  },
+  {
+    name: 'Mecedoras',
+    icon: 'rocker',
+    image: 'catalog-06/product-30.webp',
+    copy: 'Momentos de calma',
+  },
+  {
+    name: 'Sillas de comer',
+    icon: 'chair',
+    image: 'catalog-07/product-36.webp',
+    copy: 'Nuevos sabores',
+  },
   { name: 'Baño y cuidado', icon: 'bath' },
   { name: 'Accesorios', icon: 'bag' },
 ];
@@ -28,10 +48,15 @@ export function renderMegaMenu() {
     ${categories.map(categoryRow).join('')}
   </nav>
   <div class="mega-discovery"><p class="mega-eyebrow">Categorías destacadas</p>
-    <div class="mega-cards">${categories.slice(0, 4).map((category) => `<a class="mega-card" href="${esc(categoryLink(category.name))}" data-link>
+    <div class="mega-cards">${categories
+      .slice(0, 4)
+      .map(
+        (category) => `<a class="mega-card" href="${esc(categoryLink(category.name))}" data-link>
       <div class="mega-card-image"><img src="/assets/catalogs/${esc(category.image)}" alt="${esc(category.name)} de BabyCity" width="180" height="150" loading="lazy"></div>
       <div class="mega-card-copy"><div><strong>${esc(category.name)}</strong><small>${esc(category.copy)}</small></div><span class="mega-card-arrow">${icon('arrow')}</span></div>
-    </a>`).join('')}</div>
+    </a>`,
+      )
+      .join('')}</div>
     <div class="mega-more-heading"><p class="mega-eyebrow">También puedes explorar</p><span></span></div>
     <nav class="mega-extras" aria-label="Más categorías">${extras.map(([name, symbol]) => `<a href="${esc(categoryLink(name))}" data-link><span>${icon(symbol)}</span>${esc(name)}</a>`).join('')}</nav>
   </div>
@@ -44,6 +69,7 @@ export function renderMegaMenu() {
 
 export function renderMobileMenu() {
   return `<nav class="mobile-primary-links" aria-label="Principal móvil"><a href="/" data-link>Inicio</a><a href="/catalogos" data-link>Catálogos</a><a href="/nosotros" data-link>Nosotros</a><a href="/contacto" data-link>Visítanos</a></nav>
-    <p class="mega-eyebrow">Encuentra su próximo favorito</p><nav class="mobile-category-links" aria-label="Categorías móvil"><a class="mega-all" href="/tienda" data-link>${icon('grid')}<span>Todos los productos</span></a>${categories.map(categoryRow).join('')}${extras.map(([name, symbol]) => categoryRow({name, icon: symbol})).join('')}</nav>
+    <p class="mega-eyebrow">Encuentra su próximo favorito</p><nav class="mobile-category-links" aria-label="Categorías móvil"><a class="mega-all" href="/tienda" data-link>${icon('grid')}<span>Todos los productos</span></a>${categories.map(categoryRow).join('')}</nav>
+    <details class="mobile-more-categories"><summary>Más categorías ${icon('chevron')}</summary><nav class="mobile-category-links" aria-label="Más categorías móvil">${extras.map(([name, symbol]) => categoryRow({ name, icon: symbol })).join('')}</nav></details>
     <button class="mobile-contact-button" type="button" data-action="contact">${icon('chat')}Conversemos por WhatsApp</button>`;
 }

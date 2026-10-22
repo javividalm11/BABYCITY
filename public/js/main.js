@@ -10,6 +10,9 @@ import { render } from './features/navigation.js';
 import { initializeNavbar } from './features/navbar.js';
 
 function paintStaticIcons() {
+  document.querySelectorAll('[data-nav-icon]').forEach((element) => {
+    element.innerHTML = icon(element.dataset.navIcon);
+  });
   $('#searchButton').innerHTML = icon('search');
   $('#wishButton').innerHTML = icon('heart') + '<small>Favoritos</small>';
   $('#cartButton').innerHTML = icon('cart') + '<span id="cartCount">0</span><small>Carrito</small>';

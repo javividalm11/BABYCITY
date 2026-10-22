@@ -3,7 +3,7 @@ import { renderPage, SPA_ROUTE } from '../seo/render-page.js';
 import { renderSitemap } from '../seo/sitemap.js';
 
 // Reviso siempre los archivos de nombre fijo; los subidos tienen nombre único.
-const REVALIDATE = /\.(?:html|js|css|json|xml|txt)$/;
+const REVALIDATE = /\.(?:html|js|css|json|xml|txt|svg)$/;
 const CACHE = {
   revalidate: 'no-cache',
   daily: 'public, max-age=86400',

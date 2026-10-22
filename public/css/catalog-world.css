@@ -185,7 +185,7 @@ main[data-view='shop'] > .page-intro {
 .catalog-feature.catalog-promo {
   background-color: var(--paper-lilac);
   background-image:
-    url('/assets/catalogs/clouds-top-promo.svg'), url('/assets/catalogs/clouds-bottom-promo.svg');
+    url('/assets/catalogs/clouds-promo-top.svg'), url('/assets/catalogs/clouds-promo-bottom.svg');
   background-size:
     100% 115px,
     100% 90px;

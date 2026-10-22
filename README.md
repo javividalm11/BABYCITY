@@ -66,15 +66,16 @@ Abre http://127.0.0.1:3000. No abras `public/index.html` directamente: productos
 
 ## Configuración
 
-| Variable         | Uso                                                                                 |
-| ---------------- | ----------------------------------------------------------------------------------- |
-| `ADMIN_USER`     | Usuario del panel (por defecto `admin`).                                            |
-| `ADMIN_PASSWORD` | Clave del panel, mínimo 14 caracteres. Al cambiarla se cierran todas las sesiones.  |
-| `SITE_URL`       | Dominio público sin barra final; habilita sitemap, canonical y datos estructurados. |
-| `TRUST_PROXY`    | `true` detrás de un proxy: usa su protocolo, host e IP de cliente.                  |
-| `DB_PATH`        | Ruta de la base SQLite (por defecto `data/babycity.sqlite`).                        |
-| `UPLOAD_DIR`     | Carpeta de las imágenes subidas (por defecto `data/uploads`).                       |
-| `HOST` / `PORT`  | Dirección y puerto de escucha.                                                      |
+| Variable         | Uso                                                                                                                                                                  |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ADMIN_USER`     | Usuario del panel (por defecto `admin`).                                                                                                                             |
+| `ADMIN_PASSWORD` | Clave inicial del panel, mínimo 14 caracteres. Después se cambia desde el perfil; si cambias esta variable (o `ADMIN_USER`) en el servidor, la cuenta se restablece. |
+| `SITE_URL`       | Dominio público sin barra final; habilita sitemap, canonical y datos estructurados.                                                                                  |
+| `TRUST_PROXY`    | `true` detrás de un proxy: usa su protocolo, host e IP de cliente.                                                                                                   |
+| `DB_PATH`        | Ruta de la base SQLite (por defecto `data/babycity.sqlite`).                                                                                                         |
+| `UPLOAD_DIR`     | Carpeta de las imágenes subidas (por defecto `data/uploads`).                                                                                                        |
+| `HOST` / `PORT`  | Dirección y puerto de escucha.                                                                                                                                       |
+| `LOGIN_LIMIT`    | Intentos de ingreso por IP y por usuario cada 15 minutos (por defecto 10).                                                                                           |
 
 No hay contraseña predeterminada: sin `ADMIN_PASSWORD` no existe cuenta administradora. Nunca guardes claves en el repositorio.
 
@@ -102,7 +103,7 @@ Se abre en `/admin`. Pestañas:
 
 Código en `public/js/views/admin/`: `index.js` (entrada), `shell.js` (marco y pestañas), `tabs/` (una por pestaña), `product-editor.js`, `idle.js` (cierre por inactividad) y utilidades de formato y CSV. La API correspondiente está en `src/routes/admin-api.js`.
 
-La contraseña del panel se cambia con la variable `ADMIN_PASSWORD`; no se cambia desde el panel porque cada arranque la sincroniza con esa variable.
+El botón **Cuenta** de la barra superior abre el perfil del administrador cuando hay sesión iniciada (para un visitante abre la atención personalizada): ir al panel, cambiar la contraseña (pide la actual y cierra las sesiones de otros dispositivos), cerrar las otras sesiones y cerrar sesión. La clave se guarda en la base de datos; `ADMIN_PASSWORD` solo crea la cuenta o la restablece si cambia.
 
 ## Pruebas y calidad
 

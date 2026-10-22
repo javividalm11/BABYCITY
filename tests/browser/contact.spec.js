@@ -111,3 +111,31 @@ test('FAQ disclosures work with keyboard and keep only one answer open', async (
   await faq.screenshot({ path: 'test-results/faq-mobile.png', animations: 'disabled' });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });
+
+test('catalog replaces the old contact strip with the shared advice form', async ({ page }) => {
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/catalogos', { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('.catalog-card')).toHaveCount(12);
+    await expect(page.locator('.cta-strip')).toHaveCount(0);
+    await expect(page.locator('#contactPageForm')).toHaveCount(1);
+    const panel = page.locator('.advice-section');
+    await panel.scrollIntoViewIfNeeded();
+    await panel.locator('img').evaluate((image) => image.decode());
+    await expect(panel.getByRole('heading', { name: /Te asesoramos/ })).toBeVisible();
+    await expect(panel.getByRole('button', { name: 'Quiero ayuda personalizada' })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    const bounds = await panel.locator('form').boundingBox();
+    expect(bounds.x).toBeGreaterThanOrEqual(0);
+    expect(bounds.x + bounds.width).toBeLessThanOrEqual(width + 1);
+    await page
+      .locator('.contact-float,.skip,.site-header')
+      .evaluateAll((nodes) => nodes.forEach((node) => (node.style.visibility = 'hidden')));
+    await panel.screenshot({
+      path: `test-results/catalog-advice-${width}.png`,
+      animations: 'disabled',
+    });
+  }
+});

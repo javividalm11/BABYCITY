@@ -794,7 +794,21 @@ footer {
   border-radius: 40px;
   padding: 13px 18px;
   font-size: 11px;
+  transition:
+    opacity 0.24s ease,
+    visibility 0.24s;
 }
+.contact-float.is-footer-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .contact-float {
+    transition: none;
+  }
+}
+
 .page-intro {
   background: #f2f4eb;
   padding: 49px 0 45px;

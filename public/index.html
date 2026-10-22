@@ -20,6 +20,7 @@
     />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/admin.css" />
+    <link rel="stylesheet" href="/css/account.css" />
     <link rel="stylesheet" href="/css/showcase.css" />
     <link rel="stylesheet" href="/css/discovery.css" />
     <link rel="stylesheet" href="/css/product-showcase.css" />
@@ -35,6 +36,7 @@
     <link rel="stylesheet" href="/css/cart.css" />
     <link rel="stylesheet" href="/css/contact.css" />
     <link rel="stylesheet" href="/css/contact-faq.css" />
+    <link rel="stylesheet" href="/css/about.css" />
     <script type="module" src="/js/main.js"></script>
   </head>
   <body>
@@ -109,8 +111,8 @@
           </form>
           <button
             class="icon-button site-account"
-            data-action="contact"
-            aria-label="Atención personalizada"
+            data-action="account"
+            aria-label="Cuenta y atención personalizada"
           >
             <i data-nav-icon="user" aria-hidden="true"></i><small>Cuenta</small>
           </button>
@@ -348,6 +350,9 @@
     <dialog id="cartDialog" class="drawer" aria-label="Tu carrito">
       <div id="cartContent"></div>
     </dialog>
+    <dialog id="accountDialog" class="account-dialog" aria-label="Tu cuenta">
+      <div id="accountContent"></div>
+    </dialog>
     <dialog id="contactDialog" class="contact-dialog">
       <button class="close" data-close aria-label="Cerrar">×</button
       ><span class="eyebrow">De mamá a mamá</span>
@@ -360,7 +365,7 @@
             name="phone"
             type="tel"
             required
-            pattern="[+0-9\s-]{9,18}"
+            pattern="[+0-9\s\-]{9,18}"
             autocomplete="tel" /></label
         ><label
           >Tu consulta<textarea name="message" required maxlength="1000" rows="3"></textarea></label

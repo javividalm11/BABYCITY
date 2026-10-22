@@ -1,7 +1,9 @@
 // Defino el esquema una sola vez para todos los repositorios.
 export const SCHEMA = [
   'CREATE TABLE IF NOT EXISTS products(id INTEGER PRIMARY KEY, data TEXT NOT NULL)',
-  'CREATE TABLE IF NOT EXISTS admins(username TEXT PRIMARY KEY, salt TEXT NOT NULL, hash TEXT NOT NULL)',
+  // La cuenta guarda la huella de la configuración que la creó, para detectar cuando se pide restablecerla.
+  'DROP TABLE IF EXISTS admins',
+  'CREATE TABLE IF NOT EXISTS admin_accounts(username TEXT PRIMARY KEY, salt TEXT NOT NULL, hash TEXT NOT NULL, env_seed TEXT NOT NULL)',
   // Reemplazo la tabla anterior de sesiones por una con caducidad por inactividad.
   'DROP TABLE IF EXISTS sessions',
   'CREATE TABLE IF NOT EXISTS admin_sessions(hash TEXT PRIMARY KEY, username TEXT NOT NULL, idle_expires INTEGER NOT NULL, absolute_expires INTEGER NOT NULL)',

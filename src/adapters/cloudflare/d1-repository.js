@@ -76,15 +76,45 @@ export class D1Repository {
   }
 
   async findAdmin(username) {
-    return this.db.prepare('SELECT * FROM admins WHERE username = ?').bind(username).first();
+    return this.db
+      .prepare('SELECT * FROM admin_accounts WHERE username = ?')
+      .bind(username)
+      .first();
   }
 
-  async replaceAdmin(username, salt, hash) {
+  async getAdminAccount() {
+    return this.db.prepare('SELECT * FROM admin_accounts LIMIT 1').first();
+  }
+
+  async replaceAdmin(username, salt, hash, envSeed) {
     await this.db.batch([
-      this.db.prepare('DELETE FROM admins'),
-      this.db.prepare('INSERT INTO admins VALUES (?, ?, ?)').bind(username, salt, hash),
+      this.db.prepare('DELETE FROM admin_accounts'),
+      this.db
+        .prepare('INSERT INTO admin_accounts VALUES (?, ?, ?, ?)')
+        .bind(username, salt, hash, envSeed),
       this.db.prepare('DELETE FROM admin_sessions'),
     ]);
+  }
+
+  // Cambio la clave y cierro las demás sesiones; la actual se conserva.
+  async updatePassword(username, salt, hash, keepHash) {
+    await this.db.batch([
+      this.db
+        .prepare('UPDATE admin_accounts SET salt = ?, hash = ? WHERE username = ?')
+        .bind(salt, hash, username),
+      this.db
+        .prepare('DELETE FROM admin_sessions WHERE username = ? AND hash != ?')
+        .bind(username, keepHash),
+    ]);
+  }
+
+  async removeOtherSessions(username, keepHash) {
+    const result = await this.#run(
+      'DELETE FROM admin_sessions WHERE username = ? AND hash != ?',
+      username,
+      keepHash,
+    );
+    return result.meta.changes;
   }
 
   async createSession(hash, username, idleExpires, absoluteExpires) {

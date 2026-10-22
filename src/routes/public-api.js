@@ -2,6 +2,7 @@ import { quoteOrder } from '../domain/orders.js';
 import { parseClaim, parseLead } from '../domain/validation.js';
 import { json } from '../http/responses.js';
 import { randomHex } from '../security/crypto.js';
+import { getSession } from '../security/sessions.js';
 
 const now = () => new Date().toISOString();
 
@@ -11,6 +12,12 @@ async function listProducts({ repo }) {
     200,
     products.filter((p) => p.active),
   );
+}
+
+// Informo si quien consulta tiene una sesión de administrador activa.
+async function sessionInfo({ repo, request, config }) {
+  const session = await getSession(repo, request, config);
+  return json(200, { admin: session ? { username: session.username } : null });
 }
 
 async function getSettings({ repo }) {
@@ -41,6 +48,7 @@ async function createClaim({ repo, body }) {
 export const publicApiRoutes = [
   { method: 'GET', path: '/api/products', handler: listProducts },
   { method: 'GET', path: '/api/settings', handler: getSettings },
+  { method: 'GET', path: '/api/session', handler: sessionInfo },
   {
     method: 'POST',
     path: '/api/orders',

@@ -12,6 +12,10 @@ for (const suffix of ['', '-shm', '-wal'])
 const { server } = createNodeServer({
   dbPath: path.join(dir, 'browser.sqlite'),
   uploadDir: path.join(dir, 'uploads'),
-  env: { ADMIN_USER: 'browser-test', ADMIN_PASSWORD: 'test-only-password-123' },
+  env: {
+    ADMIN_USER: 'browser-test',
+    ADMIN_PASSWORD: 'test-only-password-123',
+    LOGIN_LIMIT: '500',
+  },
 });
 server.listen(3001, '127.0.0.1', () => console.log('Servidor de pruebas: http://127.0.0.1:3001'));

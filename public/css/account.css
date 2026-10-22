@@ -1,0 +1,62 @@
+/* Perfil del administrador que se abre desde el botón Cuenta. */
+.account-dialog {
+  width: min(420px, calc(100% - 32px));
+}
+.account-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-right: 36px;
+  margin-bottom: 22px;
+}
+.account-head h2 {
+  font-size: 24px;
+  overflow-wrap: anywhere;
+}
+.account-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--teal);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+}
+.account-menu {
+  display: grid;
+  gap: 8px;
+}
+.account-item {
+  display: block;
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid #e3e8dc;
+  border-radius: 10px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.account-item:hover,
+.account-item:focus-visible {
+  border-color: var(--teal);
+  background: #f4f8f1;
+}
+.account-item.danger {
+  color: #b3261e;
+}
+#passwordForm {
+  padding: 4px 16px 12px;
+  border: 1px solid #e3e8dc;
+  border-radius: 10px;
+  background: #fbfcf8;
+}
+#passwordForm[hidden] {
+  display: none;
+}

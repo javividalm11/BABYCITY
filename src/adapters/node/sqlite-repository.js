@@ -72,15 +72,39 @@ export class SqliteRepository {
   }
 
   async findAdmin(username) {
-    return this.db.prepare('SELECT * FROM admins WHERE username = ?').get(username) ?? null;
+    return this.db.prepare('SELECT * FROM admin_accounts WHERE username = ?').get(username) ?? null;
   }
 
-  async replaceAdmin(username, salt, hash) {
+  async getAdminAccount() {
+    return this.db.prepare('SELECT * FROM admin_accounts LIMIT 1').get() ?? null;
+  }
+
+  async replaceAdmin(username, salt, hash, envSeed) {
     this.#transaction(() => {
-      this.db.exec('DELETE FROM admins');
-      this.db.prepare('INSERT INTO admins VALUES (?, ?, ?)').run(username, salt, hash);
+      this.db.exec('DELETE FROM admin_accounts');
+      this.db
+        .prepare('INSERT INTO admin_accounts VALUES (?, ?, ?, ?)')
+        .run(username, salt, hash, envSeed);
       this.db.exec('DELETE FROM admin_sessions');
     });
+  }
+
+  // Cambio la clave y cierro las demás sesiones; la actual se conserva.
+  async updatePassword(username, salt, hash, keepHash) {
+    this.#transaction(() => {
+      this.db
+        .prepare('UPDATE admin_accounts SET salt = ?, hash = ? WHERE username = ?')
+        .run(salt, hash, username);
+      this.db
+        .prepare('DELETE FROM admin_sessions WHERE username = ? AND hash != ?')
+        .run(username, keepHash);
+    });
+  }
+
+  async removeOtherSessions(username, keepHash) {
+    return this.db
+      .prepare('DELETE FROM admin_sessions WHERE username = ? AND hash != ?')
+      .run(username, keepHash).changes;
   }
 
   async createSession(hash, username, idleExpires, absoluteExpires) {

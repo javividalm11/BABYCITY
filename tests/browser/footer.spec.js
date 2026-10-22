@@ -59,3 +59,22 @@ test('footer fits desktop, tablets and small phones', async ({ page }) => {
     }
   }
 });
+
+test('floating contact fades out at the footer and returns when scrolling away', async ({
+  page,
+}) => {
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/nosotros', { waitUntil: 'domcontentloaded' });
+    const button = page.locator('.contact-float');
+    await expect(button).toHaveCSS('opacity', '1');
+    await page.locator('.babycity-footer').scrollIntoViewIfNeeded();
+    await expect(button).toHaveClass(/is-footer-hidden/);
+    await expect(button).toHaveCSS('opacity', '0');
+    expect(await button.evaluate((element) => element.inert)).toBe(true);
+    await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
+    await expect(button).not.toHaveClass(/is-footer-hidden/);
+    await expect(button).toHaveCSS('opacity', '1');
+    expect(await button.evaluate((element) => element.inert)).toBe(false);
+  }
+});

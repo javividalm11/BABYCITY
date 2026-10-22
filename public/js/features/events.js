@@ -9,6 +9,7 @@ import {
   toggleFavorite,
 } from '../state/store.js';
 import { shop } from '../views/shop.js';
+import { openAccount } from './account.js';
 import { checkout, openCart, renderCart } from './cart.js';
 import { openBook } from './catalog-viewer.js';
 import { navigate, render } from './navigation.js';
@@ -54,6 +55,8 @@ async function runAction(button) {
       return openCart();
     case 'search':
       return $('#searchDialog').showModal();
+    case 'account':
+      return openAccount();
     case 'contact':
       return $('#contactDialog').showModal();
     case 'menu':

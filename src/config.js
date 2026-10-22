@@ -8,6 +8,7 @@ export function loadConfig(env = {}) {
     cookieName: 'bc_session',
     sessionTtlMs: 8 * 60 * 60 * 1000,
     sessionIdleMs: 30 * 60 * 1000,
+    loginLimit: Number(env.LOGIN_LIMIT) || 10,
     maxBodyBytes: 2_000_000,
     maxImageBytes: 1_048_576,
   });

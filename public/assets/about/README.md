@@ -1,0 +1,5 @@
+# About page illustration
+
+`mother-baby-illustration.webp` is a decorative transparent illustration generated with the built-in image generation tool and optimized to WebP. Team photographs remain the user's original JPG files.
+
+Prompt: A tender small hand-painted illustration for a baby store website: a smiling young mother with long wavy chestnut brown hair and closed eyes gently hugging her little baby against her chest, the baby smiling with closed eyes, tiny cheek blushes, mother wearing a soft coral pink blouse, baby in a pale peach pink onesie. Waist-up cuddle pose. Rounded soft shapes, warm gentle children's picture-book watercolor and gouache style, delicate outlines, subtle textured shading, refined pastel nursery palette. Both faces and the whole mother's hair silhouette fully visible with room around them. Transparent background, no scene, no furniture, no clouds, no text, no lettering, no logos, no border. Composition compact square for the left of a website contact banner.

@@ -1,22 +1,23 @@
-import { ORDER_STATUSES } from '../constants.js';
+import { MIN_ADMIN_PASSWORD, ORDER_STATUSES } from '../constants.js';
 import { audit, maskIp } from '../domain/audit.js';
 import { decodeBase64, detectImageType, IMAGE_MIME } from '../domain/images.js';
 import { parseProduct, parseSettings, text } from '../domain/validation.js';
 import { fail } from '../http/errors.js';
 import { json } from '../http/responses.js';
 import { randomHex } from '../security/crypto.js';
-import { verifyPassword } from '../security/passwords.js';
+import { createCredentials, verifyPassword } from '../security/passwords.js';
 import { enforceRateLimit } from '../security/rate-limit.js';
 import { clearedCookie, endSession, sessionCookie, startSession } from '../security/sessions.js';
 
-const MAX_LOGIN_ATTEMPTS = 10;
 const AUDIT_PAGE = 100;
 const MAX_NOTE = 1000;
+const MAX_PASSWORD = 200;
 
 async function login({ repo, config, url, body, clientIp }) {
   const data = await body();
   const username = text(data.username, 100);
-  await enforceRateLimit(repo, `user:${username.toLowerCase()}:login`, MAX_LOGIN_ATTEMPTS);
+  await enforceRateLimit(repo, `${clientIp}:login`, config.loginLimit);
+  await enforceRateLimit(repo, `user:${username.toLowerCase()}:login`, config.loginLimit);
   const admin = await repo.findAdmin(username);
   if (!(await verifyPassword(data.password ?? '', admin))) {
     await audit(repo, username || 'desconocido', 'login.fallido', '', `Origen ${maskIp(clientIp)}`);
@@ -129,6 +130,33 @@ async function deleteOrder({ repo, params, session }) {
   return json(200, { ok: true });
 }
 
+async function changePassword({ repo, body, session }) {
+  await enforceRateLimit(repo, `user:${session.username.toLowerCase()}:password`, 5);
+  const data = await body();
+  const current = typeof data.current === 'string' ? data.current : '';
+  const next = typeof data.next === 'string' ? data.next : '';
+  if (!(await verifyPassword(current, await repo.findAdmin(session.username)))) {
+    throw fail(403, 'La contraseña actual no es correcta.');
+  }
+  const tooShort = next.length < MIN_ADMIN_PASSWORD || next.length > MAX_PASSWORD;
+  if (tooShort || next === current || next.toLowerCase() === session.username.toLowerCase()) {
+    throw fail(
+      400,
+      `La nueva contraseña debe tener entre ${MIN_ADMIN_PASSWORD} y ${MAX_PASSWORD} caracteres y ser distinta de la actual.`,
+    );
+  }
+  const { salt, hash } = await createCredentials(next);
+  await repo.updatePassword(session.username, salt, hash, session.hash);
+  await audit(repo, session.username, 'cuenta.clave', '', 'Se cerraron las demás sesiones');
+  return json(200, { ok: true });
+}
+
+async function revokeOtherSessions({ repo, session }) {
+  const closed = await repo.removeOtherSessions(session.username, session.hash);
+  await audit(repo, session.username, 'cuenta.sesiones', '', `Sesiones cerradas: ${closed}`);
+  return json(200, { ok: true, closed });
+}
+
 async function markHandled({ repo, body, session }) {
   const data = await body();
   const id = text(data.id, 50);
@@ -145,7 +173,7 @@ async function markHandled({ repo, body, session }) {
 }
 
 export const adminApiRoutes = [
-  { method: 'POST', path: '/api/admin/login', limit: { bucket: 'login', max: 10 }, handler: login },
+  { method: 'POST', path: '/api/admin/login', handler: login },
   { method: 'POST', path: '/api/admin/logout', admin: true, handler: logout },
   { method: 'GET', path: '/api/admin/dashboard', admin: true, handler: dashboard },
   { method: 'GET', path: '/api/admin/activity', admin: true, handler: activity },
@@ -167,4 +195,6 @@ export const adminApiRoutes = [
     handler: deleteOrder,
   },
   { method: 'PATCH', path: '/api/admin/records', admin: true, handler: markHandled },
+  { method: 'POST', path: '/api/admin/password', admin: true, handler: changePassword },
+  { method: 'POST', path: '/api/admin/sessions/revoke', admin: true, handler: revokeOtherSessions },
 ];

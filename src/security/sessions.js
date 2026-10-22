@@ -15,7 +15,9 @@ export async function startSession(repo, config, username) {
 export async function getSession(repo, request, config) {
   const token = readCookie(request, config.cookieName);
   if (!token) return null;
-  return repo.touchSession(await sha256Hex(token), Date.now(), config.sessionIdleMs);
+  const hash = await sha256Hex(token);
+  const session = await repo.touchSession(hash, Date.now(), config.sessionIdleMs);
+  return session && { ...session, hash };
 }
 
 export async function endSession(repo, request, cookieName) {

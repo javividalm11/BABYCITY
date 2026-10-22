@@ -13,12 +13,7 @@ test('product section uses real catalog prices, filters, pagination, favorites a
   await expect(cards).toHaveCount(4);
   await expect(cards.first()).toHaveAttribute('data-showcase-product', '2');
   await expect(cards.first().locator('.showcase-price')).toContainText('279.00');
-  await expect(section.locator('.showcase-stock')).toHaveText([
-    'Consultar stock',
-    'Consultar stock',
-    'Consultar stock',
-    'Consultar stock',
-  ]);
+  await expect(section.locator('.showcase-stock')).toHaveCount(0);
   await expect(section.locator('.showcase-dots button')).toHaveCount(4);
   await expect(section.getByRole('button', { name: 'Ver productos anteriores' })).toBeDisabled();
   await cards

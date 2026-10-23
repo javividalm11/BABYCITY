@@ -1,3 +1,4 @@
+import { renderAboutPurpose } from '../components/customer-stories.js';
 import { icon } from '../lib/icons.js';
 import { renderAboutTikTok, tiktokProfile } from '../components/about-tiktok.js';
 
@@ -26,6 +27,7 @@ export function about() {
       <div class="about-gallery"><figure><img src="/assets/nosotros.jpg" alt="Integrantes del equipo de BabyCity en Perú Business Fest" width="960" height="1280" loading="lazy"><figcaption>Compartimos experiencias</figcaption></figure><figure><img src="/assets/nosotros2.jpg" alt="Encuentro de BabyCity con otros emprendedores en Perú Business Fest" width="960" height="1280" loading="lazy"><figcaption>Seguimos aprendiendo</figcaption></figure><p>Momentos de BabyCity<br>en Perú Business Fest. <span aria-hidden="true">♡</span></p></div>
     </section>
 
+    ${renderAboutPurpose()}
     <section class="about-live" aria-labelledby="about-live-title">
       <div class="about-live-copy"><span class="about-eyebrow">Conócenos de cerca</span><h2 id="about-live-title">También estamos<br>al otro lado de la pantalla.</h2><p>En TikTok compartimos nuestro día a día, te mostramos los productos y conversamos contigo. Nos encanta que conozcas a las personas detrás de BabyCity.</p><a class="about-button" href="${tiktokProfile}" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="about-tiktok-note" d="M14 3h4c0 3 2 5 5 5v4c-2 0-4-1-5-2v8a6 6 0 1 1-6-6v4a2 2 0 1 0 2 2V3Z"/></svg>Síguenos en TikTok ${icon('arrow')}</a><span class="about-profile">@babycityperu</span><span class="about-live-hearts" aria-hidden="true">♡<small>♡</small></span></div>
       ${renderAboutTikTok()}

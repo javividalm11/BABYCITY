@@ -26,7 +26,7 @@ test('about content uses supplied photographs and four exact TikTok posts while 
   await expect(about.locator('h1')).toHaveCount(1);
   await expect(page.locator('.site-header')).toHaveCount(1);
   await expect(page.locator('.babycity-footer')).toHaveCount(1);
-  await expect(about.locator('header, footer')).toHaveCount(0);
+  await expect(about.locator('.site-header, .babycity-footer')).toHaveCount(0);
   for (const file of ['ceobabycity.jpg', 'nosotros.jpg', 'nosotros2.jpg'])
     expect(await about.locator(`img[src="/assets/${file}"]`).count()).toBeGreaterThan(0);
   await expect(about.locator('iframe')).toHaveCount(0);

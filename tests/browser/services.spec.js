@@ -16,11 +16,15 @@ test('services includes the complete gift PDF content and its original download'
   );
   await expect(page.locator('.services-includes')).toContainText('Moño decorativo.');
   await expect(page.locator('.services-gallery-grid img')).toHaveCount(9);
-  await page.locator('.services-document summary').click();
   await expect(page.locator('.services-document-pages img')).toHaveCount(3);
-  await page
-    .locator('.services-page img')
-    .evaluateAll((images) => Promise.all(images.map((image) => image.decode())));
+  await page.locator('.services-page img').evaluateAll((images) =>
+    Promise.all(
+      images.map((image) => {
+        image.loading = 'eager';
+        return image.decode();
+      }),
+    ),
+  );
   const href = await page
     .getByRole('link', { name: 'Descargar PDF original' })
     .getAttribute('href');

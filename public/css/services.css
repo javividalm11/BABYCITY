@@ -226,16 +226,6 @@
   border-radius: 15px;
   padding: 17px 20px;
 }
-.services-document summary {
-  cursor: pointer;
-  font-size: 13px;
-  color: #536e74;
-}
-.services-document summary svg {
-  width: 18px;
-  height: 18px;
-  margin-left: 8px;
-}
 .services-document-pages {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

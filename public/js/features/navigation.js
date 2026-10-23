@@ -23,6 +23,7 @@ import { openBook } from './catalog-viewer.js';
 import { closeNavbarMenus } from './navbar.js';
 import { mountAboutVideos, destroyAboutVideos } from './about-videos.js';
 import { mountCatalogFilters } from './catalog-filters.js';
+import { mountCustomerStories, destroyCustomerStories } from './customer-stories.js';
 
 export async function navigate(url, { replace = false, scroll = true } = {}) {
   closeDialogs();
@@ -41,6 +42,7 @@ export async function navigate(url, { replace = false, scroll = true } = {}) {
   $('#main').focus({ preventScroll: true });
 }
 export async function render() {
+  destroyCustomerStories();
   destroyAboutVideos();
   destroyLivingEffects();
   destroyProductShowcase();
@@ -116,6 +118,7 @@ export async function render() {
                           );
   if (route === '/nosotros') mountAboutVideos(main);
   if (route === '/catalogos') mountCatalogFilters(main);
+  if (route === '/' || route === '/servicios') mountCustomerStories(main);
   if (route === '/') {
     mountProductShowcase(main, products, () => favorites);
     mountLivingEffects(main);

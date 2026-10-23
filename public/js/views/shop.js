@@ -1,3 +1,4 @@
+import { renderCustomerStories } from '../components/customer-stories.js';
 import { esc } from '../lib/format.js';
 import { products, favorites, shopPage, setShopPage } from '../state/store.js';
 import { intro, empty } from '../components/layout.js';
@@ -38,5 +39,5 @@ export function shop(saved = false) {
             ? 'Toca el corazón de los productos que te gusten para tenerlos siempre a mano.'
             : 'Prueba otro nombre o explora una categoría diferente.',
         )
-  }</div>${pages > 1 ? `<nav class="pagination" aria-label="Páginas de productos">${Array.from({ length: pages }, (_, i) => `<button data-page="${i + 1}" class="${i + 1 === shopPage ? 'active' : ''}" ${i + 1 === shopPage ? 'aria-current="page"' : ''}>${i + 1}</button>`).join('')}</nav>` : ''}</div></div></section>`;
+  }</div>${pages > 1 ? `<nav class="pagination" aria-label="Páginas de productos">${Array.from({ length: pages }, (_, i) => `<button data-page="${i + 1}" class="${i + 1 === shopPage ? 'active' : ''}" ${i + 1 === shopPage ? 'aria-current="page"' : ''}>${i + 1}</button>`).join('')}</nav>` : ''}</div></div></section>${saved ? '' : renderCustomerStories()}`;
 }

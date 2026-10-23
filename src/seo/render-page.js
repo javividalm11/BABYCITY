@@ -5,6 +5,7 @@ const PAGE_TITLES = {
   '/catalogos': 'Catálogos interactivos',
   '/contacto': 'Contacto y tienda física',
   '/nosotros': 'Nosotros',
+  '/servicios': 'Servicios · Servicio de Regalo',
   '/legal/terminos': 'Términos y condiciones',
   '/legal/privacidad': 'Política de privacidad',
   '/legal/devoluciones': 'Cambios y devoluciones',
@@ -16,7 +17,7 @@ const NO_INDEX = new Set(['/admin', '/favoritos']);
 const LOADING = '<div class="loading">Preparando un mundo de pequeños descubrimientos…</div>';
 
 export const SPA_ROUTE =
-  /^\/(?:tienda|catalogos|nosotros|contacto|favoritos|admin|reclamaciones|producto\/\d+|legal\/(?:terminos|privacidad|devoluciones))?\/?$/;
+  /^\/(?:tienda|catalogos|nosotros|servicios|contacto|favoritos|admin|reclamaciones|producto\/\d+|legal\/(?:terminos|privacidad|devoluciones))?\/?$/;
 
 export const escapeHtml = (value) =>
   String(value).replace(

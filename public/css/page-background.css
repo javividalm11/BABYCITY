@@ -1,0 +1,6 @@
+/* Inicio, tienda y contacto usan el mismo crema de fondo que «Nosotros». */
+main[data-view='home'],
+main[data-view='shop'],
+main:has(> .contact-page) {
+  --brand-background: #fff9f2;
+}

@@ -10,6 +10,7 @@ import { catalogPage } from '../views/catalogs.js';
 import { detail } from '../views/product-detail.js';
 import { contact } from '../views/contact.js';
 import { about } from '../views/about.js';
+import { services } from '../views/services.js';
 import { legal } from '../views/legal.js';
 import { claims } from '../views/claims.js';
 import { leaveAdmin, renderAdmin } from '../views/admin/index.js';
@@ -53,31 +54,33 @@ export async function render() {
         : route === '/'
           ? 'home'
           : 'other';
-  document.querySelectorAll('.desktop-nav a').forEach((a) => {
+  document.querySelectorAll('.desktop-nav a, .mobile-primary-links a').forEach((a) => {
     if (a.pathname === route) a.setAttribute('aria-current', 'page');
     else a.removeAttribute('aria-current');
   });
   closeNavbarMenus();
   const title =
-    route === '/tienda'
-      ? 'Tienda'
-      : route === '/catalogos'
-        ? 'Catálogos'
-        : route === '/favoritos'
-          ? 'Mis favoritos'
-          : route === '/contacto'
-            ? 'Contacto'
-            : route === '/nosotros'
-              ? 'Nosotros'
-              : route.startsWith('/producto/')
-                ? products.find((p) => p.id === Number(route.split('/')[2]))?.name
-                : route.startsWith('/legal/')
-                  ? legalPages[route.split('/')[2]]?.title
-                  : route === '/admin'
-                    ? 'Administración'
-                    : route === '/reclamaciones'
-                      ? 'Libro de Reclamaciones'
-                      : null;
+    route === '/servicios'
+      ? 'Servicios'
+      : route === '/tienda'
+        ? 'Tienda'
+        : route === '/catalogos'
+          ? 'Catálogos'
+          : route === '/favoritos'
+            ? 'Mis favoritos'
+            : route === '/contacto'
+              ? 'Contacto'
+              : route === '/nosotros'
+                ? 'Nosotros'
+                : route.startsWith('/producto/')
+                  ? products.find((p) => p.id === Number(route.split('/')[2]))?.name
+                  : route.startsWith('/legal/')
+                    ? legalPages[route.split('/')[2]]?.title
+                    : route === '/admin'
+                      ? 'Administración'
+                      : route === '/reclamaciones'
+                        ? 'Libro de Reclamaciones'
+                        : null;
   document.title = title
     ? `${title} · BabyCity Perú`
     : 'BabyCity Perú · El mundo de tu bebé, a un clic';
@@ -87,28 +90,30 @@ export async function render() {
     return;
   }
   main.innerHTML =
-    route === '/'
-      ? home()
-      : route === '/tienda'
-        ? shop()
-        : route === '/favoritos'
-          ? shop(true)
-          : route === '/catalogos'
-            ? catalogPage()
-            : route.startsWith('/producto/')
-              ? detail(Number(route.split('/')[2]))
-              : route === '/contacto'
-                ? contact()
-                : route === '/nosotros'
-                  ? about()
-                  : route === '/reclamaciones'
-                    ? claims()
-                    : route.startsWith('/legal/') && legalPages[route.split('/')[2]]
-                      ? legal(route.split('/')[2])
-                      : empty(
-                          'Esta página no está aquí',
-                          'Encuentra lo que necesitas en nuestra tienda.',
-                        );
+    route === '/servicios'
+      ? services()
+      : route === '/'
+        ? home()
+        : route === '/tienda'
+          ? shop()
+          : route === '/favoritos'
+            ? shop(true)
+            : route === '/catalogos'
+              ? catalogPage()
+              : route.startsWith('/producto/')
+                ? detail(Number(route.split('/')[2]))
+                : route === '/contacto'
+                  ? contact()
+                  : route === '/nosotros'
+                    ? about()
+                    : route === '/reclamaciones'
+                      ? claims()
+                      : route.startsWith('/legal/') && legalPages[route.split('/')[2]]
+                        ? legal(route.split('/')[2])
+                        : empty(
+                            'Esta página no está aquí',
+                            'Encuentra lo que necesitas en nuestra tienda.',
+                          );
   if (route === '/nosotros') mountAboutVideos(main);
   if (route === '/catalogos') mountCatalogFilters(main);
   if (route === '/') {

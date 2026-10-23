@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test('six categories have no card backgrounds or arrows and swap to a zoomed photo on hover', async ({
+test('six pastel category cards retain their original photos, arrows and hover details', async ({
   page,
 }) => {
   const errors = [];
@@ -18,10 +18,10 @@ test('six categories have no card backgrounds or arrows and swap to a zoomed pho
     await card
       .locator('img')
       .evaluateAll((images) => Promise.all(images.map((image) => image.decode())));
-    expect(await card.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
+    expect(await card.evaluate((el) => getComputedStyle(el).backgroundColor)).not.toBe(
       'rgba(0, 0, 0, 0)',
     );
-    await expect(card.locator('svg:visible')).toHaveCount(0);
+    await expect(card.locator('svg:visible')).toHaveCount(2);
     expect(
       await card
         .locator('.category-picture')

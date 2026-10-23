@@ -1,0 +1,226 @@
+.shopping-benefits,
+.shopping-channels {
+  color: #143d49;
+  padding: 48px 0;
+}
+.shopping-benefits {
+  background: linear-gradient(180deg, transparent, #eff8f5 24%, #eff8f5 76%, transparent);
+}
+.shopping-section-inner {
+  width: 88%;
+  max-width: 1440px;
+  margin: auto;
+}
+.shopping-section-inner header {
+  margin-bottom: 32px;
+}
+.shopping-section-inner h2 {
+  font-family: var(--font);
+  font-size: clamp(25px, 2.65vw, 38px);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  margin: 0 0 10px;
+}
+.shopping-section-inner header p {
+  margin: 0;
+  color: #728389;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.shopping-benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 60px;
+  padding: 18px 16px 12px;
+}
+.shopping-benefit-grid article {
+  min-width: 0;
+}
+.shopping-benefit-icon {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 15px;
+  background: #fffdfa;
+  color: #f07891;
+  margin-bottom: 18px;
+}
+.shopping-benefit-icon svg {
+  width: 25px;
+  height: 25px;
+}
+.shopping-benefit-grid article:nth-child(2) .shopping-benefit-icon {
+  color: #23aaa5;
+}
+.shopping-benefit-grid article:nth-child(3) .shopping-benefit-icon {
+  color: #d8aa37;
+}
+.shopping-section-inner h3 {
+  font-family: var(--font);
+  font-size: 21px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0 0 10px;
+}
+.shopping-benefit-grid p,
+.shopping-channel > p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #718087;
+  margin: 0;
+}
+.shopping-channels {
+  padding-top: 42px;
+  padding-bottom: 38px;
+}
+.shopping-channel-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+.shopping-channel {
+  --channel-color: #f26d8e;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e9e5df;
+  border-top: 4px solid var(--channel-color);
+  border-radius: 5px 5px 15px 15px;
+  background: #fffdfb;
+  padding: 25px 23px 23px;
+  min-width: 0;
+}
+.channel-tiktok {
+  --channel-color: #22aaa6;
+}
+.channel-catalog {
+  --channel-color: #f4cb61;
+}
+.channel-falabella {
+  --channel-color: #283039;
+}
+.shopping-channel-label {
+  text-transform: uppercase;
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 1px;
+  color: #7e8488;
+  margin-bottom: 12px;
+}
+.shopping-channel h3 {
+  font-size: 22px;
+}
+.shopping-channel > p {
+  margin-bottom: 25px;
+}
+.shopping-channel > a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+  border: 1px solid #e6e7e1;
+  border-radius: 8px;
+  padding: 10px 13px;
+  min-height: 42px;
+  color: #243e48;
+  font-size: 13px;
+  font-weight: 600;
+}
+.shopping-channel > a svg {
+  width: 17px;
+  height: 17px;
+}
+.channel-whatsapp > a {
+  background: #22c86b;
+  border-color: #22c86b;
+  color: white;
+}
+.channel-tiktok > a {
+  background: #159f9d;
+  border-color: #159f9d;
+  color: white;
+}
+.shopping-channel > a:focus-visible {
+  outline: 2px solid #087d79;
+  outline-offset: 4px;
+}
+@media (hover: hover) {
+  .shopping-channel > a:hover {
+    box-shadow: 0 4px 14px #23565018;
+  }
+}
+@media (max-width: 1000px) {
+  .shopping-channel-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .shopping-benefit-grid {
+    gap: 25px;
+    padding-inline: 0;
+  }
+}
+@media (max-width: 680px) {
+  .shopping-benefits,
+  .shopping-channels {
+    padding: 32px 0;
+  }
+  .shopping-section-inner {
+    width: calc(100% - 40px);
+  }
+  .shopping-section-inner header {
+    margin-bottom: 24px;
+  }
+  .shopping-section-inner h2 {
+    font-size: 26px;
+  }
+  .shopping-section-inner header p {
+    font-size: 13px;
+  }
+  .shopping-benefit-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 0;
+  }
+  .shopping-benefit-grid article {
+    display: grid;
+    grid-template-columns: 45px minmax(0, 1fr);
+    gap: 5px 14px;
+  }
+  .shopping-benefit-icon {
+    width: 45px;
+    height: 45px;
+    grid-row: span 2;
+    margin: 0;
+    border-radius: 13px;
+  }
+  .shopping-section-inner h3 {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+  .shopping-benefit-grid p,
+  .shopping-channel > p {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .shopping-channel-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .shopping-channel {
+    padding: 20px;
+    border-radius: 5px 5px 14px 14px;
+  }
+  .shopping-channel h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+  .shopping-channel > p {
+    margin-bottom: 20px;
+  }
+  .shopping-channel > a {
+    min-height: 44px;
+  }
+}

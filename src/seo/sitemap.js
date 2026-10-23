@@ -3,6 +3,7 @@ const STATIC_PATHS = [
   '/tienda',
   '/catalogos',
   '/nosotros',
+  '/servicios',
   '/contacto',
   '/legal/terminos',
   '/legal/privacidad',

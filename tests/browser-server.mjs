@@ -16,6 +16,7 @@ const { server } = createNodeServer({
     ADMIN_USER: 'browser-test',
     ADMIN_PASSWORD: 'test-only-password-123',
     LOGIN_LIMIT: '500',
+    SITE_URL: 'http://127.0.0.1:3001',
   },
 });
 server.listen(3001, '127.0.0.1', () => console.log('Servidor de pruebas: http://127.0.0.1:3001'));

@@ -17,7 +17,7 @@
     // Escribo aquí el dominio definitivo, sin barra final.
     "SITE_URL": "",
     // Dirección del proyecto de Supabase; la clave SUPABASE_SERVICE_KEY va como secreto, nunca aquí.
-    "SUPABASE_URL": "",
+    "SUPABASE_URL": "https://arodfjzouzuiyahlgxoj.supabase.co",
     "SUPABASE_BUCKET": "babycity-files"
   }
 }

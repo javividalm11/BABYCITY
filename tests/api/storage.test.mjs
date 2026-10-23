@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { afterEach, test } from 'node:test';
 import { createStorage } from '../../src/adapters/cloudflare/storage.js';
-import { SupabaseStorage } from '../../src/adapters/cloudflare/supabase-storage.js';
+import { objectName, SupabaseStorage } from '../../src/adapters/cloudflare/supabase-storage.js';
 
 const realFetch = globalThis.fetch;
 afterEach(() => {
@@ -39,12 +39,12 @@ test('las claves antiguas en formato JWT también van como Bearer', async () => 
   assert.equal(calls[0].headers.Authorization, 'Bearer eyJhbGciOi.payload.firma');
 });
 
-test('los nombres con espacios y tildes se codifican en la dirección', async () => {
+test('los nombres con tildes, ñ y espacios se guardan en ASCII', async () => {
   const calls = mockFetch(
     () => new Response('pdf', { headers: { 'content-type': 'application/pdf' } }),
   );
   await storage().get('catalogo/CATÁLOGO COCHES 2026.pdf');
-  assert.match(calls[0].url, /catalogo\/CAT%C3%81LOGO%20COCHES%202026\.pdf$/);
+  assert.match(calls[0].url, /catalogo\/CATALOGO-COCHES-2026\.pdf$/);
 });
 
 test('leer devuelve el contenido y su tipo; un archivo ausente devuelve null', async () => {
@@ -80,5 +80,17 @@ test('elijo el almacén según los recursos disponibles', async () => {
   await assert.rejects(
     () => none.put('uploads/x.png', new Uint8Array([1]), 'image/png'),
     /no está configurado/,
+  );
+});
+
+test('los 12 catálogos reales tienen nombres distintos y válidos tras la conversión', async () => {
+  const { readdirSync } = await import('node:fs');
+  const names = readdirSync('catalogo').filter((n) => n.endsWith('.pdf'));
+  const converted = names.map(objectName);
+  assert.equal(new Set(converted).size, names.length);
+  assert.ok(converted.every((n) => /^[A-Za-z0-9._-]+\.pdf$/.test(n)));
+  assert.equal(
+    objectName('CATÁLOGO  BAÑERAS  BABY CITY 2026.pdf'),
+    'CATALOGO-BANERAS-BABY-CITY-2026.pdf',
   );
 });

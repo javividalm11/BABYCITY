@@ -1,3 +1,13 @@
+// Supabase rechaza nombres con tildes o «ñ»; guardo y busco cada archivo con su equivalente en ASCII.
+export function objectName(name) {
+  return name
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^A-Za-z0-9._-]+/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
+}
+
 // Guardo y leo archivos en un bucket privado de Supabase Storage con claves "uploads/..." y "catalogo/...".
 export class SupabaseStorage {
   constructor({ url, key, bucket }) {
@@ -14,7 +24,7 @@ export class SupabaseStorage {
   }
 
   #url(key) {
-    return `${this.base}/${this.bucket}/${key.split('/').map(encodeURIComponent).join('/')}`;
+    return `${this.base}/${this.bucket}/${key.split('/').map(objectName).join('/')}`;
   }
 
   async put(key, bytes, contentType) {

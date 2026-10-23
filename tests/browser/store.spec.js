@@ -28,12 +28,16 @@ test('shopping, favorites, persistent cart and quote checkout', async ({ page })
 test('catalog page flip, source product and mobile layout', async ({ page }) => {
   await page.goto('/catalogos');
   await expect(page.locator('.catalog-card')).toHaveCount(12);
-  await page.getByRole('button', { name: 'Hojear' }).first().click();
+  await page
+    .locator('.catalog-card')
+    .first()
+    .getByRole('button', { name: /Ver catálogo/ })
+    .click();
   await expect(page.locator('#bookDialog')).toBeVisible();
   await expect(
     page.locator('.reader-sheet[aria-hidden=false] .reader-page-image').first(),
   ).toHaveAttribute('alt', /página 1/);
-  await page.getByRole('button', { name: 'Página siguiente' }).click();
+  await page.keyboard.press('ArrowRight');
   await expect(
     page.locator('.reader-sheet[aria-hidden=false] .reader-page-image').first(),
   ).toHaveAttribute('alt', /página 3/);

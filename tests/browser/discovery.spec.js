@@ -21,7 +21,7 @@ test('six categories have no card backgrounds or arrows and swap to a zoomed pho
     expect(await card.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe(
       'rgba(0, 0, 0, 0)',
     );
-    await expect(card.locator('svg')).toHaveCount(0);
+    await expect(card.locator('svg:visible')).toHaveCount(0);
     expect(
       await card
         .locator('.category-picture')
@@ -85,4 +85,26 @@ test('categories retain keyboard access and fit mobile with reduced motion', asy
     .locator('.discovery img')
     .evaluateAll((images) => Promise.all(images.map((image) => image.decode())));
   await page.locator('.discovery').screenshot({ path: 'test-results/discovery-mobile.png' });
+  const originalImages = await page
+    .locator('.category-image-main')
+    .evaluateAll((images) => images.map((img) => img.getAttribute('src')));
+  for (const width of [320, 390, 430, 680]) {
+    await page.setViewportSize({ width, height: 844 });
+    await expect(page.locator('.category-card')).toHaveCount(6);
+    await expect(page.locator('.category-mobile-arrow:visible')).toHaveCount(6);
+    const columns = await page
+      .locator('.category-grid')
+      .evaluate((el) => getComputedStyle(el).gridTemplateColumns.split(' ').length);
+    expect(columns).toBe(2);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    expect(
+      await page
+        .locator('.category-image-main')
+        .evaluateAll((images) => images.map((img) => img.getAttribute('src'))),
+    ).toEqual(originalImages);
+  }
+  await page.getByRole('link', { name: 'Explorar todas las categorías', exact: true }).click();
+  await expect(page).toHaveURL(/\/tienda$/);
 });

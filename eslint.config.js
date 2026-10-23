@@ -7,6 +7,7 @@ export default [
       'node_modules/**',
       'public/vendor/**',
       'archive/**',
+      'output/**',
       'test-results/**',
       '.wrangler/**',
     ],

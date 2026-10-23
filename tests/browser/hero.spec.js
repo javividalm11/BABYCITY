@@ -99,3 +99,26 @@ test('hero adapts to mobile and respects reduced motion', async ({ page }) => {
   await page.getByRole('button', { name: 'Buscar productos', exact: true }).click();
   await expect(page.locator('#searchDialog')).toBeVisible();
 });
+
+test('mobile cover keeps its content readable without slideshow controls', async ({ page }) => {
+  for (const width of [320, 360, 390, 430, 680]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/?efectos=0');
+    await expect(page.locator('.hero-pause')).not.toBeVisible();
+    await expect(page.locator('.hero-showcase')).toHaveCount(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
+      true,
+    );
+    const hero = await page.locator('.hero-showcase').boundingBox();
+    const cta = await page.locator('.hero-actions .btn').boundingBox();
+    const product = await page.locator('.hero-product-stage').boundingBox();
+    expect(cta.x).toBeGreaterThanOrEqual(16);
+    expect(cta.y + cta.height).toBeLessThan(hero.y + hero.height * 0.65);
+    expect(product.y + product.height).toBeLessThanOrEqual(hero.y + hero.height);
+    expect(hero.height).toBeLessThanOrEqual(650);
+    await expect(page.getByRole('link', { name: 'Ver todas las categorías' })).toHaveAttribute(
+      'href',
+      '/tienda',
+    );
+  }
+});

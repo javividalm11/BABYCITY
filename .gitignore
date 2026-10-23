@@ -15,3 +15,4 @@ Cotizacion_*
 .dev.vars
 .wrangler/
 data/uploads/
+output/

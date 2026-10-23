@@ -1,0 +1,419 @@
+.collections-page {
+  background: radial-gradient(ellipse at 74% 0%, #ffe0e1, transparent 54%), #fff8f3;
+  color: #124b55;
+  padding-bottom: 44px;
+}
+.collections-hero,
+.collections-list {
+  width: min(1380px, 90%);
+  margin-inline: auto;
+}
+.collections-hero {
+  position: relative;
+  padding-top: 42px;
+  isolation: isolate;
+}
+.collections-heading {
+  position: relative;
+  z-index: 1;
+  width: 48%;
+}
+.collections-eyebrow {
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+.collections-heading h1 {
+  font-family: var(--font);
+  font-size: clamp(32px, 3.5vw, 54px);
+  font-weight: 700;
+  line-height: 1.03;
+  letter-spacing: -1.5px;
+  margin: 12px 0;
+  color: #084552;
+}
+.collections-heading h1 em {
+  font-style: normal;
+  color: #ff6185;
+}
+.collections-heading p {
+  color: #687782;
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 0;
+}
+.collections-art {
+  position: absolute;
+  right: 5%;
+  top: 8px;
+  width: 49%;
+  height: 260px;
+  object-fit: contain;
+  z-index: -1;
+}
+.collections-heart {
+  position: absolute;
+  top: 35px;
+  left: 47%;
+  color: #ff7191;
+  font-size: 54px;
+  transform: rotate(-17deg);
+  line-height: 1;
+}
+.collections-note {
+  position: absolute;
+  top: 48px;
+  right: -1%;
+  width: 130px;
+  padding: 19px 10px;
+  text-align: center;
+  background: url('/assets/catalogs/message-cloud.svg') center / 100% 100% no-repeat;
+  transform: rotate(-9deg);
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.3;
+  color: #087d82;
+}
+.collections-note b {
+  display: block;
+  color: #ff7191;
+  font-size: 20px;
+}
+.collections-toolbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 25px 0 16px;
+}
+.collections-search {
+  display: flex;
+  align-items: center;
+  width: 34%;
+  min-width: 250px;
+  height: 42px;
+  border-radius: 15px;
+  padding: 4px 5px 4px 15px;
+  background: #fffdfa;
+  box-shadow: 0 4px 15px #ad716514;
+  gap: 10px;
+}
+.collections-search > svg {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+.collections-search input[type='search'] {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  width: 100%;
+  min-width: 0;
+  font-size: 12px;
+  box-shadow: none;
+  color: #124b55;
+}
+.collections-search input:focus {
+  outline: none;
+}
+.collections-search:focus-within {
+  outline: 2px solid #0b8888;
+  outline-offset: 3px;
+}
+.collections-search > span {
+  display: grid;
+  place-items: center;
+  background: #ff6587;
+  color: white;
+  height: 33px;
+  width: 36px;
+  flex-shrink: 0;
+  border-radius: 10px;
+}
+.collections-search span svg {
+  width: 17px;
+  height: 17px;
+}
+.collections-filters {
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.collections-filters button,
+.collections-more select {
+  border: 0;
+  background: #fffaf6;
+  border-radius: 30px;
+  color: #526774;
+  padding: 10px 16px;
+  font: inherit;
+  font-size: 11px;
+  box-shadow: 0 3px 12px #ad716510;
+  cursor: pointer;
+}
+.collections-filters button[aria-pressed='true'] {
+  background: #ff6587;
+  color: white;
+  box-shadow: 0 4px 10px #ff65872b;
+}
+.collections-more select {
+  max-width: 160px;
+}
+.collections-page .catalogs-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  max-width: none;
+}
+.collections-page .catalog-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.06fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 18px;
+  background: #fffdf9;
+  border: 1px solid #fff8;
+  border-radius: 17px;
+  padding: 15px;
+  box-shadow: 0 9px 25px #926e6510;
+  text-align: left;
+}
+.collections-page .catalog-card[hidden] {
+  display: none;
+}
+.collections-page .catalog-cover {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  padding: 0;
+  border-radius: 9px;
+  overflow: hidden;
+}
+.collections-page .catalog-cover img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 210/297;
+  object-fit: cover;
+  border-radius: 9px;
+  transform: none;
+  box-shadow: 0 5px 10px #9b7b6c26;
+  filter: none;
+}
+.collections-page .catalog-cover:hover img {
+  transform: scale(1.025);
+}
+.collection-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 2px 0;
+}
+.collections-page .catalog-number {
+  font: inherit;
+  font-size: 9px;
+  text-transform: uppercase;
+  background: #fff0bd;
+  color: #685e3e;
+  padding: 3px 9px;
+  margin: 0 0 8px;
+}
+.collection-info h2 {
+  font-family: var(--font);
+  font-size: 19px;
+  line-height: 1.1;
+  letter-spacing: -0.4px;
+  margin: 0 0 7px;
+  font-weight: 700;
+  color: #084552;
+}
+.collections-page .collection-edition {
+  font-size: 10px;
+  margin: 0 0 9px;
+  color: #607c88;
+  line-height: 1.4;
+}
+.collections-page .collection-description {
+  color: #3b6774;
+  font-size: 11px;
+  line-height: 1.45;
+  margin: 0 0 18px;
+}
+.collections-page .catalog-links {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 9px;
+  margin-top: auto;
+  width: 100%;
+}
+.collections-page .catalog-links > button,
+.collections-page .catalog-links > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 5px;
+  border-radius: 10px;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.25;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.collections-page .collection-read {
+  border: 1px solid #ff6587;
+  background: linear-gradient(110deg, #ff7396, #ff5f83);
+  color: white;
+}
+.collections-page .catalog-links > a {
+  color: #19556a;
+  border: 1px solid #6499a3;
+  background: transparent;
+}
+.collections-page .catalog-links svg {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+}
+.collections-page .catalog-links button svg:last-child {
+  width: 14px;
+}
+.collections-page .catalog-card:focus-within {
+  outline: 2px solid #108c8c;
+}
+.collections-empty {
+  text-align: center;
+  padding: 40px 10px;
+}
+@media (min-width: 1600px) {
+  .collections-art {
+    height: 310px;
+  }
+  .collections-heading {
+    padding-bottom: 15px;
+  }
+  .collections-page .catalog-card {
+    padding: 18px;
+    gap: 22px;
+  }
+  .collection-info h2 {
+    font-size: 23px;
+  }
+  .collections-page .collection-description {
+    font-size: 12px;
+  }
+}
+@media (max-width: 1150px) {
+  .collections-page .catalogs-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .collections-art {
+    right: 3%;
+    height: 250px;
+  }
+  .collections-note {
+    font-size: 11px;
+    width: 105px;
+    right: -3%;
+  }
+  .collections-toolbar {
+    gap: 18px;
+  }
+  .collections-filters button,
+  .collections-more select {
+    padding: 9px 12px;
+  }
+}
+@media (max-width: 700px) {
+  .collections-hero,
+  .collections-list {
+    width: 92%;
+  }
+  .collections-hero {
+    padding-top: 28px;
+  }
+  .collections-heading {
+    width: 100%;
+  }
+  .collections-heading h1 {
+    font-size: 39px;
+    max-width: 350px;
+  }
+  .collections-heading p {
+    font-size: 13px;
+  }
+  .collections-art {
+    position: relative;
+    width: 85%;
+    height: 200px;
+    display: block;
+    margin: -5px auto -10px;
+    right: auto;
+    top: auto;
+  }
+  .collections-note {
+    top: 218px;
+    right: 0;
+    width: 105px;
+    font-size: 10px;
+    padding: 16px 7px;
+  }
+  .collections-heart {
+    top: 208px;
+    left: 4%;
+    font-size: 42px;
+  }
+  .collections-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    padding-top: 10px;
+  }
+  .collections-search {
+    width: 100%;
+    min-width: 0;
+  }
+  .collections-search input[type='search'] {
+    font-size: 16px;
+  }
+  .collections-filters {
+    gap: 6px;
+  }
+  .collections-filters button,
+  .collections-more select {
+    font-size: 10px;
+    padding: 9px 11px;
+  }
+  .collections-page .catalogs-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .collections-page .catalog-card {
+    padding: 14px;
+    gap: 18px;
+  }
+  .collection-info h2 {
+    font-size: 23px;
+  }
+  .collections-page .collection-description {
+    font-size: 12px;
+  }
+  .collections-page .catalog-links > button,
+  .collections-page .catalog-links > a {
+    font-size: 12px;
+    min-height: 40px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .collections-page .catalog-cover img {
+    transition: none;
+  }
+  .collections-page .catalog-cover:hover img {
+    transform: none;
+  }
+}

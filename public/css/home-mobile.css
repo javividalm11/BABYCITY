@@ -1,0 +1,261 @@
+.category-mobile-icon,
+.category-mobile-arrow,
+.discovery-mobile-cta {
+  display: none;
+}
+/* Proporciones de la portada móvil; el escritorio conserva su composición. */
+@media (max-width: 680px) {
+  .hero.hero-showcase {
+    height: clamp(470px, 142vw, 650px);
+    min-height: 0;
+  }
+  .hero.hero-showcase > .container {
+    width: calc(100% - 40px);
+    padding-top: 24px;
+  }
+  .hero.hero-showcase h1 {
+    font-size: clamp(40px, 12.5vw, 54px);
+    line-height: 0.94;
+    margin-bottom: 10px;
+  }
+  .hero.hero-showcase h1 em {
+    line-height: 1;
+    margin: 2px 0 8px;
+  }
+  .hero.hero-showcase .hero-copy > p {
+    font-family: var(--body);
+    font-size: clamp(14px, 3.9vw, 17px);
+    font-weight: 400;
+    line-height: 1.28;
+    letter-spacing: 0;
+  }
+  .hero-showcase .hero-actions {
+    margin-top: 14px;
+  }
+  .hero-showcase .hero-actions .btn {
+    min-height: 42px;
+    padding: 10px 21px;
+    font-size: 12px;
+    border-radius: 24px;
+    gap: 20px;
+  }
+  .hero-showcase .hero-actions .btn svg {
+    width: 20px;
+    height: 20px;
+  }
+  .hero-room {
+    top: 27%;
+  }
+  .hero-room img {
+    object-position: 60% bottom;
+  }
+  .hero.hero-showcase::after {
+    background: linear-gradient(
+      180deg,
+      var(--brand-background) 0% 30%,
+      #f2a4a8e6 38%,
+      #f2a4a800 56%
+    );
+  }
+  .hero-product-stage {
+    top: 46%;
+    bottom: 17px;
+    left: 9%;
+    width: 82%;
+  }
+  .hero-pause {
+    display: none;
+  }
+  .discovery {
+    margin-top: -26px;
+    padding: 61px 0 44px;
+    mask-image: url('/assets/catalogs/mobile-section-edge.svg'), linear-gradient(#000, #000);
+    mask-size:
+      100% 32px,
+      100% calc(100% - 31px);
+    mask-position:
+      center top,
+      center bottom;
+    mask-repeat: no-repeat;
+    background-image:
+      var(--paper-cloud-top), url('/assets/catalogs/clouds-join-upper.svg'),
+      radial-gradient(ellipse at center, #ffe5e9, #ffd4da 70%);
+    background-size:
+      100% 65px,
+      100% 65px,
+      100% 100%;
+    background-position:
+      center top,
+      center bottom,
+      center;
+  }
+  .discovery > .container {
+    width: calc(100% - 40px);
+  }
+  .discovery .section-heading {
+    position: relative;
+    display: block;
+    padding: 0;
+    margin-bottom: 24px;
+  }
+  .discovery .eyebrow {
+    display: block;
+    font-size: 7px;
+    letter-spacing: 0.16em;
+  }
+  .discovery h2 {
+    font-size: clamp(30px, 8.9vw, 52px);
+    line-height: 0.96;
+    margin: 10px 0;
+    max-width: none;
+    padding-top: 9px;
+    font-weight: 600;
+  }
+  .discovery .section-heading p {
+    font-size: clamp(11px, 3vw, 13px);
+    line-height: 1.35;
+  }
+  .discovery .section-heading > .text-link {
+    position: absolute;
+    top: 16px;
+    right: 0;
+    margin: 0;
+    font-size: clamp(8px, 2.3vw, 11px);
+    font-weight: 400;
+    padding-bottom: 3px;
+    gap: 4px;
+  }
+  .discovery .section-heading > .text-link svg {
+    width: 12px;
+    height: 12px;
+    margin-left: 0;
+  }
+  .discovery .category-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .discovery .category-card {
+    --category-tint: #ffd8e8;
+    --category-accent: #d74082;
+    position: relative;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    aspect-ratio: 0.92;
+    padding: 10px 10px 12px;
+    border-radius: clamp(18px, 4vw, 28px);
+    background: #fffdf9;
+    border: 1px solid #ffffffa6;
+    box-shadow: 0 8px 18px #c7708610;
+    overflow: hidden;
+  }
+  .discovery .category-card:nth-child(2) {
+    --category-tint: #c8effb;
+    --category-accent: #178da8;
+  }
+  .discovery .category-card:nth-child(3) {
+    --category-tint: #d6f0e5;
+    --category-accent: #129b83;
+  }
+  .discovery .category-card:nth-child(4) {
+    --category-tint: #ffdbd0;
+    --category-accent: #c54c29;
+  }
+  .discovery .category-card:nth-child(5) {
+    --category-tint: #eee0fc;
+    --category-accent: #8857b2;
+  }
+  .discovery .category-card:nth-child(6) {
+    --category-tint: #fff0bd;
+    --category-accent: #c88b16;
+  }
+  .discovery .category-card .category-picture {
+    height: auto;
+    min-height: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .discovery .category-picture::before {
+    content: '';
+    position: absolute;
+    inset: 20% 3% 2%;
+    background: var(--category-tint);
+    opacity: 0.55;
+    border-radius: 52% 38% 45% 30%;
+    transform: rotate(-12deg);
+    z-index: -1;
+  }
+  .discovery .category-picture img {
+    padding: 0;
+    object-position: center;
+  }
+  .discovery .category-mobile-icon {
+    position: absolute;
+    z-index: 2;
+    left: 10px;
+    top: 10px;
+    display: grid;
+    place-items: center;
+    width: clamp(32px, 9vw, 50px);
+    height: clamp(32px, 9vw, 50px);
+    border-radius: 50%;
+    background: var(--category-tint);
+    color: var(--category-accent);
+  }
+  .category-mobile-icon svg {
+    width: 50%;
+    height: 50%;
+  }
+  .discovery .category-copy {
+    display: flex;
+    align-items: center;
+    padding: 5px 32px 0 0;
+    min-height: 35px;
+  }
+  .discovery .category-card h3 {
+    font-family: var(--font);
+    font-size: clamp(13px, 3.5vw, 22px);
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    margin: 0;
+    color: #123547;
+  }
+  .discovery .category-card small {
+    display: none;
+  }
+  .discovery .category-mobile-arrow {
+    position: absolute;
+    bottom: 12px;
+    right: 10px;
+    display: grid;
+    place-items: center;
+    width: clamp(28px, 7.5vw, 42px);
+    height: clamp(28px, 7.5vw, 42px);
+    border-radius: 50%;
+    background: var(--category-tint);
+    color: #123547;
+  }
+  .category-mobile-arrow svg {
+    width: 60%;
+    height: 60%;
+  }
+  .discovery .discovery-mobile-cta {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    width: 78%;
+    margin: 18px auto 0;
+    min-height: 46px;
+    padding: 10px 12px;
+    border-radius: 40px;
+    background: #087b78;
+    font-size: clamp(11px, 3vw, 16px);
+    font-weight: 500;
+    color: white;
+  }
+  .discovery-mobile-cta svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+}

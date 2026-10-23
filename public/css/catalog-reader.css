@@ -1,17 +1,18 @@
-/* Doy estilo al visor de páginas con efecto de papel. */
+/* Catalog workspace: original pages and existing paper engine. */
 .book-dialog {
-  width: calc(100vw - 80px);
-  max-width: 1600px;
-  height: calc(100dvh - 36px);
-  max-height: calc(100dvh - 36px);
-  padding: 30px 38px 22px;
+  width: calc(100vw - 32px);
+  max-width: 1800px;
+  height: calc(100dvh - 28px);
+  max-height: calc(100dvh - 28px);
+  padding: 0;
   overflow: hidden;
-  background: #e9e9df;
-  border-radius: 18px;
+  background: #f6f5ed;
+  border-radius: 20px;
+  color: #234e58;
 }
 .book-dialog::backdrop {
-  background: #183b35a8;
-  backdrop-filter: blur(7px);
+  background: #173e38a8;
+  backdrop-filter: blur(8px);
 }
 #bookContent {
   height: 100%;
@@ -19,29 +20,232 @@
   flex-direction: column;
   min-height: 0;
 }
-.book-head {
+.book-dialog .book-head {
   flex: none;
-  padding-bottom: 15px;
-  min-height: 63px;
+  min-height: 80px;
+  padding: 12px 18px;
   gap: 20px;
+  border-bottom: 1px solid #e7e7df;
+  background: #fbfaf4;
 }
-.book-head h2 {
-  font-size: 25px;
-  margin: 4px 0 0;
+.reader-logo {
+  width: 135px;
+  height: 50px;
+  object-fit: contain;
+  padding-right: 18px;
+  border-right: 1px solid #b8cbc8;
 }
-.book-head .eyebrow {
+.reader-heading {
+  margin-right: auto;
+  min-width: 100px;
+}
+.book-dialog .book-head h2 {
+  font-size: 23px;
+  margin: 0 0 2px;
+  color: #173f49;
+}
+.reader-heading p {
+  font-size: 12px;
+  color: #71848a;
+  margin: 0;
+  white-space: nowrap;
+}
+.book-dialog .book-actions {
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+.book-dialog .book-actions button,
+.book-dialog .book-actions a,
+.book-dialog .book-actions select {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  min-height: 36px;
+  padding: 6px 10px;
+  background: #fffefa;
+  border: 1px solid #dedfd9;
+  border-radius: 7px;
+  font-size: 12px;
+  color: #285661;
+}
+.book-actions svg {
+  width: 18px;
+  height: 18px;
+}
+.book-dialog .book-actions select {
+  width: 78px;
+  flex: none;
+}
+.book-dialog .reader-download {
+  flex: none;
+  white-space: nowrap;
+}
+.book-dialog .book-actions [data-close] {
+  font-size: 24px;
+  font-weight: 300;
+}
+.reader-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e0e3df;
+  border-radius: 7px;
+  padding: 0 10px;
+  background: #fff;
+  height: 36px;
+  width: 190px;
+  margin: 0;
+  flex-shrink: 0;
+}
+.reader-search svg {
+  width: 16px;
+  flex-shrink: 0;
+}
+.book-dialog .reader-search input[type='search'] {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 100%;
+  min-width: 0;
+  font-size: 11px;
+  box-shadow: none;
+}
+.reader-search:focus-within {
+  outline: 2px solid #2d8583;
+}
+.reader-search input:focus {
+  outline: none;
+}
+.reader-modes {
+  display: flex;
+  gap: 3px;
+  border: 1px solid #dfe3da;
+  border-radius: 7px;
+  padding: 3px;
+}
+.book-dialog .reader-modes button {
+  min-height: 28px;
+  height: 28px;
+  border: 0;
+  padding: 4px 8px;
+}
+.book-dialog .reader-modes [aria-pressed='true'] {
+  background: #27817f;
+  color: white;
+}
+.reader-modes [data-reader-action='single'] svg {
+  clip-path: inset(0 45% 0 0);
+  width: 22px;
+  margin-right: -9px;
+}
+.reader-layout {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}
+.reader-sidebar {
+  width: 202px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #fbfaf5;
+  border-right: 1px solid #e5e6df;
+}
+.reader-tabs {
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+  padding: 0 14px;
+}
+.reader-tabs button {
+  border: 0;
+  background: transparent;
+  padding: 12px 2px;
+  color: #75858a;
+  border-bottom: 2px solid transparent;
+  font-size: 12px;
+}
+.reader-tabs [aria-selected='true'] {
+  color: #23847e;
+  border-bottom-color: #23847e;
+  font-weight: 600;
+}
+#readerThumbnails {
+  overflow: auto;
+  flex: 1;
+  padding: 12px 14px;
+  min-height: 0;
+  scrollbar-width: thin;
+  scrollbar-color: #bec6c0 transparent;
+}
+.reader-thumbnail {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  padding: 2px;
+  margin-bottom: 12px;
+  color: #52717b;
+}
+.reader-thumbnail[hidden] {
+  display: none;
+}
+.reader-thumbnail img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 210/297;
+  object-fit: contain;
+  border-radius: 3px;
+}
+.reader-thumbnail img:only-of-type {
+  grid-column: 1 / -1;
+  max-height: 150px;
+}
+.reader-thumbnail span {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  padding-top: 4px;
+}
+.reader-thumbnail[aria-current='page'] {
+  border-color: #298c86;
+  background: #eaf4ee;
+}
+.reader-bookmark {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  border-top: 1px solid #e2e5de;
+  background: #f7f7ef;
+  color: #287a76;
+  padding: 12px 5px;
   font-size: 11px;
 }
-.book-actions {
-  gap: 10px;
+.reader-bookmark svg {
+  width: 18px;
+  height: 18px;
 }
-.book-actions button,
-.book-actions a {
-  padding: 10px 15px;
-  font-size: 13px;
-  min-height: 43px;
-  background: #fffefa;
-  border-color: #cbd2c0;
+.reader-bookmark[aria-pressed='true'] svg {
+  fill: #ffcbd6;
+  stroke: #f36e8c;
+}
+.reader-no-pages {
+  font-size: 12px;
+  padding: 10px 0;
+}
+.reader-workspace {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: radial-gradient(ellipse at center, #fffffb, #efeee5);
 }
 .reader-stage {
   flex: 1;
@@ -125,7 +329,7 @@
   overflow: auto;
   display: block;
   overscroll-behavior: contain;
-  touch-action: pan-x pan-y;
+  touch-action: none;
   padding: 15px;
 }
 .reader-zoomed .reader-book {
@@ -134,138 +338,290 @@
 .reader-zoomed .reader-floor {
   display: none;
 }
-.book-controls {
+.reader-stage.reader-zoomed .stf__item {
+  cursor: grab;
+}
+.reader-stage.reader-zoomed.is-panning .stf__item {
+  cursor: grabbing;
+}
+
+.book-dialog .book-controls {
   flex: none;
-  margin: 14px 0 0;
-  gap: 22px;
-  min-height: 45px;
-}
-.book-controls button {
-  width: 43px;
-  height: 43px;
-  font-size: 21px;
-  flex: none;
-}
-.book-controls button.reader-edge {
-  width: 31px;
-  height: 31px;
-  font-size: 17px;
-  background: transparent;
-  border-color: transparent;
-  color: #5c756d;
-}
-.book-controls label {
   display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 12px;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 18px;
+  min-height: 58px;
+  margin: 0 10px 8px;
+  padding: 10px 20px;
+  border-radius: 18px;
+  background: #fffdf8e8;
+}
+.book-controls .fine {
+  font-size: 11px;
+  color: #5b7b82;
   white-space: nowrap;
 }
-.book-controls input {
-  width: 165px;
+.reader-progress {
+  flex: 1;
+  max-width: 350px;
+  display: flex;
 }
-.book-hint {
-  flex: none;
-  margin: 12px 0 0;
+.book-controls .reader-progress input {
+  width: 100%;
+  min-width: 40px;
+  accent-color: #2e8985;
+}
+#readerGoForm {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-size: 11px;
+  color: #617e86;
+  white-space: nowrap;
 }
-.book-dialog:fullscreen {
+.book-dialog #readerPageInput {
+  width: 44px;
+  height: 34px;
+  padding: 5px;
+  text-align: center;
+  font-size: 12px;
+  background: white;
+  border: 1px solid #e0e5df;
+  border-radius: 6px;
+  -moz-appearance: textfield;
+}
+#readerPageInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.book-controls #readerGoForm button {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 7px;
+  background: #2b8581;
+  color: white;
+}
+.reader-keyboard {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  border-left: 1px solid #dbe1d9;
+  padding-left: 20px;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #71898b;
+}
+.reader-access-controls {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.reader-access-controls:focus-within {
+  position: static;
+  width: auto;
+  height: auto;
+  clip-path: none;
+  display: flex;
+  gap: 4px;
+}
+.book-dialog .reader-access-controls button {
+  width: 30px;
+  height: 30px;
+}
+.reader-gesture {
+  position: absolute;
+  z-index: 8;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+  transition:
+    opacity 0.3s,
+    visibility 0.3s;
+}
+.reader-gesture > svg {
+  width: 54px;
+  height: 54px;
+  fill: #fffcf4;
+  stroke: #1d7f7b;
+  stroke-width: 2.5;
+  filter: drop-shadow(0 3px 6px #123c3933);
+  animation: reader-swipe 2.2s ease-in-out 3;
+}
+.reader-gesture span {
+  background: #fffef7ed;
+  border: 1px solid #d6e9e1;
+  box-shadow: 0 3px 15px #244e3c1a;
+  border-radius: 30px;
+  padding: 8px 15px;
+  font-size: 12px;
+  color: #206a69;
+  white-space: nowrap;
+}
+.reader-gesture.is-dismissed,
+.reader-stage[aria-busy='true'] .reader-gesture {
+  opacity: 0;
+  visibility: hidden;
+}
+@keyframes reader-swipe {
+  0%,
+  100% {
+    transform: translateX(22px) rotate(10deg);
+    opacity: 0.45;
+  }
+  25% {
+    opacity: 1;
+  }
+  65% {
+    transform: translateX(-32px) rotate(-12deg);
+    opacity: 1;
+  }
+  85% {
+    opacity: 0.3;
+  }
+}
+.book-dialog:fullscreen,
+.book-dialog.is-fullscreen {
   width: 100vw;
   max-width: none;
   height: 100dvh;
   max-height: none;
   border-radius: 0;
+  margin: 0;
+  inset: 0;
 }
-@media (max-width: 800px) {
-  .book-dialog {
-    width: calc(100vw - 30px);
-    height: calc(100dvh - 28px);
-    max-height: calc(100dvh - 28px);
-    padding: 20px;
+@media (max-width: 1200px) {
+  .reader-logo {
+    width: 115px;
+    padding-right: 12px;
   }
-  .book-head h2 {
-    font-size: 21px;
+  .book-dialog .book-head {
+    gap: 14px;
+    padding-inline: 14px;
   }
-  .book-actions {
+  .reader-sidebar {
+    width: 180px;
+  }
+  .reader-search {
+    width: 150px;
+  }
+  .book-dialog .book-actions {
     gap: 6px;
   }
-  .book-actions button,
-  .book-actions a {
-    font-size: 11px;
-    padding: 8px 10px;
+  .book-dialog .book-head h2 {
+    font-size: 20px;
   }
-  .book-controls {
-    gap: 13px;
-  }
-  .book-controls input {
-    width: 115px;
+  .reader-keyboard {
+    display: none;
   }
 }
-@media (max-width: 560px) {
+@media (max-width: 1000px) {
+  .reader-logo {
+    display: none;
+  }
+  .reader-search {
+    width: 130px;
+  }
+  .reader-sidebar {
+    width: 158px;
+  }
+  .reader-tabs {
+    gap: 9px;
+    padding-inline: 8px;
+  }
+  .reader-tabs button {
+    font-size: 11px;
+  }
+  .reader-heading p {
+    font-size: 10px;
+  }
+  .reader-download span {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
   .book-dialog {
     width: calc(100vw - 12px);
     height: calc(100dvh - 12px);
     max-height: calc(100dvh - 12px);
-    padding: 15px 10px;
-    border-radius: 12px;
+    border-radius: 13px;
   }
-  .book-head {
-    min-height: 70px;
-    gap: 8px;
-    padding: 0 4px 12px;
-    align-items: start;
+  .reader-sidebar {
+    display: none;
   }
-  .book-head h2 {
-    font-size: 18px;
-    max-width: 145px;
-  }
-  .book-head .eyebrow {
-    font-size: 9px;
-  }
-  .book-actions {
-    gap: 4px;
-    max-width: 190px;
-  }
-  .book-actions button,
-  .book-actions a {
-    min-height: 33px;
-    padding: 6px 9px;
-    font-size: 10px;
-  }
-  .reader-stage {
-    padding: 10px 0 20px;
-  }
-  .book-controls {
-    gap: 9px;
-    margin-top: 8px;
+  .book-dialog .book-head {
     flex-wrap: wrap;
+    gap: 9px;
+    padding: 10px;
   }
-  .book-controls button {
-    width: 36px;
-    height: 36px;
+  .reader-heading {
+    width: calc(100% - 45px);
   }
-  .book-controls button.reader-edge {
-    width: 24px;
-    height: 30px;
+  .book-dialog .book-head h2 {
+    font-size: 20px;
   }
-  .book-controls label {
-    font-size: 10px;
+  .book-dialog .book-actions {
+    width: 100%;
+    max-width: none;
+    flex-wrap: nowrap;
     gap: 5px;
   }
-  .book-controls input {
-    width: 85px;
+  .book-dialog .book-actions [data-close] {
+    position: absolute;
+    right: 10px;
+    top: 12px;
   }
-  .book-controls .fine {
-    font-size: 10px;
-    min-width: 47px;
-    text-align: center;
+  .reader-search {
+    flex: 1;
+    min-width: 50px;
+    width: auto;
   }
-  .book-hint {
-    font-size: 10px;
-    margin-top: 9px;
-    padding: 0 10px;
+  .book-dialog .reader-search input[type='search'] {
+    font-size: 16px;
   }
-  .reader-stage.reader-zoomed {
-    padding: 10px;
+  .reader-modes {
+    display: none;
+  }
+  .book-dialog .book-actions button,
+  .book-dialog .book-actions a,
+  .book-dialog .book-actions select {
+    padding: 5px 8px;
+    min-height: 34px;
+    height: 34px;
+    font-size: 11px;
+  }
+  .reader-stage {
+    padding: 8px 0 14px;
+  }
+  .book-dialog .book-controls {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 9px 10px;
+    gap: 8px 14px;
+    margin-inline: 5px;
+  }
+  .reader-progress {
+    max-width: none;
+  }
+  #readerGoForm {
+    justify-content: center;
+  }
+  .reader-gesture span {
+    font-size: 11px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reader-gesture > svg {
+    animation: none;
+  }
+  .reader-gesture {
+    transition: none;
   }
 }

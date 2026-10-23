@@ -20,6 +20,8 @@ import {
 import { mountLivingEffects, destroyLivingEffects } from '../effects/living-effects.js';
 import { openBook } from './catalog-viewer.js';
 import { closeNavbarMenus } from './navbar.js';
+import { mountAboutVideos, destroyAboutVideos } from './about-videos.js';
+import { mountCatalogFilters } from './catalog-filters.js';
 
 export async function navigate(url, { replace = false, scroll = true } = {}) {
   closeDialogs();
@@ -38,6 +40,7 @@ export async function navigate(url, { replace = false, scroll = true } = {}) {
   $('#main').focus({ preventScroll: true });
 }
 export async function render() {
+  destroyAboutVideos();
   destroyLivingEffects();
   destroyProductShowcase();
   const route = location.pathname;
@@ -106,6 +109,8 @@ export async function render() {
                           'Esta página no está aquí',
                           'Encuentra lo que necesitas en nuestra tienda.',
                         );
+  if (route === '/nosotros') mountAboutVideos(main);
+  if (route === '/catalogos') mountCatalogFilters(main);
   if (route === '/') {
     mountProductShowcase(main, products, () => favorites);
     mountLivingEffects(main);

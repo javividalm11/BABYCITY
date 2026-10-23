@@ -1,0 +1,54 @@
+/* Los fondos y las dos mitades de las nubes comparten escala en cada unión. */
+.product-showcase {
+  background-size:
+    100% 150px,
+    100% 130px;
+}
+.babycity-footer {
+  background: var(--brand-background);
+}
+.collections-page {
+  background:
+    linear-gradient(to top, var(--brand-background), transparent 140px),
+    radial-gradient(ellipse at 74% 0%, #ffe0e1, transparent 54%), #fff8f3;
+}
+.about-intro {
+  background:
+    linear-gradient(to top, #fff9f2, transparent 85px),
+    radial-gradient(ellipse at 60% 25%, #ffe5e4 0, transparent 65%),
+    linear-gradient(110deg, #ffc6ca, #ffdcdb 60%, #ffd5d8);
+}
+.about-page {
+  background: linear-gradient(to top, var(--brand-background) 100px, #fff9f2 100px);
+}
+.about-closing {
+  mask-image: linear-gradient(#000 calc(100% - 24px), transparent);
+  background:
+    linear-gradient(to bottom, #fff9f2, transparent 55px),
+    linear-gradient(to top, var(--brand-background), transparent 55px),
+    linear-gradient(110deg, #ffc5cd, #ffb6c4 60%, #ffc3ce);
+}
+.contact-hero {
+  mask-image: linear-gradient(#000 calc(100% - 20px), transparent);
+}
+.community-contact {
+  border-radius: 75px;
+}
+@media (max-width: 680px) {
+  .product-showcase {
+    background-image:
+      url('/assets/catalogs/clouds-join-lower.svg'), var(--paper-cloud-bottom),
+      linear-gradient(#ffd4da 80px, var(--brand-background) 260px);
+    background-size:
+      100% 75px,
+      100% 105px,
+      100% 100%;
+    background-position:
+      center top,
+      center bottom,
+      center;
+  }
+  .community-contact {
+    border-radius: 35px;
+  }
+}

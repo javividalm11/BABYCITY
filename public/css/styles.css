@@ -975,7 +975,7 @@ dialog::backdrop {
   background: #142e2aaa;
   backdrop-filter: blur(4px);
 }
-body:has(dialog[open]) {
+body:has(dialog[open]:not(#chatDialog)) {
   overflow: hidden;
 }
 .close {

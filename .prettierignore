@@ -10,3 +10,4 @@ test-results/
 .wrangler/
 .npm-cache/
 backups/
+output/

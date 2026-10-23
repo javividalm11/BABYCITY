@@ -1,8 +1,10 @@
 import { icon } from '../lib/icons.js';
 import { renderAboutTikTok, tiktokProfile } from '../components/about-tiktok.js';
 
-const maps = 'https://www.google.com/maps/search/?api=1&query=Jr.+Antonio+Raymondi+512+La+Victoria+Lima+Peru';
-const pin = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
+const maps =
+  'https://www.google.com/maps/search/?api=1&query=Jr.+Antonio+Raymondi+512+La+Victoria+Lima+Peru';
+const pin =
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>';
 const benefits = [
   ['heart', 'Asesoría cercana', 'Te escuchamos y te ayudamos siempre.'],
   ['store', 'Tienda física y virtual', 'Compra como prefieras, de forma segura.'],
@@ -20,7 +22,7 @@ export function about() {
     <div class="about-benefits">${benefits.map(([symbol, title, copy]) => `<div>${icon(symbol)}<span><strong>${title}</strong><small>${copy}</small></span></div>`).join('')}</div>
 
     <section class="about-story" id="about-story" aria-labelledby="about-story-title">
-      <div class="about-story-copy"><span class="about-eyebrow">Un poquito de nosotros</span><h2 id="about-story-title">Crecemos para<br>acompañarte mejor.</h2><p>Somos una tienda física y virtual de productos para bebés. Nos gusta mostrarte cada detalle, responder tus preguntas y ayudarte a comparar opciones con calma.</p><p>También seguimos aprendiendo y compartiendo con otros emprendedores. Cada experiencia nos inspira a cuidar mejor lo que hacemos para tu familia.</p><div class="about-story-note">${icon('heart')}<span>Productos para su mundo.<br><strong>Personas que están para ti.</strong></span></div><span class="about-stroller-doodle" aria-hidden="true">${icon('stroller')}</span></div>
+      <div class="about-story-copy"><span class="about-eyebrow">Un poquito de nosotros</span><h2 id="about-story-title">Crecemos para<br>acompañarte mejor.</h2><p>Somos una tienda física y virtual de productos para bebés. Nos gusta mostrarte cada detalle, responder tus preguntas y ayudarte a comparar opciones con calma.</p><p>También seguimos aprendiendo y compartiendo con otros emprendedores. Cada experiencia nos inspira a cuidar mejor lo que hacemos para tu familia.</p><div class="about-story-note">${icon('heart')}<span>Productos para su mundo.<br><strong>Personas que están para ti.</strong></span></div></div>
       <div class="about-gallery"><figure><img src="/assets/nosotros.jpg" alt="Integrantes del equipo de BabyCity en Perú Business Fest" width="960" height="1280" loading="lazy"><figcaption>Compartimos experiencias</figcaption></figure><figure><img src="/assets/nosotros2.jpg" alt="Encuentro de BabyCity con otros emprendedores en Perú Business Fest" width="960" height="1280" loading="lazy"><figcaption>Seguimos aprendiendo</figcaption></figure><p>Momentos de BabyCity<br>en Perú Business Fest. <span aria-hidden="true">♡</span></p></div>
     </section>
 

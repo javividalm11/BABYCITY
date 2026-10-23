@@ -5,6 +5,7 @@ import { esc, money } from '../lib/format.js';
 import { notify } from '../lib/notify.js';
 import { cart, clearCart } from '../state/store.js';
 import { navigate } from './navigation.js';
+import { renderOrderSuccess } from '../components/checkout-content.js';
 
 const FORM_IDS = [
   'checkoutForm',
@@ -44,8 +45,8 @@ async function submitCheckout(fields) {
   const order = await api('/api/orders', 'POST', { ...fields, items });
   clearCart();
   const link = `${WHATSAPP}?text=${encodeURIComponent(orderMessage(order))}`;
-  $('#cartContent').innerHTML =
-    `<div class="success">${icon('check')}<h2>Ya tenemos tu solicitud.</h2><p>Tu código es <strong>${esc(order.id)}</strong>. El siguiente paso es enviarla por WhatsApp para confirmar disponibilidad, entrega y pago.</p><a class="btn primary" href="${link}" target="_blank" rel="noopener noreferrer">Enviar mi pedido por WhatsApp ↗</a><p class="fine">No se ha realizado un cobro. Tu solicitud está guardada para que nuestro equipo pueda atenderte.</p><button class="btn secondary" data-close>Seguir explorando</button></div>`;
+  $('#cartContent').innerHTML = renderOrderSuccess(order, link);
+  $('#cartDialog').scrollTop = 0;
 }
 
 async function submitContact(fields, form, status) {

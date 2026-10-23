@@ -9,6 +9,7 @@ import { bindForms } from './features/forms.js';
 import { render } from './features/navigation.js';
 import { initializeNavbar } from './features/navbar.js';
 import { initializeContactFloat } from './features/contact-float.js';
+import { initializeChat } from './features/chat.js';
 
 function paintStaticIcons() {
   document.querySelectorAll('[data-nav-icon]').forEach((element) => {
@@ -24,6 +25,7 @@ function paintStaticIcons() {
 async function start() {
   initializeNavbar();
   initializeContactFloat();
+  initializeChat();
   paintStaticIcons();
   bindEvents();
   bindForms();

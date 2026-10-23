@@ -50,9 +50,9 @@ test('reader opens all twelve catalogs with fitted double pages and paper engine
     expect(fits, catalog.title).toBe(true);
     if (catalog.id === 'catalog-01')
       await page.screenshot({ path: 'test-results/reader-desktop.png', animations: 'disabled' });
-    await page.getByRole('button', { name: 'Página siguiente', exact: true }).click();
+    await page.keyboard.press('ArrowRight');
     await expect(page.locator('#readerPageLabel')).toHaveText(`3–4 / ${catalog.count}`);
-    await page.getByRole('button', { name: 'Última página', exact: true }).click();
+    await page.keyboard.press('End');
     await expect(
       page.getByRole('button', { name: 'Página siguiente', exact: true }),
     ).toBeDisabled();
@@ -78,16 +78,13 @@ test('reader supports corner dragging, keyboard, zoom, slider and reopening', as
   await expect(page.locator('#readerPageLabel')).toHaveText('1–2 / 24');
   const before = await page.locator('.reader-book').boundingBox();
   await page.getByRole('button', { name: 'Ampliar' }).click();
-  await expect(page.getByRole('button', { name: 'Reducir' })).toHaveAttribute(
-    'aria-pressed',
-    'true',
-  );
+  await expect(page.getByLabel('Nivel de zoom')).toHaveValue('1.25');
   const after = await page.locator('.reader-book').boundingBox();
   expect(after.width).toBeGreaterThan(before.width);
-  await page.getByRole('button', { name: 'Reducir' }).click();
+  await page.getByRole('button', { name: 'Alejar', exact: true }).click();
   await page.locator('#bookSlider').fill('11');
   await expect(page.locator('#readerPageLabel')).toHaveText('11–12 / 24');
-  await page.keyboard.press('Tab');
+  await page.getByRole('button', { name: 'Cerrar lector', exact: true }).focus();
   await page.keyboard.press('Home');
   await expect(page.locator('#readerPageLabel')).toHaveText('1–2 / 24');
   await page.getByRole('button', { name: 'Cerrar lector', exact: true }).click();
@@ -108,15 +105,15 @@ test('reader fits mobile, navigates single pages and retains position on resize'
   const box = await page.locator('.reader-book').boundingBox();
   expect(box.width).toBeLessThan(390);
   await page.screenshot({ path: 'test-results/reader-mobile.png', animations: 'disabled' });
-  await page.getByRole('button', { name: 'Página siguiente', exact: true }).click();
+  await page.keyboard.press('ArrowRight');
   await expect(page.locator('#readerPageLabel')).toHaveText('2 / 24');
   await page.setViewportSize({ width: 1440, height: 1000 });
   await expect(page.locator('#readerPageLabel')).toHaveText('1–2 / 24');
-  await page.getByRole('button', { name: 'Última página', exact: true }).click();
+  await page.keyboard.press('End');
   await expect(page.locator('#readerPageLabel')).toHaveText('23–24 / 24');
   await page.setViewportSize({ width: 390, height: 844 });
   await expect(page.locator('#readerPageLabel')).toHaveText('23 / 24');
-  await page.getByRole('button', { name: 'Página siguiente', exact: true }).click();
+  await page.keyboard.press('ArrowRight');
   await expect(page.locator('#readerPageLabel')).toHaveText('24 / 24');
   await expect(page.getByRole('button', { name: 'Página siguiente', exact: true })).toBeDisabled();
 });

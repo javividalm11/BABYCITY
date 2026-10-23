@@ -9,6 +9,11 @@ export function initializeContactFloat() {
   function setFooterVisible(visible) {
     button.classList.toggle('is-footer-hidden', visible);
     button.inert = visible;
+    const chat = document.querySelector('#chatDialog');
+    if (chat) {
+      chat.classList.toggle('is-footer-hidden', visible);
+      chat.inert = visible;
+    }
   }
 
   const bounds = footer.getBoundingClientRect();

@@ -117,6 +117,10 @@ npm run check          # lint + formato + pruebas de API
 
 Las pruebas de navegador levantan su propio servidor en el puerto 3001 con una base nueva. En otro sistema: `npx playwright install chromium`. La integración continua ejecuta `npm run check` en cada cambio.
 
+## Videos de TikTok en «Nosotros»
+
+La página muestra la portada de cada video y carga el reproductor de TikTok solo cuando alguien la pulsa (un solo video activo a la vez). Las portadas se alojan en `public/assets/about/` para no pedir nada a terceros antes de la reproducción. Para cambiar los videos, edita la lista de ids en `public/js/components/about-tiktok.js` y descarga sus portadas con `node scripts/fetch-tiktok-covers.mjs <id> <id> ...`.
+
 ## Catálogos, pedidos e inventario
 
 - 12 catálogos y 195 páginas con visor de páginas que se doblan, zoom, teclado y vista móvil. El motor se sirve desde `public/vendor/`; `node scripts/vendor-pageflip.mjs` lo regenera.

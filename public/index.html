@@ -32,11 +32,16 @@
     <link rel="stylesheet" href="/css/living-effects.css" />
     <link rel="stylesheet" href="/css/footer.css" />
     <link rel="stylesheet" href="/css/catalog-world.css" />
+    <link rel="stylesheet" href="/css/collections.css" />
     <link rel="stylesheet" href="/css/navbar.css" />
     <link rel="stylesheet" href="/css/cart.css" />
+    <link rel="stylesheet" href="/css/checkout-mobile.css" />
     <link rel="stylesheet" href="/css/contact.css" />
     <link rel="stylesheet" href="/css/contact-faq.css" />
     <link rel="stylesheet" href="/css/about.css" />
+    <link rel="stylesheet" href="/css/chat.css" />
+    <link rel="stylesheet" href="/css/home-mobile.css" />
+    <link rel="stylesheet" href="/css/section-transitions.css" />
     <script type="module" src="/js/main.js"></script>
   </head>
   <body>
@@ -344,9 +349,17 @@
         </div>
       </div>
     </footer>
-    <button class="contact-float" data-action="contact" aria-label="Contactar con BabyCity">
-      <span>Conversemos</span><span id="waIcon"></span>
+    <button
+      class="contact-float"
+      data-action="chat"
+      aria-label="Abrir asistente de BabyCity"
+      aria-controls="chatDialog"
+      aria-expanded="false"
+      aria-haspopup="dialog"
+    >
+      <span>¿Te ayudamos?</span><span id="waIcon"></span>
     </button>
+    <dialog id="chatDialog" class="chat-dialog" aria-labelledby="chatTitle"></dialog>
     <dialog id="cartDialog" class="drawer" aria-label="Tu carrito">
       <div id="cartContent"></div>
     </dialog>

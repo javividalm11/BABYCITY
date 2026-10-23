@@ -150,10 +150,10 @@ Monta el volumen en `/data` y, si el servicio lo monta como root, define `RAILWA
 `src/adapters/cloudflare/worker.js` usa **D1** para los datos, **R2** para imágenes y PDF, y sirve `public/` como archivos estáticos. La base se crea y se carga sola en la primera visita.
 
 1. _Workers & Pages → Create → Import a repository_ con comando de build vacío y deploy `npx wrangler deploy`.
-2. Crea el bucket R2 `babycity-files` (R2 debe estar activado en la cuenta). El D1 `babycity-db` se crea solo.
+2. Elige dónde guardar las imágenes subidas y los PDF. **Supabase Storage** (sin tarjeta): crea un proyecto y un bucket privado `babycity-files`, escribe la dirección del proyecto en `SUPABASE_URL` (`wrangler.jsonc`) y guarda la clave `service_role` como secreto `SUPABASE_SERVICE_KEY`. **R2**: actívalo en la cuenta y quita el comentario de `r2_buckets` en `wrangler.jsonc`. Sin ninguno, la tienda funciona pero no se pueden subir archivos. El D1 `babycity-db` se crea solo.
 3. En _Settings → Variables and Secrets_ agrega los secretos `ADMIN_USER` y `ADMIN_PASSWORD`.
 4. Define `SITE_URL` en `wrangler.jsonc` y conecta el dominio en _Domains & Routes_.
-5. Sube los PDF (superan el límite de 25 MiB de los archivos estáticos): `npx wrangler login` y `npm run cf:upload-pdfs`.
+5. Sube los PDF (superan el límite de 25 MiB de los archivos estáticos): con Supabase, `SUPABASE_URL=... SUPABASE_SERVICE_KEY=... node scripts/upload-catalogs-supabase.mjs`; con R2, `npx wrangler login` y `npm run cf:upload-pdfs`.
 
 Prueba local: crea `.dev.vars` (ignorado por Git) con `ADMIN_USER` y `ADMIN_PASSWORD` y ejecuta `npm run cf:dev`.
 

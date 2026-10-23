@@ -9,11 +9,15 @@
     "html_handling": "none",
     "not_found_handling": "none"
   },
-  // Creo estos recursos en el primer despliegue; no necesito IDs.
+  // Creo la base de datos en el primer despliegue; no necesito IDs.
   "d1_databases": [{ "binding": "DB", "database_name": "babycity-db" }],
-  "r2_buckets": [{ "binding": "FILES", "bucket_name": "babycity-files" }],
+  // Para usar R2 en lugar de Supabase, activo R2 en la cuenta y quito el comentario de esta línea.
+  // "r2_buckets": [{ "binding": "FILES", "bucket_name": "babycity-files" }],
   "vars": {
     // Escribo aquí el dominio definitivo, sin barra final.
-    "SITE_URL": ""
+    "SITE_URL": "",
+    // Dirección del proyecto de Supabase; la clave SUPABASE_SERVICE_KEY va como secreto, nunca aquí.
+    "SUPABASE_URL": "",
+    "SUPABASE_BUCKET": "babycity-files"
   }
 }

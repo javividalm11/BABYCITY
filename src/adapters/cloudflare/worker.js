@@ -2,7 +2,7 @@ import seedProducts from '../../../data/products.json';
 import { createApp } from '../../app.js';
 import { loadConfig } from '../../config.js';
 import { D1Repository } from './d1-repository.js';
-import { R2Storage } from './r2-storage.js';
+import { createStorage } from './storage.js';
 
 let app;
 
@@ -11,7 +11,7 @@ function getApp(env) {
   app ||= createApp({
     config: loadConfig(env),
     repo: new D1Repository(env.DB),
-    files: new R2Storage(env.FILES),
+    files: createStorage(env),
     assets: env.ASSETS,
     seedProducts,
   });

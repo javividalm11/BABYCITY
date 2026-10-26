@@ -25,5 +25,5 @@ export function renderCartContent({ entries, count, subtotal, favorites }) {
       <div class="cart-actions"><button class="btn primary" data-action="checkout">Continuar con mi pedido ${icon('arrow')}</button><button class="btn cart-continue" data-close>Seguir comprando</button></div>`
         : `<div class="cart-empty">${icon('bag')}<h3>Hay un mundo por descubrir</h3><p>Agrega algo especial para tu bebé y lo encontrarás aquí.</p><button class="btn primary" data-close>Seguir comprando ${icon('arrow')}</button></div>`
     }
-    <div class="cart-footer"><div>${icon('bag')}<span><b>Compra segura</b><small>Tus datos están protegidos</small></span></div><div>${icon('truck')}<span><b>Envíos a todo el Perú</b><small>Hasta donde está tu familia</small></span></div><button data-action="contact">${icon('chat')}<span><b>¿Necesitas ayuda?</b><small>Escríbenos por WhatsApp</small></span></button></div>`;
+    <div class="cart-footer"><div>${icon('bag')}<span><b>Compra segura</b><small>Tus datos están protegidos</small></span></div><div>${icon('truck')}<span><b>Envíos a todo el Perú</b><small>Hasta donde está tu familia</small></span></div><button data-action="contact">${icon('whatsapp')}<span><b>¿Necesitas ayuda?</b><small>Escríbenos por WhatsApp</small></span></button></div>`;
 }

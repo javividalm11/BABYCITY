@@ -8,6 +8,8 @@ export const SCHEMA = [
   'DROP TABLE IF EXISTS sessions',
   'CREATE TABLE IF NOT EXISTS admin_sessions(hash TEXT PRIMARY KEY, username TEXT NOT NULL, idle_expires INTEGER NOT NULL, absolute_expires INTEGER NOT NULL)',
   'CREATE TABLE IF NOT EXISTS orders(id TEXT PRIMARY KEY, created TEXT NOT NULL, status TEXT NOT NULL, data TEXT NOT NULL)',
+  'CREATE TABLE IF NOT EXISTS order_receipts(order_id TEXT PRIMARY KEY, content_type TEXT NOT NULL, base64 TEXT NOT NULL)',
+  'CREATE TRIGGER IF NOT EXISTS delete_order_receipt AFTER DELETE ON orders BEGIN DELETE FROM order_receipts WHERE order_id = OLD.id; END',
   'CREATE TABLE IF NOT EXISTS leads(id TEXT PRIMARY KEY, created TEXT NOT NULL, data TEXT NOT NULL)',
   'CREATE TABLE IF NOT EXISTS claims(id TEXT PRIMARY KEY, created TEXT NOT NULL, data TEXT NOT NULL)',
   'CREATE TABLE IF NOT EXISTS settings(id INTEGER PRIMARY KEY, data TEXT NOT NULL)',
@@ -38,3 +40,9 @@ export const HANDLED_SQL = (table) =>
 export const AUDIT_RETENTION_MS = 180 * 24 * 60 * 60 * 1000;
 
 export const parseRecord = (row) => ({ ...row, data: JSON.parse(row.data) });
+
+// Actualización atómica: la revisión requiere un comprobante y conserva notas y estado del pedido.
+export const REVIEW_PAYMENT_SQL = `UPDATE orders SET data = json_set(data,
+  '$.payment.status', ?, '$.payment.reviewedBy', ?, '$.payment.reviewedAt', ?)
+  WHERE id = ? AND EXISTS (SELECT 1 FROM order_receipts WHERE order_id = orders.id)
+  RETURNING data`;

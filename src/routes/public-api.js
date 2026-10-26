@@ -1,4 +1,5 @@
 import { quoteOrder } from '../domain/orders.js';
+import { parseReceipt, parseReceiptChannel } from '../domain/receipts.js';
 import { parseClaim, parseLead } from '../domain/validation.js';
 import { json } from '../http/responses.js';
 import { randomHex } from '../security/crypto.js';
@@ -25,10 +26,15 @@ async function getSettings({ repo }) {
 }
 
 // Una solicitud no reserva ni descuenta stock; el administrador confirma la disponibilidad.
-async function createOrder({ repo, body }) {
-  const order = await quoteOrder(repo, await body());
+async function createOrder({ repo, body, config }) {
+  const data = await body();
+  const order = await quoteOrder(repo, data);
+  const receipt = parseReceipt(data.receiptBase64, order.payment.method, config.maxImageBytes);
+  const channel = parseReceiptChannel(data.receiptChannel, order.payment.method, receipt);
+  if (channel) order.payment.receiptChannel = channel;
+  if (receipt) order.payment.receipt = true;
   const id = `BC-${randomHex(5).toUpperCase()}`;
-  await repo.addOrder(id, now(), 'solicitud', order);
+  await repo.addOrder(id, now(), 'solicitud', order, receipt);
   return json(201, { id, ...order });
 }
 

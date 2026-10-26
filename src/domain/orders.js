@@ -1,6 +1,7 @@
 import { DELIVERY_METHODS } from '../constants.js';
 import { fail } from '../http/errors.js';
 import { parseCustomer, round2, text } from './validation.js';
+import { PAYMENT_METHODS } from '../../public/js/content/payment-methods.js';
 
 const MAX_LINES = 50;
 const MAX_QUANTITY = 99;
@@ -26,6 +27,11 @@ async function priceLine(repo, line) {
 // Calculo importes con precios y tarifas del servidor; nunca con los del navegador.
 export async function quoteOrder(repo, data) {
   const customer = parseCustomer(data);
+  // Compatibilidad con solicitudes anteriores que aún no enviaban una preferencia.
+  const paymentMethod = data.paymentMethod === undefined ? 'coordinate' : data.paymentMethod;
+  if (!PAYMENT_METHODS.some((method) => method.id === paymentMethod)) {
+    throw fail(400, 'Selecciona un medio de pago oficial.');
+  }
   if (!DELIVERY_METHODS.includes(data.delivery)) throw fail(400, 'Selecciona la entrega.');
   if (data.delivery !== 'pickup' && !customer.address) {
     throw fail(400, 'Indica la dirección y ciudad de entrega.');
@@ -51,5 +57,7 @@ export async function quoteOrder(repo, data) {
     total: shipping === null ? null : round2(subtotal + shipping),
     delivery: data.delivery,
     notes: text(data.notes, 700),
+    // El cliente solo elige el medio; nunca puede acreditar un pago desde el navegador.
+    payment: { method: paymentMethod, status: 'pending_verification' },
   };
 }

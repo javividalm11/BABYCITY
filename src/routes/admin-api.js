@@ -130,6 +130,34 @@ async function deleteOrder({ repo, params, session }) {
   return json(200, { ok: true });
 }
 
+async function orderReceipt({ repo, params }) {
+  const receipt = await repo.getOrderReceipt(params.id);
+  if (!receipt) throw fail(404, 'Comprobante no encontrado.');
+  return new Response(decodeBase64(receipt.base64), {
+    headers: {
+      'Content-Type': receipt.content_type,
+      'Content-Disposition': 'inline; filename="comprobante"',
+      'Cache-Control': 'no-store',
+    },
+  });
+}
+
+async function reviewPayment({ repo, body, session, params }) {
+  const { status } = await body();
+  if (!['verified', 'rejected', 'pending_verification'].includes(status)) {
+    throw fail(400, 'Estado de pago inválido.');
+  }
+  const payment = await repo.reviewPayment(
+    params.id,
+    status,
+    session.username,
+    new Date().toISOString(),
+  );
+  if (!payment) throw fail(404, 'Pedido o comprobante no encontrado.');
+  await audit(repo, session.username, 'pago.revisar', params.id, status);
+  return json(200, { payment });
+}
+
 async function changePassword({ repo, body, session }) {
   await enforceRateLimit(repo, `user:${session.username.toLowerCase()}:password`, 5);
   const data = await body();
@@ -188,6 +216,18 @@ export const adminApiRoutes = [
   },
   { method: 'PUT', path: '/api/admin/settings', admin: true, handler: updateSettings },
   { method: 'PATCH', path: '/api/admin/orders', admin: true, handler: updateOrder },
+  {
+    method: 'GET',
+    path: /^\/api\/admin\/orders\/(?<id>BC-[A-F0-9]{10})\/receipt$/,
+    admin: true,
+    handler: orderReceipt,
+  },
+  {
+    method: 'PATCH',
+    path: /^\/api\/admin\/orders\/(?<id>BC-[A-F0-9]{10})\/payment$/,
+    admin: true,
+    handler: reviewPayment,
+  },
   {
     method: 'DELETE',
     path: /^\/api\/admin\/orders\/(?<id>BC-[A-F0-9]{10})$/,

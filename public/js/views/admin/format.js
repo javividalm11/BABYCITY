@@ -18,6 +18,7 @@ export const ACTION_LABELS = {
   'pedido.estado': 'Estado de pedido',
   'pedido.nota': 'Nota de pedido',
   'pedido.eliminar': 'Pedido eliminado',
+  'pago.revisar': 'Revisión de pago',
   'cuenta.clave': 'Contraseña cambiada',
   'cuenta.sesiones': 'Otras sesiones cerradas',
   'consulta.atendido': 'Consulta atendida',

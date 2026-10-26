@@ -6,6 +6,7 @@ import {
   HANDLED_TABLES,
   parseRecord,
   RATE_LIMIT_SQL,
+  REVIEW_PAYMENT_SQL,
   SCHEMA,
   TOUCH_SESSION_SQL,
 } from '../schema.js';
@@ -131,10 +132,27 @@ export class SqliteRepository {
     this.db.prepare('DELETE FROM audit_log WHERE at < ?').run(limit);
   }
 
-  async addOrder(id, created, status, data) {
-    this.db
-      .prepare('INSERT INTO orders VALUES (?, ?, ?, ?)')
-      .run(id, created, status, JSON.stringify(data));
+  async addOrder(id, created, status, data, receipt = null) {
+    this.#transaction(() => {
+      this.db
+        .prepare('INSERT INTO orders VALUES (?, ?, ?, ?)')
+        .run(id, created, status, JSON.stringify(data));
+      if (receipt)
+        this.db
+          .prepare('INSERT INTO order_receipts VALUES (?, ?, ?)')
+          .run(id, receipt.contentType, receipt.base64);
+    });
+  }
+
+  async getOrderReceipt(id) {
+    return this.db
+      .prepare('SELECT content_type, base64 FROM order_receipts WHERE order_id = ?')
+      .get(id);
+  }
+
+  async reviewPayment(id, status, username, at) {
+    const row = this.db.prepare(REVIEW_PAYMENT_SQL).get(status, username, at, id);
+    return row ? JSON.parse(row.data).payment : null;
   }
 
   async listOrders() {

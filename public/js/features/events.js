@@ -22,6 +22,23 @@ const withParam = (name, value, { drop = false } = {}) => {
   return `${location.pathname}?${params}`;
 };
 
+async function copyValue(button) {
+  try {
+    await navigator.clipboard.writeText(button.dataset.copyValue);
+    notify('Copiado al portapapeles');
+  } catch {
+    const source = button.closest('[data-copy-group]')?.querySelector('[data-copy-source]');
+    if (source) {
+      const range = document.createRange();
+      range.selectNodeContents(source);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+    notify('Selecciona el texto y cópialo desde tu navegador.');
+  }
+}
+
 function bindSortSelect() {
   const select = $('#shopSort');
   if (select) {
@@ -64,7 +81,7 @@ async function runAction(button) {
     case 'checkout':
       return checkout();
     case 'back-cart':
-      return renderCart();
+      return openCart();
   }
 }
 
@@ -78,6 +95,7 @@ function onClick(e) {
   const button = e.target.closest('button');
   if (!button) return;
   const { dataset } = button;
+  if (dataset.copyValue) return copyValue(button);
   if (button.hasAttribute('data-close')) return button.closest('dialog').close();
   if (dataset.add) return addToCart(Number(dataset.add));
   if (dataset.wish) return toggleWish(button);

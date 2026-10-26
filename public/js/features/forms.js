@@ -6,6 +6,8 @@ import { notify } from '../lib/notify.js';
 import { cart, clearCart } from '../state/store.js';
 import { navigate } from './navigation.js';
 import { renderOrderSuccess } from '../components/checkout-content.js';
+import { paymentLabel } from '../content/payment-methods.js';
+import { receiptPayload } from './receipt-upload.js';
 
 const FORM_IDS = [
   'checkoutForm',
@@ -36,17 +38,27 @@ function orderMessage(order) {
     `Celular: ${order.customer.phone}`,
     `Entrega: ${DELIVERY_LABEL[order.delivery]}`,
     `Dirección: ${order.customer.address || 'Recojo'}`,
+    `Medio de pago: ${paymentLabel(order.payment?.method)}`,
+    'Pago no verificado. Confirmar disponibilidad y total antes de pagar.',
+    order.payment?.receipt ? 'Comprobante adjunto al pedido, pendiente de revisión.' : '',
+    order.payment?.receiptChannel === 'whatsapp'
+      ? 'Elegí enviar el comprobante por WhatsApp; lo adjuntaré en esta conversación.'
+      : '',
     order.notes,
   ].join('\n');
 }
 
-async function submitCheckout(fields) {
+async function submitCheckout(fields, form) {
   const items = cart.map((i) => ({ id: i.id, quantity: i.quantity }));
-  const order = await api('/api/orders', 'POST', { ...fields, items });
+  delete fields.receipt;
+  const receipt = await receiptPayload(form);
+  const order = await api('/api/orders', 'POST', { ...fields, items, ...receipt });
   clearCart();
   const link = `${WHATSAPP}?text=${encodeURIComponent(orderMessage(order))}`;
-  $('#cartContent').innerHTML = renderOrderSuccess(order, link);
-  $('#cartDialog').scrollTop = 0;
+  $('#purchaseContent').innerHTML = renderOrderSuccess(order, link);
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  $('#purchaseContent h2').setAttribute('tabindex', '-1');
+  $('#purchaseContent h2').focus({ preventScroll: true });
 }
 
 async function submitContact(fields, form, status) {
@@ -94,7 +106,7 @@ async function onSubmit(e) {
     status.textContent = 'Guardando…';
   }
   try {
-    if (form.id === 'checkoutForm') await submitCheckout(fields);
+    if (form.id === 'checkoutForm') await submitCheckout(fields, form);
     else if (form.id === 'contactForm' || form.id === 'contactPageForm')
       await submitContact(fields, form, status);
     else await submitClaim(fields, form);

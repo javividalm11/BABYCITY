@@ -35,6 +35,7 @@ export function persist() {
   }
   const badge = document.querySelector('#cartCount');
   if (badge) badge.textContent = cart.reduce((sum, line) => sum + line.quantity, 0);
+  document.dispatchEvent(new Event('bc-cart-change'));
 }
 
 export function setStoreData(data) {

@@ -19,7 +19,7 @@ function paintStaticIcons() {
   $('#wishButton').innerHTML = icon('heart') + '<small>Favoritos</small>';
   $('#cartButton').innerHTML = icon('cart') + '<span id="cartCount">0</span><small>Carrito</small>';
   $('#menuButton').innerHTML = icon('menu');
-  $('#waIcon').innerHTML = icon('chat');
+  $('#waIcon').innerHTML = icon('whatsapp');
 }
 
 async function start() {

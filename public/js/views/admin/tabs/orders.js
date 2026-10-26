@@ -5,6 +5,11 @@ import { toCsv } from '../csv.js';
 import { DELIVERY_LABELS, formatDateTime, STATUS_LABELS } from '../format.js';
 import { request } from '../request.js';
 import { admin } from '../state.js';
+import {
+  paymentLabel,
+  paymentStatusLabel,
+  receiptChannelLabel,
+} from '../../../content/payment-methods.js';
 
 const view = { query: '', status: 'all' };
 
@@ -23,6 +28,9 @@ const CSV_HEADERS = [
   'Total',
   'Notas del cliente',
   'Nota interna',
+  'Medio de pago',
+  'Verificación de pago',
+  'Envío del comprobante',
 ];
 
 const statusOptions = (current) =>
@@ -36,11 +44,21 @@ const statusOptions = (current) =>
 const lines = (items) =>
   items.map((i) => `${i.quantity} × ${esc(i.name)} — ${money(i.price * i.quantity)}`).join('<br>');
 
+function paymentReview(order) {
+  const payment = order.data.payment;
+  if (!payment?.receipt)
+    return `<p class="fine">${esc(receiptChannelLabel(payment))}. Sin comprobante adjunto en el panel.</p>`;
+  const reviewed = payment.reviewedAt
+    ? `<p class="fine">Última revisión: ${esc(payment.reviewedBy)} · ${esc(formatDateTime(payment.reviewedAt))}</p>`
+    : '';
+  return `<section aria-label="Revisión del comprobante"><p>Comprobante subido al panel</p><img class="admin-receipt-preview" src="/api/admin/orders/${esc(order.id)}/receipt" alt="Comprobante de pago adjunto por el cliente" loading="lazy"><a class="btn secondary" href="/api/admin/orders/${esc(order.id)}/receipt" target="_blank" rel="noopener noreferrer">Ver comprobante</a><p class="fine">Verifica el abono en la cuenta oficial antes de validar. La captura por sí sola no acredita el pago. Registra las observaciones en la nota interna.</p><div class="admin-actions"><button class="btn primary" data-review-payment="${esc(order.id)}" data-payment-status="verified">Validar abono</button><button class="btn secondary" data-review-payment="${esc(order.id)}" data-payment-status="rejected">Rechazar comprobante</button><button class="btn secondary" data-review-payment="${esc(order.id)}" data-payment-status="pending_verification">Volver a pendiente</button></div>${reviewed}</section>`;
+}
+
 function card(order) {
   const { data } = order;
   const shipping = data.shipping === null ? 'Por cotizar' : money(data.shipping);
   const total = data.total === null ? 'Total por confirmar' : `Total: ${money(data.total)}`;
-  return `<article class="admin-record"><div class="admin-top"><h3>${esc(order.id)}</h3><span class="badge">${esc(formatDateTime(order.created))}</span></div><p><b>${esc(data.customer.name)}</b> · ${esc(data.customer.phone)}<br>${esc(data.customer.email)}<br>Entrega: ${esc(DELIVERY_LABELS[data.delivery] ?? data.delivery)} · ${esc(data.customer.address || 'Recojo en tienda')}</p><p>${lines(data.items)}</p><p>Subtotal: ${money(data.subtotal)} · Envío: ${shipping} · ${total}</p><p>${esc(data.notes)}</p><label>Estado<select data-order="${esc(order.id)}">${statusOptions(order.status)}</select></label><label>Nota interna (solo la ves tú)<textarea data-note="${esc(order.id)}" maxlength="1000" rows="2">${esc(data.internalNote ?? '')}</textarea></label><div class="admin-actions"><button class="btn secondary" data-save-note="${esc(order.id)}">Guardar nota</button><button class="btn danger" data-delete-order="${esc(order.id)}">Eliminar pedido</button></div><p class="fine">Confirmar o completar una solicitud no descuenta inventario automáticamente. Actualiza el stock del producto al cerrar la venta.</p></article>`;
+  return `<article class="admin-record"><div class="admin-top"><h3>${esc(order.id)}</h3><span class="badge">${esc(formatDateTime(order.created))}</span></div><p><b>${esc(data.customer.name)}</b> · ${esc(data.customer.phone)}<br>${esc(data.customer.email)}<br>Entrega: ${esc(DELIVERY_LABELS[data.delivery] ?? data.delivery)} · ${esc(data.customer.address || 'Recojo en tienda')}</p><p>${lines(data.items)}</p><p>Subtotal: ${money(data.subtotal)} · Envío: ${shipping} · ${total}</p><p>Medio de pago: <b>${esc(paymentLabel(data.payment?.method))}</b><br>${esc(paymentStatusLabel(data.payment?.status))}</p>${paymentReview(order)}<p>${esc(data.notes)}</p><label>Estado<select data-order="${esc(order.id)}">${statusOptions(order.status)}</select></label><label>Nota interna (solo la ves tú)<textarea data-note="${esc(order.id)}" maxlength="1000" rows="2">${esc(data.internalNote ?? '')}</textarea></label><div class="admin-actions"><button class="btn secondary" data-save-note="${esc(order.id)}">Guardar nota</button><button class="btn danger" data-delete-order="${esc(order.id)}">Eliminar pedido</button></div><p class="fine">Confirmar o completar una solicitud no descuenta inventario automáticamente. Actualiza el stock del producto al cerrar la venta.</p></article>`;
 }
 
 function visibleOrders() {
@@ -67,6 +85,9 @@ function csvRows(orders) {
     data.total ?? 'Por confirmar',
     data.notes,
     data.internalNote ?? '',
+    paymentLabel(data.payment?.method),
+    paymentStatusLabel(data.payment?.status),
+    receiptChannelLabel(data.payment),
   ]);
 }
 
@@ -78,6 +99,35 @@ async function updateOrder(id, changes) {
 }
 
 function bindList(list) {
+  list.querySelectorAll('[data-review-payment]').forEach((button) => {
+    button.onclick = async () => {
+      const id = button.dataset.reviewPayment;
+      const status = button.dataset.paymentStatus;
+      if (
+        status === 'verified' &&
+        !window.confirm(
+          '¿Comprobaste el abono en la cuenta oficial? Se registrará el pago como validado.',
+        )
+      )
+        return;
+      const buttons = list.querySelectorAll(`[data-review-payment="${CSS.escape(id)}"]`);
+      buttons.forEach((item) => {
+        item.disabled = true;
+      });
+      try {
+        const { payment } = await request(`/api/admin/orders/${id}/payment`, 'PATCH', { status });
+        admin.dashboard.orders.find((order) => order.id === id).data.payment = payment;
+        drawList(list.parentElement);
+        notify('Revisión de pago guardada');
+      } catch (error) {
+        notify(error.message);
+      } finally {
+        buttons.forEach((item) => {
+          item.disabled = false;
+        });
+      }
+    };
+  });
   list.querySelectorAll('[data-order]').forEach((select) => {
     select.onchange = async () => {
       try {

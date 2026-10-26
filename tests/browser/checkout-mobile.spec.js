@@ -27,7 +27,9 @@ test('mobile checkout and confirmation preserve delivery, totals and order submi
     await page.goto('/');
     await page.getByRole('button', { name: 'Abrir carrito' }).click();
     await page.getByRole('button', { name: 'Continuar con mi pedido' }).click();
-    const dialog = page.locator('#cartDialog');
+    const dialog = page.locator('.purchase-page');
+    await expect(page).toHaveURL(/\/compra$/);
+    await expect(page.locator('#cartDialog')).not.toBeVisible();
     const form = page.locator('#checkoutForm');
     await expect(form).toBeVisible();
     expect(await dialog.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
@@ -49,8 +51,8 @@ test('mobile checkout and confirmation preserve delivery, totals and order submi
       dialog.getByRole('link', { name: 'Enviar mi pedido por WhatsApp' }),
     ).toHaveAttribute('href', /https:\/\/wa.me\/51937473120\?text=.*BC-MOBILE-TEST/);
     expect(await dialog.evaluate((el) => el.scrollWidth <= el.clientWidth)).toBe(true);
-    await dialog.getByRole('button', { name: 'Seguir explorando' }).click();
-    await expect(dialog).not.toBeVisible();
+    await dialog.getByRole('link', { name: 'Seguir explorando' }).click();
+    await expect(page).toHaveURL(/\/tienda$/);
     await expect(page.locator('#cartCount')).toHaveText('0');
   }
 });

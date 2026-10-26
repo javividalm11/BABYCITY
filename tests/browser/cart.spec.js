@@ -26,7 +26,9 @@ test('redesigned cart updates quantities, totals and favorites and continues to 
   await expect(item.locator('[data-wish]')).toHaveAttribute('aria-pressed', 'true');
   await drawer.getByRole('button', { name: 'Continuar con mi pedido' }).click();
   await expect(page.locator('#checkoutForm')).toBeVisible();
-  await drawer.getByRole('button', { name: /Volver al carrito/ }).click();
+  await expect(page).toHaveURL(/\/compra$/);
+  await expect(drawer).not.toBeVisible();
+  await page.getByRole('button', { name: /Volver al carrito/ }).click();
   await item.getByRole('button', { name: /Quitar .* del carrito/ }).click();
   await expect(drawer.locator('.cart-empty')).toBeVisible();
   await expect(page.locator('#cartCount')).toHaveText('0');

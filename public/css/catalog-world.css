@@ -426,7 +426,22 @@ main[data-view='shop'] .shop-toolbar p {
   font-size: 20px;
 }
 .product-card .add {
-  background: #705097;
+  background: #087e78;
+  border-color: #087e78;
+  color: #fff;
+}
+.product-card .add:hover:not(:disabled) {
+  background: #06635e;
+  border-color: #06635e;
+}
+.product-card .add:focus-visible {
+  outline: 3px solid #087e78;
+  outline-offset: 3px;
+}
+.product-card .add:disabled {
+  background: #e4e9e7;
+  border-color: #d3dcd8;
+  color: #72817b;
 }
 .product-info > small {
   color: #785f90;

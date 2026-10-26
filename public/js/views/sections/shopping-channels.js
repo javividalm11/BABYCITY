@@ -13,7 +13,7 @@ export function renderShoppingBenefits() {
       'Conoce las características de cada modelo y recibe asesoría para elegir lo que tu bebé necesita.',
     ],
     [
-      icon('chat'),
+      icon('whatsapp'),
       'Atención cercana',
       'Te atendemos de mamá a mamá: con cercanía, honestidad y atención personalizada.',
     ],

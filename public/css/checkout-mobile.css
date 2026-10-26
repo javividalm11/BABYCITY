@@ -28,6 +28,98 @@
 .checkout-success .btn + .btn {
   margin-top: 10px;
 }
+.checkout-payments,
+.payment-summary {
+  min-width: 0;
+  margin: 18px 0;
+  padding: 16px;
+  border: 1px solid #dce5e1;
+  border-radius: 16px;
+  background: #fffefc;
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.checkout-payments legend {
+  padding: 0 6px;
+  font-weight: 600;
+  color: #184951;
+}
+.payment-options {
+  display: grid;
+  gap: 10px;
+}
+#checkoutForm .payment-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0;
+  padding: 12px;
+  border: 1px solid #dce5e1;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+#checkoutForm .payment-option:has(input:checked) {
+  background: #edf8f5;
+  border-color: #087e78;
+}
+#checkoutForm .payment-option:has(input:focus-visible) {
+  outline: 2px solid #087e78;
+  outline-offset: 2px;
+}
+#checkoutForm .payment-option input {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  margin: 2px 0 0;
+  accent-color: #087e78;
+}
+.payment-option > span {
+  min-width: 0;
+}
+.payment-option strong,
+.payment-option > span > span,
+.payment-summary > span {
+  display: block;
+}
+.payment-number {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: #184951;
+  user-select: all;
+}
+.payment-business {
+  font-size: 12px;
+  line-height: 1.6;
+}
+.payment-summary h3 {
+  font-size: 16px;
+  margin: 0 0 10px;
+}
+.receipt-upload {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #dce5e1;
+}
+.receipt-upload[hidden] {
+  display: none;
+}
+#checkoutForm .receipt-upload input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin-top: 8px;
+  font-size: 13px;
+}
+.receipt-confirmation {
+  padding: 12px;
+  border-radius: 10px;
+  background: #edf8f5;
+  color: #184951;
+  font-size: 13px;
+}
 @media (max-width: 460px) {
   #cartContent:has(#checkoutForm) {
     padding-bottom: 72px;
@@ -308,5 +400,281 @@
   }
   #cartDialog .checkout-success .checkout-disclaimer {
     margin-top: 16px;
+  }
+}
+
+/* Payment cards follow the store's soft pink and teal visual language. */
+:is(#cartDialog, .purchase-page) .checkout-payments {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  margin: 24px 0 18px;
+}
+:is(#cartDialog, .purchase-page) .checkout-payments > legend {
+  padding: 0;
+  width: 100%;
+  font-family: var(--font-heading, 'Outfit', sans-serif);
+  font-size: clamp(29px, 7vw, 38px);
+  font-weight: 750;
+  line-height: 1.05;
+  letter-spacing: -1.3px;
+  color: #073d49;
+}
+.checkout-payments > legend em {
+  display: block;
+  font-style: normal;
+  color: #fa6596;
+}
+:is(#cartDialog, .purchase-page) #paymentHelp {
+  margin: 14px 0 20px;
+  font-size: 14px;
+  line-height: 1.65;
+  color: #526373;
+}
+.payment-method-options {
+  gap: 12px;
+}
+#checkoutForm .payment-method-option {
+  display: grid;
+  grid-template-columns: 21px 52px minmax(0, 1fr) 12px;
+  align-items: center;
+  gap: 11px;
+  padding: 18px 13px;
+  border: 1px solid #e5e6e9;
+  border-radius: 18px;
+  background: #ffffffb8;
+  box-shadow: 0 3px 12px #204a4d03;
+  line-height: 1.5;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+#checkoutForm .payment-method-option:has(input:checked) {
+  border-color: #00968f;
+  background: linear-gradient(110deg, #edfaf8, #f7fcfb);
+  box-shadow: inset 0 0 0 0.5px #00968f;
+}
+#checkoutForm .payment-method-option input {
+  width: 21px;
+  height: 21px;
+  margin: 0;
+}
+:is(#cartDialog, .purchase-page) .payment-details > strong {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #073d49;
+  margin-bottom: 6px;
+}
+.payment-details > span {
+  color: #526373;
+  font-size: 12px;
+}
+:is(#cartDialog, .purchase-page) .payment-details .payment-yape-number {
+  color: #073d49;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  user-select: all;
+}
+.payment-account b {
+  font-weight: 500;
+  color: #123e4e;
+  user-select: all;
+}
+.payment-holder {
+  margin-top: 5px;
+  font-size: 10px !important;
+}
+:is(#cartDialog, .purchase-page) .payment-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 58px;
+  border-radius: 13px;
+  color: #fff;
+  box-shadow: inset 0 1px 1px #ffffff40;
+  overflow: hidden;
+}
+.payment-brand-yape {
+  background: linear-gradient(140deg, #b10cce, #8200a9);
+}
+.payment-yape-currency {
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background: #00d4b7;
+  color: #8a00a8;
+  font-size: 12px;
+  font-weight: 800;
+}
+.payment-yape-word {
+  font-family: cursive;
+  font-size: 22px;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1.5px;
+  white-space: nowrap;
+}
+:is(#cartDialog, .purchase-page) .payment-brand > span {
+  flex: none;
+}
+:is(#cartDialog, .purchase-page) .payment-yape-currency {
+  display: grid;
+}
+.payment-brand-bcp {
+  background: linear-gradient(140deg, #0050aa, #003782);
+}
+.payment-bcp-word {
+  font-size: 19px;
+  font-style: italic;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.payment-bcp-word i {
+  color: #ff8a20;
+  font-style: normal;
+}
+.payment-brand-coordinate {
+  background: linear-gradient(145deg, #44de85, #00b657);
+}
+:is(#cartDialog, .purchase-page) .payment-brand svg {
+  width: 36px;
+  height: 36px;
+  color: #fff;
+  stroke-width: 1.5;
+}
+.payment-chevron {
+  color: #7b8290;
+}
+:is(#cartDialog, .purchase-page) .payment-chevron svg {
+  width: 12px;
+  height: 18px;
+}
+.payment-security {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 18px 15px;
+  margin-top: 16px;
+  border-radius: 18px;
+  background: linear-gradient(115deg, #ffeaf1, #fff1f5);
+  color: #80506a;
+}
+.payment-security strong {
+  color: #bf174f;
+  font-size: 14px;
+  line-height: 1.4;
+}
+.payment-security p {
+  margin: 6px 0 0;
+  font-size: 12px;
+  line-height: 1.65;
+}
+.payment-security-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 40px;
+  border-radius: 12px;
+  background: #ff6c9d;
+  color: #fff;
+}
+:is(#cartDialog, .purchase-page) .payment-security-icon svg {
+  width: 26px;
+  height: 29px;
+}
+.payment-business-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 15px;
+  margin-top: 12px;
+  border: 1px solid #e5e6e9;
+  border-radius: 18px;
+  background: #ffffffb8;
+  color: #526373;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.payment-business-card strong,
+.payment-business-card span {
+  display: block;
+}
+.payment-business-card strong {
+  color: #073d49;
+  font-size: 14px;
+}
+.payment-business-icon {
+  display: grid !important;
+  place-items: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #e3f6f3;
+  color: #008e88;
+}
+:is(#cartDialog, .purchase-page) .payment-business-icon svg {
+  width: 26px;
+  height: 26px;
+}
+#receiptDelivery {
+  padding: 16px 0 0;
+  border: 0;
+  border-top: 1px solid #e5e6e9;
+  min-width: 0;
+}
+#receiptDelivery legend {
+  padding: 0 5px;
+  font-size: 14px;
+  font-weight: 600;
+}
+#checkoutForm #receiptDelivery .payment-option input {
+  width: 20px;
+  flex: none;
+}
+#receiptUpload {
+  margin-top: 14px;
+}
+:is(#cartDialog, .purchase-page) #checkoutForm > .btn.primary {
+  min-height: 52px;
+  border-radius: 30px;
+  background: linear-gradient(115deg, #008e88, #007b76);
+  box-shadow: 0 7px 16px #006f7020;
+}
+@media (max-width: 360px) {
+  #checkoutForm .payment-method-option {
+    grid-template-columns: 18px 38px minmax(0, 1fr);
+    padding: 15px 11px;
+    gap: 8px;
+  }
+  :is(#cartDialog, .purchase-page) .payment-brand {
+    width: 38px;
+    height: 46px;
+    border-radius: 10px;
+  }
+  .payment-chevron {
+    display: none;
+  }
+  :is(#cartDialog, .purchase-page) .payment-details > strong {
+    font-size: 14px;
+  }
+  .payment-bcp-word {
+    font-size: 15px;
+  }
+  .payment-yape-word {
+    font-size: 18px;
+  }
+  .payment-security,
+  .payment-business-card {
+    gap: 10px;
+    padding: 15px 12px;
   }
 }

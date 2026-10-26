@@ -7,7 +7,7 @@ export const ORDER_STATUSES = [
   'cancelado',
 ];
 export const DELIVERY_METHODS = ['pickup', 'lima', 'province'];
-export const PRIVACY_VERSION = '2026-10-20';
+export const PRIVACY_VERSION = '2026-10-26';
 export const MIN_ADMIN_PASSWORD = 14;
 
 export const BUSINESS = {

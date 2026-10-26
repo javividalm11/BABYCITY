@@ -5,6 +5,7 @@ import {
   HANDLED_TABLES,
   parseRecord,
   RATE_LIMIT_SQL,
+  REVIEW_PAYMENT_SQL,
   SCHEMA,
   TOUCH_SESSION_SQL,
 } from '../schema.js';
@@ -150,14 +151,31 @@ export class D1Repository {
     ]);
   }
 
-  async addOrder(id, created, status, data) {
-    await this.#run(
-      'INSERT INTO orders VALUES (?, ?, ?, ?)',
-      id,
-      created,
-      status,
-      JSON.stringify(data),
-    );
+  async addOrder(id, created, status, data, receipt = null) {
+    const statements = [
+      this.db
+        .prepare('INSERT INTO orders VALUES (?, ?, ?, ?)')
+        .bind(id, created, status, JSON.stringify(data)),
+    ];
+    if (receipt)
+      statements.push(
+        this.db
+          .prepare('INSERT INTO order_receipts VALUES (?, ?, ?)')
+          .bind(id, receipt.contentType, receipt.base64),
+      );
+    await this.db.batch(statements);
+  }
+
+  async getOrderReceipt(id) {
+    return this.db
+      .prepare('SELECT content_type, base64 FROM order_receipts WHERE order_id = ?')
+      .bind(id)
+      .first();
+  }
+
+  async reviewPayment(id, status, username, at) {
+    const row = await this.db.prepare(REVIEW_PAYMENT_SQL).bind(status, username, at, id).first();
+    return row ? JSON.parse(row.data).payment : null;
   }
 
   async listOrders() {

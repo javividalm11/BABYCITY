@@ -1,3 +1,5 @@
+import { icon } from '../../lib/icons.js';
+
 const captures = ['tiktok-live', 'tiktok-pedidos', 'tiktok-tienda'];
 const profile = 'https://www.tiktok.com/@babycityperu';
 const arrow = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6"/></svg>';
@@ -15,8 +17,7 @@ const lineIcon = (name) =>
   `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${icons[name]}"/></svg>`;
 const tiktok = () =>
   '<svg class="community-tiktok-logo" viewBox="0 0 48 48" aria-hidden="true"><path class="note-cyan" d="M28 5h8c0 6 4 10 10 11v8a23 23 0 0 1-10-3v15a14 14 0 1 1-14-14v8a6 6 0 1 0 6 6Z"/><path class="note-pink" d="M28 5h8c0 6 4 10 10 11v8a23 23 0 0 1-10-3v15a14 14 0 1 1-14-14v8a6 6 0 1 0 6 6Z"/><path class="note-white" d="M28 5h8c0 6 4 10 10 11v8a23 23 0 0 1-10-3v15a14 14 0 1 1-14-14v8a6 6 0 1 0 6 6Z"/></svg>';
-const whatsapp = () =>
-  '<svg viewBox="0 0 100 100" aria-hidden="true"><path fill="#fff" d="M49 3a45 45 0 0 0-39 67L3 97l28-7A45 45 0 1 0 49 3Z"/><path fill="#2dcc66" d="M49 11a37 37 0 0 0-31 57l-4 17 18-5A37 37 0 1 0 49 11Z"/><path fill="#fff" d="M32 28c-5 0-8 7-7 12 3 16 19 32 35 34 6 1 13-4 13-9l-1-3-13-6-3 1-5 6c-7-3-14-9-17-16l6-5v-3l-5-11Z"/></svg>';
+const whatsapp = () => icon('whatsapp');
 export function renderCommunity() {
   return `<section class="community" aria-labelledby="community-title">
  <div class="community-main">

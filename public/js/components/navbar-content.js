@@ -71,5 +71,5 @@ export function renderMobileMenu() {
   return `<nav class="mobile-primary-links" aria-label="Principal móvil"><a href="/" data-link>Inicio</a><a href="/catalogos" data-link>Catálogos</a><a href="/servicios" data-link>Servicios</a><a href="/nosotros" data-link>Nosotros</a><a href="/contacto" data-link>Visítanos</a></nav>
     <p class="mega-eyebrow">Encuentra su próximo favorito</p><nav class="mobile-category-links" aria-label="Categorías móvil"><a class="mega-all" href="/tienda" data-link>${icon('grid')}<span>Todos los productos</span></a>${categories.map(categoryRow).join('')}</nav>
     <details class="mobile-more-categories"><summary>Más categorías ${icon('chevron')}</summary><nav class="mobile-category-links" aria-label="Más categorías móvil">${extras.map(([name, symbol]) => categoryRow({ name, icon: symbol })).join('')}</nav></details>
-    <button class="mobile-contact-button" type="button" data-action="contact">${icon('chat')}Conversemos por WhatsApp</button>`;
+    <button class="mobile-contact-button" type="button" data-action="contact">${icon('whatsapp')}Conversemos por WhatsApp</button>`;
 }

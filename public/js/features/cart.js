@@ -4,7 +4,7 @@ import { notify } from '../lib/notify.js';
 import { cart, products, shipping, favorites, setStoreData, pruneCart } from '../state/store.js';
 import { loadStoreData } from '../state/loaders.js';
 import { renderCartContent } from '../components/cart-content.js';
-import { renderCheckout } from '../components/checkout-content.js';
+import { navigate } from './navigation.js';
 
 export function cartEntries() {
   return cart
@@ -17,7 +17,7 @@ export function totals(delivery = 'pickup') {
   const fee = delivery === 'pickup' ? 0 : shipping[delivery];
   return { subtotal, fee, total: fee === null ? null : Math.round((subtotal + fee) * 100) / 100 };
 }
-function totalMarkup(delivery = 'pickup') {
+export function totalMarkup(delivery = 'pickup') {
   const t = totals(delivery);
   return `<div class="cart-totals"><p><span>Subtotal</span><b>${money(t.subtotal)}</b></p><p><span>${delivery === 'pickup' ? 'Recojo en tienda' : 'Envío'}</span><b>${t.fee === null ? 'Por cotizar' : t.fee === 0 ? 'Sin costo' : money(t.fee)}</b></p><p class="total"><span>${t.total === null ? 'Subtotal sin envío' : 'Total'}</span><b>${money(t.total ?? t.subtotal)}</b></p>${t.total === null ? '<p class="fine">El total final se confirma al cotizar el envío.</p>' : ''}</div>`;
 }
@@ -42,19 +42,9 @@ export async function openCart() {
 }
 export function checkout() {
   if (!cartEntries().length) return;
-  $('#cartContent').innerHTML = renderCheckout(
-    {
-      lima: shipping.lima === null ? ' \u00b7 Por cotizar' : ' \u00b7 ' + money(shipping.lima),
-      province:
-        shipping.province === null ? ' \u00b7 Por cotizar' : ' \u00b7 ' + money(shipping.province),
-    },
-    totalMarkup(),
-  );
-  $('#cartDialog').scrollTop = 0;
-  $('#deliverySelect').onchange = (e) => {
-    const needed = e.target.value !== 'pickup';
-    $('#addressLabel').hidden = !needed;
-    $('#addressLabel textarea').required = needed;
-    $('#checkoutTotals').innerHTML = totalMarkup(e.target.value);
-  };
+  if (location.pathname === '/compra' && $('#checkoutForm')) {
+    $('#cartDialog').close();
+    return;
+  }
+  return navigate('/compra');
 }

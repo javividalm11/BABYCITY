@@ -93,6 +93,33 @@ test('las tarifas son autoritativas y no se aceptan líneas duplicadas', async (
   assert.equal(duplicated.status, 400);
 });
 
+test('medios de pago: valida selección, persiste preferencia e ignora pagos falsificados', async () => {
+  const order = { ...customer, delivery: 'pickup', items: [{ id: 2, quantity: 1 }] };
+  const post = (data) => t.call('/api/orders', { method: 'POST', data });
+  for (const paymentMethod of ['yape', 'bcp', 'coordinate', undefined]) {
+    const created = await post({
+      ...order,
+      paymentMethod,
+      payment: { method: 'bcp', status: 'paid' },
+      paymentStatus: 'paid',
+      total: 0.01,
+    });
+    assert.equal(created.status, 201);
+    assert.deepEqual(created.data.payment, {
+      method: paymentMethod ?? 'coordinate',
+      status: 'pending_verification',
+    });
+    assert.notEqual(created.data.total, 0.01);
+    const dashboard = await t.call('/api/admin/dashboard', { cookie });
+    const stored = dashboard.data.orders.find((o) => o.id === created.data.id);
+    assert.deepEqual(stored.data.payment, created.data.payment);
+    assert.equal(stored.status, 'solicitud');
+  }
+  for (const paymentMethod of ['card', '', null, {}, ['yape'], '<script>alert(1)</script>']) {
+    assert.equal((await post({ ...order, paymentMethod })).status, 400);
+  }
+});
+
 test('consultas y reclamos se guardan con consentimiento', async () => {
   const lead = { ...customer, message: 'Consulta' };
   assert.equal((await t.call('/api/leads', { method: 'POST', data: lead })).status, 201);

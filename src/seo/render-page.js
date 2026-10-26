@@ -12,12 +12,13 @@ const PAGE_TITLES = {
   '/reclamaciones': 'Libro de Reclamaciones',
   '/admin': 'Administración',
   '/favoritos': 'Mis favoritos',
+  '/compra': 'Finalizar mi compra',
 };
-const NO_INDEX = new Set(['/admin', '/favoritos']);
+const NO_INDEX = new Set(['/admin', '/favoritos', '/compra']);
 const LOADING = '<div class="loading">Preparando un mundo de pequeños descubrimientos…</div>';
 
 export const SPA_ROUTE =
-  /^\/(?:tienda|catalogos|nosotros|servicios|contacto|favoritos|admin|reclamaciones|producto\/\d+|legal\/(?:terminos|privacidad|devoluciones))?\/?$/;
+  /^\/(?:tienda|catalogos|nosotros|servicios|contacto|favoritos|admin|compra|reclamaciones|producto\/\d+|legal\/(?:terminos|privacidad|devoluciones))?\/?$/;
 
 export const escapeHtml = (value) =>
   String(value).replace(

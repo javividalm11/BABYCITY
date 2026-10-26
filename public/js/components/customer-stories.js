@@ -32,7 +32,7 @@ export function renderAboutPurpose() {
 export function renderPackageGallery() {
   const row = (photos, index) => {
     const images = photos.map(({ image, alt, caption }) => photo(image, alt, caption)).join('');
-    return `<div class="package-lane" tabindex="0" role="region" aria-label="Fila ${index + 1} de paquetes: desliza o usa las flechas"><div class="package-ribbon"><div class="package-group">${images}</div><div class="package-group" aria-hidden="true" inert>${images}</div></div></div>`;
+    return `<div class="package-lane" tabindex="0" role="region" aria-label="Fila ${index + 1} de paquetes: desliza o usa las flechas"><div class="package-ribbon"><div class="package-group">${images}</div>${`<div class="package-group" aria-hidden="true" inert>${images}</div>`.repeat(2)}</div></div>`;
   };
   return `<section class="package-gallery" aria-labelledby="package-gallery-title"><header class="work-heading"><span>De BabyCity hasta ti</span><h2 id="package-gallery-title">As\u00ed preparamos tus pedidos</h2><p>Un vistazo a nuestros paquetes y al cuidado que ponemos en cada despacho.</p></header><div class="package-wall">${row(packagePhotos, 0)}${row([...packagePhotos.slice(3), ...packagePhotos.slice(0, 3)], 1)}</div><div class="package-gallery-controls"><span>Desliza para ver m\u00e1s detalles</span><button type="button" data-package-pause aria-pressed="false">Pausar</button></div></section>`;
 }

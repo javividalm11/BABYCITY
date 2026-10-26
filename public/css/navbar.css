@@ -129,7 +129,7 @@
   position: relative;
 }
 .site-header .desktop-nav a[aria-current='page'] {
-  color: #075f59;
+  color: var(--text-ink);
 }
 .site-header .desktop-nav a[aria-current='page']:after {
   content: '';
@@ -227,7 +227,7 @@
   outline-offset: 6px;
 }
 .site-search input::placeholder {
-  color: #758c94;
+  color: var(--text-copy);
   opacity: 1;
 }
 .site-header .icon-button {
@@ -305,7 +305,7 @@
   gap: 15px;
   border-radius: 25px;
   padding: 7px 12px;
-  color: #274d5c;
+  color: var(--text-ink);
   font-size: 12px;
   min-height: 38px;
 }
@@ -328,7 +328,7 @@
 .mega-sidebar > a.mega-all,
 .mobile-category-links > a.mega-all {
   background: #ffedf0;
-  color: #fa466c;
+  color: var(--text-rose);
   font-weight: 600;
   min-height: 37px;
 }
@@ -394,14 +394,14 @@
   font:
     600 11px/1.3 'DM Sans',
     sans-serif;
-  color: #224a59;
+  color: var(--text-ink);
 }
 .mega-card-copy small {
   display: block;
   font:
     400 9px/1.4 'DM Sans',
     sans-serif;
-  color: #75858a;
+  color: var(--text-copy);
   margin-top: 2px;
 }
 .mega-card-arrow {
@@ -459,7 +459,7 @@
   place-items: center;
   border-radius: 50%;
   background: #fff0f2;
-  color: #a74259;
+  color: var(--text-rose);
 }
 .mega-extras svg {
   width: 22px;
@@ -484,7 +484,7 @@
   display: block;
   border-radius: 20px;
   background: #ffdce1;
-  color: #d94566;
+  color: var(--text-rose);
   padding: 8px 11px;
   font:
     500 9px/1.2 'DM Sans',
@@ -495,7 +495,7 @@
 .mega-promo > strong {
   z-index: 1;
   display: block;
-  color: #12575a;
+  color: var(--text-ink);
   font:
     600 27px/1.12 Outfit,
     sans-serif;
@@ -504,7 +504,7 @@
 }
 .mega-promo em {
   font-style: normal;
-  color: #ef708e;
+  color: var(--text-rose);
 }
 .mega-promo-button {
   z-index: 1;
@@ -693,7 +693,7 @@
     padding: 9px 5px;
     border-radius: 20px;
     background: #fff3f4;
-    color: #34535b;
+    color: var(--text-ink);
   }
   .mobile-category-links {
     display: grid;

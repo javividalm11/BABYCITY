@@ -4,7 +4,7 @@ test('shopping, favorites, persistent cart and quote checkout', async ({ page })
   page.on('pageerror', (e) => errors.push(e.message));
   await page.goto('/');
   await expect(page.getByRole('heading', { name: /el mundo de tu bebe/ })).toBeVisible();
-  await page.getByRole('link', { name: 'Explorar productos', exact: true }).click();
+  await page.getByRole('link', { name: 'Compra aquí', exact: true }).click();
   await expect(page.locator('.product-card')).toHaveCount(12);
   await page.getByRole('button', { name: 'Guardar en favoritos' }).first().click();
   await page.getByRole('link', { name: 'Mis favoritos', exact: true }).first().click();

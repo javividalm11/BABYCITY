@@ -31,7 +31,7 @@
   line-height: 1.02;
   font-weight: 500;
   letter-spacing: -0.035em;
-  color: #294b46;
+  color: var(--text-ink);
   margin: 18px 0 17px;
 }
 .catalog-feature .catalog-copy h2 em {
@@ -45,7 +45,7 @@
   line-height: 1.65;
   max-width: 405px;
   margin: 0 0 16px;
-  color: #8e9990;
+  color: var(--text-copy);
   letter-spacing: 0.005em;
 }
 .catalog-feature .catalog-cta {
@@ -68,7 +68,7 @@
 }
 .catalog-feature .catalog-copy > .fine {
   font-size: 10px;
-  color: #94a096;
+  color: var(--text-copy);
   margin: 10px 0 0;
   max-width: none;
 }
@@ -91,7 +91,7 @@
   backdrop-filter: blur(5px);
   font-size: 10px;
   line-height: 1.45;
-  color: #234a45;
+  color: var(--text-ink);
   font-weight: 500;
 }
 .catalog-perk > span:first-child {

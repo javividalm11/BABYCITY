@@ -131,7 +131,7 @@
 }
 .phone-stats dt {
   font-size: 9px;
-  color: #666;
+  color: var(--text-copy);
   white-space: nowrap;
 }
 .phone-stats dd {
@@ -169,7 +169,7 @@
   font-size: 23px;
 }
 .phone-tabs span {
-  color: #666;
+  color: var(--text-copy);
 }
 .phone-grid {
   display: grid;
@@ -234,7 +234,7 @@
   width: 69px;
   aspect-ratio: 1;
   border-radius: 20px;
-  color: #f66778;
+  color: var(--text-rose);
   font-size: 44px;
   transform: rotate(8deg);
   box-shadow: 4px 8px 10px #654c3330;
@@ -243,7 +243,7 @@
 .community-heart {
   position: absolute;
   z-index: 3;
-  color: #ff8c95;
+  color: var(--text-rose);
   text-shadow:
     2px 4px 3px #b75a6b70,
     -3px -3px 3px white;
@@ -340,7 +340,7 @@
 }
 .community-doodle {
   position: absolute;
-  color: #f67d90;
+  color: var(--text-rose);
   font-size: 58px;
   z-index: 3;
   line-height: 1;
@@ -364,7 +364,7 @@
   position: absolute;
   right: 15%;
   top: 22%;
-  color: #ff7890;
+  color: var(--text-rose);
   font-size: 64px;
   transform: rotate(15deg);
   pointer-events: none;
@@ -396,7 +396,7 @@
   font:
     400 clamp(14px, 1.15vw, 18px)/1.4 'DM Sans',
     sans-serif;
-  color: #81929b;
+  color: var(--text-copy);
   margin: 0;
   max-width: 570px;
 }
@@ -418,11 +418,11 @@
   place-items: center;
   border-radius: 50%;
   background: #ffeff0;
-  color: #e83f65;
+  color: var(--text-rose);
 }
 .community-perks > div:nth-child(2) > span {
   background: #e9f4ef;
-  color: #086864;
+  color: var(--text-ink);
 }
 .community-perks svg {
   width: 29px;
@@ -432,7 +432,7 @@
   font:
     500 13px/1.35 'DM Sans',
     sans-serif;
-  color: #23535c;
+  color: var(--text-ink);
 }
 .community-follow {
   display: flex;
@@ -500,10 +500,10 @@
   font:
     400 12px 'DM Sans',
     sans-serif;
-  color: #81929b;
+  color: var(--text-copy);
 }
 .community-signature i {
-  color: #f77b91;
+  color: var(--text-rose);
   font-size: 32px;
   font-style: normal;
 }
@@ -565,7 +565,7 @@
     400 clamp(12px, 1.05vw, 16px)/1.5 'DM Sans',
     sans-serif;
   margin: 0;
-  color: #7c939c;
+  color: var(--text-copy);
 }
 .community-contact-perks {
   display: flex;
@@ -578,7 +578,7 @@
   display: flex;
   gap: 16px;
   align-items: center;
-  color: #075e5c;
+  color: var(--text-ink);
 }
 .community-contact-perks svg {
   width: 34px;
@@ -603,7 +603,7 @@
     600 clamp(13px, 1.15vw, 18px) Outfit,
     sans-serif;
   background: white;
-  color: #08645d;
+  color: var(--text-ink);
   border: 1px solid #ecf8ef;
   border-radius: 45px;
   min-height: 63px;
@@ -649,7 +649,7 @@
   font:
     400 13px 'DM Sans',
     sans-serif;
-  color: #08645d;
+  color: var(--text-ink);
   margin: 11px 0 0;
 }
 .community-contact-status > span {

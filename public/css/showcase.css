@@ -63,7 +63,7 @@
 }
 .desktop-nav a[aria-current='page'] {
   font-weight: 600;
-  color: #08756e;
+  color: var(--text-ink);
 }
 .header .nav-actions {
   gap: 13px;
@@ -112,11 +112,11 @@
   background: transparent;
   border-radius: 0;
   font-size: 9px;
-  color: #4c625f;
+  color: var(--text-copy);
   outline-offset: 7px;
 }
 .header-search input::placeholder {
-  color: #7a8b87;
+  color: var(--text-copy);
   opacity: 1;
 }
 .header .mobile-only {
@@ -184,14 +184,14 @@
   letter-spacing: -0.045em;
   margin: 0 0 13px;
   max-width: none;
-  color: #223d39;
+  color: var(--text-ink);
 }
 .hero-showcase h1 > span {
   display: block;
 }
 .hero-showcase h1 em {
   display: block;
-  color: #fa8799;
+  color: var(--text-rose);
   font-style: normal;
   font-size: 0.9em;
   line-height: 1.08;
@@ -210,7 +210,7 @@
   font-size: clamp(19px, 1.68vw, 27px);
   line-height: 1.08;
   font-weight: 400;
-  color: #879691;
+  color: var(--text-copy);
   letter-spacing: -0.02em;
   transform: translateY(-13px);
 }
@@ -302,7 +302,7 @@
   border-radius: 50%;
   border: 1px solid #fff9;
   background: #fff9;
-  color: #37544d;
+  color: var(--text-ink);
   backdrop-filter: blur(6px);
   opacity: 0.65;
   padding: 0;

@@ -1,5 +1,5 @@
 .services-page {
-  color: #164b55;
+  color: var(--text-ink);
   background: #fff9f2;
   padding: 42px 0 40px;
 }
@@ -28,7 +28,7 @@
   margin: 17px 0;
 }
 .services-page h1 em {
-  color: #ee668c;
+  color: var(--text-rose);
   font-style: normal;
 }
 .services-page h2 {
@@ -38,7 +38,7 @@
 .services-page p {
   font-size: 15px;
   line-height: 1.65;
-  color: #6e838b;
+  color: var(--text-copy);
 }
 .services-hero {
   display: grid;
@@ -53,7 +53,7 @@
 .services-page .services-hero-lead {
   font-family: var(--font);
   font-size: 26px;
-  color: #235f68;
+  color: var(--text-ink);
   margin: 0;
 }
 .services-button {
@@ -128,7 +128,7 @@
   display: flex;
   align-items: center;
   gap: 18px;
-  color: #c74679;
+  color: var(--text-rose);
   font-size: 40px;
   font-weight: 600;
   font-family: var(--font);
@@ -138,7 +138,7 @@
   font-family: var(--body);
   font-size: 13px;
   font-weight: 400;
-  color: #68827d;
+  color: var(--text-copy);
 }
 .services-includes ul {
   list-style: none;
@@ -153,7 +153,7 @@
   gap: 13px;
   font-size: 14px;
   line-height: 1.55;
-  color: #617c80;
+  color: var(--text-copy);
 }
 .services-includes li > svg {
   width: 25px;
@@ -164,7 +164,7 @@
 }
 .services-includes strong {
   display: block;
-  color: #245c64;
+  color: var(--text-ink);
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 3px;

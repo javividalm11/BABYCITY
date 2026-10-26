@@ -1,6 +1,6 @@
 import { esc } from '../lib/format.js';
 import { icon } from '../lib/icons.js';
-import { customerStories, workPhotos } from '../content/customer-stories.js';
+import { customerStories, workPhotos, packagePhotos } from '../content/customer-stories.js';
 
 const photo = (src, alt, caption) =>
   `<figure class="work-photo"><a href="${src}" target="_blank" rel="noopener noreferrer" aria-label="Ampliar: ${esc(caption)}"><img src="${src}" alt="${esc(alt)}" width="960" height="1280" loading="lazy"></a><figcaption>${esc(caption)}</figcaption></figure>`;
@@ -27,4 +27,8 @@ export function renderDispatchWork() {
 
 export function renderAboutPurpose() {
   return `<section class="about-purpose" aria-labelledby="about-purpose-title"><header class="work-heading"><span>Lo que nos mueve</span><h2 id="about-purpose-title">Cuidar cada detalle, acompañar a cada familia</h2></header><div class="about-purpose-grid"><article><h3>Nuestra misión</h3><p>Ofrecer productos innovadores, seguros y de alta calidad para bebés, brindando una experiencia de compra excepcional tanto en tienda física como online, con atención personalizada, confianza y compromiso; buscando posicionar a Baby City como una marca reconocida y preferida por las familias peruanas.</p></article><article><h3>Nuestra visión</h3><p>Convertir a Baby City en una marca líder y reconocida a nivel nacional en el rubro de bebés, destacando por nuestra innovación, calidad, presencia digital y excelencia en el servicio, logrando posicionarnos en la mente y confianza de las familias como la mejor opción para el cuidado y bienestar de sus bebés.</p></article></div></section>`;
+}
+
+export function renderPackageGallery() {
+  return `<section class="package-gallery" aria-labelledby="package-gallery-title"><header class="work-heading"><span>De BabyCity hasta ti</span><h2 id="package-gallery-title">Así preparamos tus pedidos</h2><p>Un vistazo a nuestros paquetes y al cuidado que ponemos en cada despacho.</p></header><div class="package-carousel" role="region" aria-roledescription="carrusel" aria-label="Galería de paquetes BabyCity"><div class="package-gallery-track customer-stories-track" tabindex="0" aria-label="Desliza o usa las flechas para ver los paquetes">${packagePhotos.map(({ image, alt, caption }) => photo(image, alt, caption)).join('')}</div><div class="customer-stories-controls"><button type="button" data-stories-prev aria-label="Paquetes anteriores">${icon('arrow')}</button><span data-stories-status aria-live="off"></span><button type="button" data-stories-next aria-label="Siguientes paquetes">${icon('arrow')}</button><button type="button" class="customer-stories-pause" data-stories-pause aria-pressed="false">Pausar</button></div></div></section>`;
 }

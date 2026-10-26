@@ -24,7 +24,7 @@
     sans-serif;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #1e6770;
+  color: var(--text-ink);
 }
 .about-page h1,
 .about-page h2 {
@@ -124,7 +124,7 @@
 .about-intro h1 em {
   display: block;
   font-style: normal;
-  color: #d64574;
+  color: var(--text-rose);
 }
 .about-intro-copy > p {
   max-width: 490px;
@@ -139,7 +139,7 @@
   font:
     52px/1 'DM Sans',
     sans-serif;
-  color: #e85d85;
+  color: var(--text-rose);
   transform: rotate(-10deg);
 }
 .about-intro-photos {
@@ -224,10 +224,10 @@
 .about-benefits svg {
   width: 39px;
   height: 39px;
-  color: #ec4e7e;
+  color: var(--text-rose);
 }
 .about-benefits > div:nth-child(even) svg {
-  color: #14787b;
+  color: var(--text-ink);
 }
 .about-benefits strong,
 .about-benefits small {
@@ -281,7 +281,7 @@
 .about-story-note > svg {
   width: 40px;
   height: 40px;
-  color: #e84e7a;
+  color: var(--text-rose);
 }
 .about-story-note strong {
   font-weight: 500;
@@ -349,7 +349,7 @@
   transform: rotate(-8deg);
 }
 .about-gallery > p span {
-  color: #e75c8b;
+  color: var(--text-rose);
   font-size: 30px;
   float: right;
   margin-left: 15px;
@@ -384,7 +384,7 @@
 .about-profile {
   display: block;
   margin-top: 12px;
-  color: #6e7f83;
+  color: var(--text-copy);
   font-size: 12px;
 }
 .about-tiktok-note {
@@ -398,7 +398,7 @@
   font:
     48px/1 'DM Sans',
     sans-serif;
-  color: #f1809e;
+  color: var(--text-rose);
   transform: rotate(-8deg);
 }
 .about-live-hearts small {
@@ -480,7 +480,7 @@
   padding-top: 8px;
   text-align: center;
   font-size: 10px;
-  color: #667e80;
+  color: var(--text-copy);
 }
 .about-store-details {
   padding: 24px 20px;
@@ -497,7 +497,7 @@
   margin: 0 0 24px;
 }
 .about-store-details h3 svg {
-  color: #df537d;
+  color: var(--text-rose);
   width: 28px;
   height: 28px;
 }
@@ -509,7 +509,7 @@
   margin: 0 0 17px;
 }
 .about-store-details p svg {
-  color: #e45e86;
+  color: var(--text-rose);
 }
 .about-store-details > a {
   display: flex;
@@ -571,7 +571,7 @@
 .about-page .about-closing p {
   margin: 0 0 15px;
   font-size: 12px;
-  color: #204f5b;
+  color: var(--text-ink);
 }
 .about-closing .about-button {
   min-height: 44px;
@@ -585,7 +585,7 @@
   font:
     400 19px/1.3 'Fredoka',
     sans-serif;
-  color: #dc5d87;
+  color: var(--text-rose);
   transform: rotate(-9deg);
 }
 @media (max-width: 1199px) {

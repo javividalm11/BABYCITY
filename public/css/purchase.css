@@ -1,5 +1,5 @@
 #main:has(> .purchase-page) {
-  --brand-background: #fff9f2;
+  --brand-background: #fff;
 }
 body:has(.purchase-page) .contact-float {
   display: none;
@@ -8,7 +8,7 @@ body:has(.purchase-page) .contact-float {
   max-width: 1240px;
   margin: 0 auto;
   padding: 48px 28px 72px;
-  color: #23464b;
+  color: var(--text-ink);
 }
 #main .purchase-page .checkout-head {
   margin-bottom: 32px;
@@ -25,13 +25,13 @@ body:has(.purchase-page) .contact-float {
   border: 0;
   background: transparent;
   padding: 4px 0;
-  color: #087e78;
+  color: var(--text-ink);
   text-align: left;
 }
 #main .purchase-page .checkout-step {
   display: inline-block;
   background: #ffe9ef;
-  color: #b43a62;
+  color: var(--text-rose);
   padding: 5px 14px;
   border-radius: 24px;
   font-size: 12px;
@@ -42,11 +42,11 @@ body:has(.purchase-page) .contact-float {
 }
 #main .purchase-page h1 em {
   font-style: normal;
-  color: #e96590;
+  color: var(--text-rose);
 }
 #main .purchase-page .checkout-head > p {
   font-size: 16px;
-  color: #62737b;
+  color: var(--text-copy);
 }
 #main .purchase-page #checkoutForm {
   display: grid;
@@ -87,7 +87,7 @@ body:has(.purchase-page) .contact-float {
   margin: 0;
   display: block;
   min-width: 0;
-  color: #31555e;
+  color: var(--text-ink);
   font-size: 14px;
 }
 #main .purchase-page .checkout-fields > label[hidden] {
@@ -111,7 +111,7 @@ body:has(.purchase-page) .contact-float {
   border: 1px solid #dce3df;
   border-radius: 10px;
   background: #fff;
-  color: #31555e;
+  color: var(--text-ink);
   font-size: 16px;
 }
 #main .purchase-page .checkout-input textarea {
@@ -185,7 +185,7 @@ body:has(.purchase-page) .contact-float {
 }
 .purchase-item span {
   margin-top: 5px;
-  color: #6b7e83;
+  color: var(--text-copy);
 }
 #main .purchase-page #checkoutTotals {
   padding: 0;
@@ -207,7 +207,7 @@ body:has(.purchase-page) .contact-float {
   padding-top: 14px;
   border-top: 1px solid #e5e6e0;
   font-size: 20px;
-  color: #073d49;
+  color: var(--text-ink);
 }
 #main .purchase-page #checkoutForm .check {
   display: flex;
@@ -226,7 +226,7 @@ body:has(.purchase-page) .contact-float {
   accent-color: #008a83;
 }
 #main .purchase-page .check a {
-  color: #007e78;
+  color: var(--text-ink);
   text-decoration: underline;
 }
 #main .purchase-page .purchase-summary > .btn {
@@ -237,7 +237,7 @@ body:has(.purchase-page) .contact-float {
 }
 #main .purchase-page .checkout-disclaimer {
   font-size: 12px;
-  color: #74818b;
+  color: var(--text-copy);
   text-align: center;
   margin-top: 14px;
 }

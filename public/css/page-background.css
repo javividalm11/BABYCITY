@@ -1,6 +1,89 @@
-/* Inicio, tienda y contacto usan el mismo crema de fondo que «Nosotros». */
-main[data-view='home'],
-main[data-view='shop'],
-main:has(> .contact-page) {
-  --brand-background: #fff9f2;
+/* Shared white canvas, with pastel accents inside cards and illustrations. */
+html,
+body,
+main {
+  --brand-background: #fff;
+  background-color: #fff;
+}
+.about-page,
+.about-intro,
+.about-closing,
+.services-page,
+.collections-page,
+.page-intro,
+.product-showcase,
+.catalog-feature-section,
+.community,
+.community-copy-actions,
+.shopping-benefits,
+.shopping-channels,
+.babycity-footer,
+.footer-layout {
+  background: #fff;
+}
+.discovery {
+  background: #fff url('/assets/catalogs/clouds-join-upper.svg') center bottom / 100% 130px
+    no-repeat;
+}
+.hero.hero-showcase {
+  background: #fff;
+}
+.hero-wave path {
+  fill: #fff;
+  fill-opacity: 1;
+}
+.hero.hero-showcase h1 {
+  color: #438f94;
+  text-shadow: none;
+}
+.hero.hero-showcase h1 em {
+  color: #d17b87;
+  text-shadow: none;
+}
+.hero.hero-showcase .hero-copy > p {
+  color: #477f82;
+}
+.hero-showcase .hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+.hero-showcase .hero-actions .hero-whatsapp {
+  background: #fff;
+  color: #087e78;
+  border: 1px solid #b7d9d4;
+  gap: 10px;
+  box-shadow: 0 4px 12px #2b77750a;
+}
+.hero-showcase .hero-actions .hero-whatsapp:hover {
+  background: #edf8f5;
+  border-color: #087e78;
+}
+.contact-hero {
+  background-color: #fff;
+}
+.contact-hero::before {
+  background: linear-gradient(90deg, #fff 0%, #fff 40%, #ffffffbb 49%, transparent 65%);
+}
+@media (max-width: 680px) {
+  .discovery {
+    background-size: 100% 65px;
+  }
+  .hero.hero-showcase::after {
+    background: linear-gradient(180deg, #fff 0% 39%, #ffffffd9 46%, transparent 60%);
+  }
+  .hero.hero-showcase {
+    height: clamp(550px, 160vw, 730px);
+  }
+  .hero-showcase .hero-actions {
+    gap: 8px;
+  }
+  .hero-showcase .hero-actions .btn {
+    min-height: 42px;
+    padding: 10px 16px;
+  }
+  .hero-product-stage {
+    top: 55%;
+  }
 }

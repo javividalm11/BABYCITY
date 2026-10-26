@@ -146,7 +146,7 @@
 .footer-social-links svg {
   width: 22px;
   height: 22px;
-  color: #db2457;
+  color: var(--text-rose);
 }
 .footer-social-links a:nth-child(1) svg,
 .footer-social-links a:nth-child(4) svg {
@@ -154,7 +154,7 @@
   stroke: none;
 }
 .footer-social-links a:nth-child(2) svg {
-  color: #00867c;
+  color: var(--text-ink);
 }
 .footer-social-links a:nth-child(4) svg {
   color: #1685ee;
@@ -187,7 +187,7 @@
   flex-shrink: 0;
   border-radius: 50%;
   background: linear-gradient(130deg, #ddf0e7, #cee9dc);
-  color: #0c7c80;
+  color: var(--text-ink);
 }
 .footer-link-icon svg,
 .footer-contact-icon svg {
@@ -235,7 +235,7 @@
   border: 1px solid #c6e7d9;
   border-radius: 32px;
   background: linear-gradient(110deg, #f6faf3, #d9f2e6);
-  color: #0b6d74;
+  color: var(--text-ink);
   text-align: left;
   cursor: pointer;
   box-shadow: 0 8px 16px #40766810;
@@ -287,7 +287,7 @@
   border: 6px solid #eefbf2;
   border-radius: 50%;
   background: #c9efdb;
-  color: #007a74;
+  color: var(--text-ink);
   font-size: 28px;
   line-height: 1;
   margin-left: auto;
@@ -319,7 +319,7 @@
 .babycity-footer .footer-love {
   width: 250px;
   height: 32px;
-  color: #f66e8e;
+  color: var(--text-rose);
   stroke-width: 1.6;
 }
 .footer-love .footer-love-wave {
@@ -334,7 +334,7 @@
   z-index: 2;
   left: 3%;
   bottom: 75px;
-  color: #ff7894;
+  color: var(--text-rose);
   font:
     400 35px/1 Outfit,
     sans-serif;
@@ -654,5 +654,97 @@
   .footer-social-links a,
   .footer-link-chevron {
     transition: none;
+  }
+}
+
+.babycity-footer {
+  --footer-payments-height: 74px;
+}
+.footer-payments {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 18px 30px;
+  min-height: var(--footer-payments-height);
+  padding: 14px 24px;
+  border-top: 1px solid #eee9e4;
+  background: #fff;
+  color: #5a6e77;
+}
+.footer-payment-trust {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+}
+.footer-payment-trust i {
+  display: flex;
+  font-style: normal;
+}
+.footer-payment-methods {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin: 0;
+  padding: 0 26px;
+  list-style: none;
+  border-inline: 1px solid #eee9e4;
+}
+.footer-payment-yape {
+  display: inline-block;
+  color: #86129d;
+  font-family: cursive;
+  font-style: italic;
+  font-size: 27px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1.5px;
+}
+.footer-payment-bcp {
+  display: inline-block;
+  color: #004b9c;
+  font-family: var(--body);
+  font-size: 23px;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+.footer-payment-bcp i {
+  color: #ff8525;
+  font-style: normal;
+}
+.babycity-footer .footer-rocking-horse {
+  bottom: calc(64px + var(--footer-payments-height));
+}
+@media (max-width: 540px) {
+  .babycity-footer {
+    --footer-payments-height: 98px;
+  }
+  .footer-payments {
+    gap: 12px 20px;
+    padding: 14px 12px;
+  }
+  .footer-payment-trust:first-child {
+    justify-content: center;
+    width: 100%;
+  }
+  .footer-payment-trust {
+    font-size: 10px;
+    gap: 6px;
+  }
+  .footer-payment-methods {
+    gap: 18px;
+    padding: 0 16px 0 0;
+    border-inline-start: 0;
+  }
+  .footer-payment-yape {
+    font-size: 24px;
+  }
+  .footer-payment-bcp {
+    font-size: 20px;
   }
 }

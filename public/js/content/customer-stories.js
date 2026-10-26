@@ -45,3 +45,33 @@ export const customerStories = [
     alt: 'Captura de WhatsApp con la confirmación de recojo y el agradecimiento de una clienta',
   },
 ];
+
+// Fotografías de paquetes que no se utilizaban en las otras secciones.
+export const packagePhotos = [
+  [
+    'pedidos-embalados',
+    'Pedidos embalados en nuestra tienda',
+    'Productos reunidos y embalados en cajas para su despacho',
+  ],
+  [
+    'productos-protegidos',
+    'Cuidamos cada producto',
+    'Productos protegidos con envoltura transparente para su traslado',
+  ],
+  [
+    'despacho-en-agencia',
+    'Coordinamos tu despacho',
+    'Cajas de productos BabyCity en la agencia de transporte',
+  ],
+  [
+    'cajas-preparadas',
+    'Preparados para el viaje',
+    'Dos cajas de productos embaladas en la agencia',
+  ],
+  [
+    'paquete-protegido',
+    'Protección para el traslado',
+    'Caja de producto protegida con envoltura transparente',
+  ],
+  ['listo-para-envio', 'Un pedido listo para enviar', 'Caja embalada e identificada por BabyCity'],
+].map(([file, caption, alt]) => ({ image: `${root}/paquetes/${file}.webp`, caption, alt }));

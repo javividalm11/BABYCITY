@@ -6,6 +6,10 @@ test('footer preserves social destinations and opens the existing contact dialog
   await page.goto('/');
   const footer = page.locator('.babycity-footer');
   await footer.scrollIntoViewIfNeeded();
+  const payments = footer.getByRole('region', { name: 'Medios de pago oficiales' });
+  await expect(payments.getByRole('img', { name: 'Yape Empresas' })).toBeVisible();
+  await expect(payments.getByRole('img', { name: 'Transferencia BCP en soles' })).toBeVisible();
+  await expect(payments).not.toContainText(/Plin|Visa|Mastercard/i);
   await expect(footer.locator('.footer-social-links a')).toHaveCount(4);
   const expected = [
     'https://www.tiktok.com/@babycityperu',

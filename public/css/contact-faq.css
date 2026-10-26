@@ -56,17 +56,17 @@
     600 clamp(36px, 3.65vw, 53px)/0.98 Outfit,
     sans-serif;
   letter-spacing: -1.5px;
-  color: #104951;
+  color: var(--text-ink);
 }
 .contact-faq h2 em {
   display: block;
   font-style: normal;
-  color: #f6698b;
+  color: var(--text-rose);
   text-shadow: 0 2px 0 #fff6;
 }
 .faq-copy > p {
   margin: 0 0 20px;
-  color: #5d737c;
+  color: var(--text-copy);
   font-size: 12px;
   line-height: 1.65;
 }
@@ -86,7 +86,7 @@
   position: absolute;
   right: 24px;
   top: 126px;
-  color: #fa7793;
+  color: var(--text-rose);
   font:
     45px/1 'DM Sans',
     sans-serif;
@@ -113,7 +113,7 @@
   min-height: 55px;
   cursor: pointer;
   list-style: none;
-  color: #164956;
+  color: var(--text-ink);
   font:
     600 12px/1.4 'DM Sans',
     sans-serif;
@@ -134,7 +134,7 @@
   flex-shrink: 0;
   background: #ffe7e9;
   border-radius: 50%;
-  color: #ff4877;
+  color: var(--text-rose);
 }
 .contact-page .faq-question-icon svg {
   width: 22px;
@@ -147,7 +147,7 @@
 .faq-question summary > i {
   display: flex;
   margin-left: auto;
-  color: #52636a;
+  color: var(--text-copy);
   flex-shrink: 0;
 }
 .contact-page .faq-question summary > i svg {
@@ -166,10 +166,10 @@
   margin: 0;
   font-size: 12px;
   line-height: 1.65;
-  color: #536d75;
+  color: var(--text-copy);
 }
 .faq-answer a {
-  color: #087b76;
+  color: var(--text-ink);
   text-decoration: underline;
 }
 .faq-art {
@@ -194,7 +194,7 @@
   position: absolute;
   left: 8%;
   top: 49px;
-  color: #ff7e98;
+  color: var(--text-rose);
   font:
     57px/1 'DM Sans',
     sans-serif;
@@ -206,7 +206,7 @@
   right: 8%;
   z-index: 1;
   text-align: center;
-  color: #125367;
+  color: var(--text-ink);
   font:
     600 12px/1.3 'DM Sans',
     sans-serif;
@@ -226,7 +226,7 @@
 }
 .faq-help-bubble small {
   display: block;
-  color: #ff7292;
+  color: var(--text-rose);
   font-size: 23px;
   line-height: 1;
   margin-top: 4px;
@@ -464,7 +464,7 @@
   flex-shrink: 0;
   border-radius: 50%;
   background: #ffe9ea;
-  color: #ff4a78;
+  color: var(--text-rose);
 }
 .contact-page .faq-benefit-icon svg {
   width: 26px;
@@ -472,7 +472,7 @@
   stroke-width: 1.7;
 }
 .faq-benefits > div:nth-child(2) .faq-benefit-icon {
-  color: #00867c;
+  color: var(--text-ink);
   background: #e9f2e9;
 }
 .faq-benefits strong,
@@ -480,14 +480,14 @@
   display: block;
 }
 .faq-benefits strong {
-  color: #154b5a;
+  color: var(--text-ink);
   font-size: 12px;
   font-weight: 600;
   line-height: 1.4;
 }
 .faq-benefits small {
   margin-top: 3px;
-  color: #6d7e84;
+  color: var(--text-copy);
   font-size: 10px;
   line-height: 1.4;
 }

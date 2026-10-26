@@ -7,9 +7,9 @@ export function destroyCustomerStories() {
 
 export function mountCustomerStories(root) {
   destroyCustomerStories();
-  const cleanups = [...root.querySelectorAll('.customer-stories-carousel, .dispatch-carousel')].map(
-    mountCarousel,
-  );
+  const cleanups = [
+    ...root.querySelectorAll('.customer-stories-carousel, .dispatch-carousel, .package-carousel'),
+  ].map(mountCarousel);
   cleanup = () => cleanups.forEach((dispose) => dispose());
 }
 

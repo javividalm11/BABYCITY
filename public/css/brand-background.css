@@ -1,6 +1,6 @@
-/* El rosa Baby del logo es el fondo compartido de toda la web. */
+/* Fondo blanco compartido; los acentos conservan los colores de BabyCity. */
 :root {
-  --brand-background: #f2a4a8;
+  --brand-background: #fff;
   --city-accent: #58d8d8;
   --brand-copy: #214349;
   --muted: #304d51;
@@ -24,15 +24,15 @@ footer {
   fill: var(--brand-background);
 }
 .hero.hero-showcase .hero-copy > p {
-  color: #223d39;
+  color: var(--text-ink);
 }
 .hero-showcase h1 em,
 .discovery h2 em {
-  color: #a52a50;
+  color: var(--text-rose);
 }
 .discovery .eyebrow,
 .showcase-heading .eyebrow {
-  color: #104b50;
+  color: var(--text-ink);
 }
 .discovery .category-card small,
 .discovery .section-heading p,
@@ -52,18 +52,18 @@ footer {
   background: linear-gradient(90deg, transparent 75%, var(--brand-background));
 }
 .community-eyebrow {
-  color: #104b50;
+  color: var(--text-ink);
 }
 .community-copy-header > p,
 .community-signature div > span {
   color: var(--brand-copy);
 }
 .community-copy h2 em {
-  color: #a52a50;
+  color: var(--text-rose);
 }
 .community-copy:after,
 .community-signature i {
-  color: #a52a50;
+  color: var(--text-rose);
 }
 .community-copy-actions {
   background: var(--brand-background);

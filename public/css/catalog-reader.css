@@ -8,7 +8,7 @@
   overflow: hidden;
   background: #f6f5ed;
   border-radius: 20px;
-  color: #234e58;
+  color: var(--text-ink);
 }
 .book-dialog::backdrop {
   background: #173e38a8;
@@ -42,11 +42,11 @@
 .book-dialog .book-head h2 {
   font-size: 23px;
   margin: 0 0 2px;
-  color: #173f49;
+  color: var(--text-ink);
 }
 .reader-heading p {
   font-size: 12px;
-  color: #71848a;
+  color: var(--text-copy);
   margin: 0;
   white-space: nowrap;
 }
@@ -68,7 +68,7 @@
   border: 1px solid #dedfd9;
   border-radius: 7px;
   font-size: 12px;
-  color: #285661;
+  color: var(--text-ink);
 }
 .book-actions svg {
   width: 18px;
@@ -163,7 +163,7 @@
   border: 0;
   background: transparent;
   padding: 12px 2px;
-  color: #75858a;
+  color: var(--text-copy);
   border-bottom: 2px solid transparent;
   font-size: 12px;
 }
@@ -189,7 +189,7 @@
   border-radius: 5px;
   padding: 2px;
   margin-bottom: 12px;
-  color: #52717b;
+  color: var(--text-copy);
 }
 .reader-thumbnail[hidden] {
   display: none;
@@ -289,7 +289,7 @@
   inset: 0;
   display: grid;
   place-items: center;
-  color: #5d756a;
+  color: var(--text-copy);
   font-size: 13px;
 }
 .reader-sheet {
@@ -359,7 +359,7 @@
 }
 .book-controls .fine {
   font-size: 11px;
-  color: #5b7b82;
+  color: var(--text-copy);
   white-space: nowrap;
 }
 .reader-progress {
@@ -377,7 +377,7 @@
   align-items: center;
   gap: 10px;
   font-size: 11px;
-  color: #617e86;
+  color: var(--text-copy);
   white-space: nowrap;
 }
 .book-dialog #readerPageInput {
@@ -410,7 +410,7 @@
   padding-left: 20px;
   font-size: 10px;
   line-height: 1.4;
-  color: #71898b;
+  color: var(--text-copy);
 }
 .reader-access-controls {
   position: absolute;
@@ -462,7 +462,7 @@
   border-radius: 30px;
   padding: 8px 15px;
   font-size: 12px;
-  color: #206a69;
+  color: var(--text-ink);
   white-space: nowrap;
 }
 .reader-gesture.is-dismissed,

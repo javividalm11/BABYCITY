@@ -1,0 +1,26 @@
+/* Muted brand tones for text on white and pastel surfaces. */
+:root {
+  --text-ink: #4b7076;
+  --text-copy: #60727b;
+  --text-accent: #477b80;
+  --text-rose: #a65372;
+  --text-lilac: #78658f;
+  --ink: var(--text-ink);
+  --muted: var(--text-copy);
+  --brand-copy: var(--text-ink);
+}
+.header.site-header {
+  --nav-ink: var(--text-ink);
+}
+.babycity-footer {
+  --footer-ink: var(--text-ink);
+  --footer-copy: var(--text-copy);
+}
+.community {
+  --social-ink: var(--text-ink);
+  --social-pink: var(--text-rose);
+}
+/* Keep white labels on filled buttons and the official payment logos intact. */
+.hero.hero-showcase .hero-copy > p {
+  color: var(--text-accent);
+}

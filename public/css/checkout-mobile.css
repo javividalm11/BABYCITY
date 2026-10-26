@@ -16,7 +16,7 @@
 #cartDialog .checkout-success-icon svg {
   width: 45px;
   height: 45px;
-  color: #087e78;
+  color: var(--text-ink);
 }
 .checkout-confirmation {
   margin: 18px 0;
@@ -42,7 +42,7 @@
 .checkout-payments legend {
   padding: 0 6px;
   font-weight: 600;
-  color: #184951;
+  color: var(--text-ink);
 }
 .payment-options {
   display: grid;
@@ -87,7 +87,7 @@
 .payment-number {
   font-variant-numeric: tabular-nums;
   font-weight: 600;
-  color: #184951;
+  color: var(--text-ink);
   user-select: all;
 }
 .payment-business {
@@ -117,7 +117,7 @@
   padding: 12px;
   border-radius: 10px;
   background: #edf8f5;
-  color: #184951;
+  color: var(--text-ink);
   font-size: 13px;
 }
 @media (max-width: 460px) {
@@ -145,7 +145,7 @@
     align-items: center;
     border-radius: 25px;
     padding: 5px 13px;
-    color: #ef6287;
+    color: var(--text-rose);
     background: #ffe9ed;
     font-size: 11px;
     font-weight: 600;
@@ -156,12 +156,12 @@
   }
   .checkout-head h2 em,
   .checkout-success h2 em {
-    color: #ee6c94;
+    color: var(--text-rose);
   }
   .checkout-head p {
     font-size: 12px;
     line-height: 1.5;
-    color: #77828e;
+    color: var(--text-copy);
     margin: 0;
   }
   #checkoutForm {
@@ -186,7 +186,7 @@
     font-weight: 500;
     line-height: 1.35;
     margin: 0;
-    color: #184951;
+    color: var(--text-ink);
   }
   #checkoutForm .checkout-fields > label[hidden] {
     display: none;
@@ -201,7 +201,7 @@
     top: 12px;
     left: 11px;
     pointer-events: none;
-    color: #7e8a8f;
+    color: var(--text-copy);
   }
   #checkoutForm .checkout-field-icon svg {
     width: 18px;
@@ -221,13 +221,13 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 1.4;
-    color: #31555e;
+    color: var(--text-ink);
     margin: 0;
   }
   #checkoutForm input::placeholder,
   #checkoutForm textarea::placeholder {
     font-size: 12px;
-    color: #99a0a7;
+    color: var(--text-copy);
     opacity: 1;
   }
   #cartDialog #checkoutForm .checkout-input select {
@@ -257,11 +257,11 @@
     padding: 10px 8px;
   }
   #cartDialog #checkoutTotals .total b {
-    color: #073e49;
+    color: var(--text-ink);
   }
   #cartDialog #checkoutTotals .fine {
     font-size: 10px;
-    color: #6e7d83;
+    color: var(--text-copy);
   }
   #checkoutForm .check {
     display: flex;
@@ -271,7 +271,7 @@
     font-size: 10px;
     line-height: 1.5;
     font-weight: 400;
-    color: #31535c;
+    color: var(--text-ink);
   }
   #checkoutForm input[type='checkbox'] {
     width: 19px;
@@ -281,7 +281,7 @@
     accent-color: #058980;
   }
   #checkoutForm .check a {
-    color: #006e73;
+    color: var(--text-ink);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
@@ -294,7 +294,7 @@
   #cartDialog .checkout-disclaimer {
     font-size: 10px;
     line-height: 1.5;
-    color: #7b868c;
+    color: var(--text-copy);
     text-align: center;
     margin: 0 6px;
   }
@@ -338,7 +338,7 @@
     height: 29px;
     padding: 5px;
     border-radius: 50%;
-    color: #e9567e;
+    color: var(--text-rose);
     background: #ffe9ef;
   }
   #cartContent:has(.checkout-success) {
@@ -368,7 +368,7 @@
   .checkout-success > p {
     font-size: 12px;
     line-height: 1.6;
-    color: #72828d;
+    color: var(--text-copy);
   }
   .checkout-confirmation {
     background: #fffefb;
@@ -380,19 +380,19 @@
   }
   .checkout-confirmation > span {
     font-size: 11px;
-    color: #6f7f85;
+    color: var(--text-copy);
   }
   .checkout-confirmation > strong {
     margin: 6px 0;
     font-size: 23px;
     overflow-wrap: anywhere;
-    color: #097e79;
+    color: var(--text-ink);
   }
   .checkout-confirmation p {
     margin-bottom: 0;
     font-size: 12px;
     line-height: 1.5;
-    color: #59717a;
+    color: var(--text-copy);
   }
   .checkout-success .btn {
     border-radius: 13px;
@@ -418,18 +418,18 @@
   font-weight: 750;
   line-height: 1.05;
   letter-spacing: -1.3px;
-  color: #073d49;
+  color: var(--text-ink);
 }
 .checkout-payments > legend em {
   display: block;
   font-style: normal;
-  color: #fa6596;
+  color: var(--text-rose);
 }
 :is(#cartDialog, .purchase-page) #paymentHelp {
   margin: 14px 0 20px;
   font-size: 14px;
   line-height: 1.65;
-  color: #526373;
+  color: var(--text-copy);
 }
 .payment-method-options {
   gap: 12px;
@@ -463,11 +463,11 @@
   font-size: 16px;
   font-weight: 700;
   line-height: 1.25;
-  color: #073d49;
+  color: var(--text-ink);
   margin-bottom: 6px;
 }
 .payment-details > span {
-  color: #526373;
+  color: var(--text-copy);
   font-size: 12px;
 }
 :is(#cartDialog, .purchase-page) .payment-details .payment-yape-number {
@@ -479,7 +479,7 @@
 }
 .payment-account b {
   font-weight: 500;
-  color: #123e4e;
+  color: var(--text-ink);
   user-select: all;
 }
 .payment-holder {
@@ -550,7 +550,7 @@
   stroke-width: 1.5;
 }
 .payment-chevron {
-  color: #7b8290;
+  color: var(--text-copy);
 }
 :is(#cartDialog, .purchase-page) .payment-chevron svg {
   width: 12px;
@@ -567,7 +567,7 @@
   color: #80506a;
 }
 .payment-security strong {
-  color: #bf174f;
+  color: var(--text-rose);
   font-size: 14px;
   line-height: 1.4;
 }
@@ -599,7 +599,7 @@
   border: 1px solid #e5e6e9;
   border-radius: 18px;
   background: #ffffffb8;
-  color: #526373;
+  color: var(--text-copy);
   font-size: 13px;
   line-height: 1.65;
 }
@@ -608,7 +608,7 @@
   display: block;
 }
 .payment-business-card strong {
-  color: #073d49;
+  color: var(--text-ink);
   font-size: 14px;
 }
 .payment-business-icon {
@@ -619,7 +619,7 @@
   height: 46px;
   border-radius: 50%;
   background: #e3f6f3;
-  color: #008e88;
+  color: var(--text-ink);
 }
 :is(#cartDialog, .purchase-page) .payment-business-icon svg {
   width: 26px;

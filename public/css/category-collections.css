@@ -59,12 +59,12 @@
     font-weight: 600;
     line-height: 0.97;
     letter-spacing: -0.025em;
-    color: #06445a;
+    color: var(--text-ink);
     margin: 12px 0 19px;
   }
   .discovery h2 em {
     line-height: 1.02;
-    color: #ef4b8a;
+    color: var(--text-rose);
     background: linear-gradient(100deg, #ff87af, #ed176a);
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -73,7 +73,7 @@
     font-family: var(--body);
     font-size: clamp(13px, 1.18vw, 18px);
     line-height: 1.4;
-    color: #648092;
+    color: var(--text-copy);
   }
   .discovery .section-heading > .discovery-note {
     display: block;
@@ -92,7 +92,7 @@
     display: block;
     font-size: 43px;
     line-height: 1.1;
-    color: #ff5792;
+    color: var(--text-rose);
   }
   .discovery .section-heading > .text-link {
     display: flex;
@@ -104,7 +104,7 @@
     border: 0;
     border-radius: 40px;
     background: #fffdfc;
-    color: #22536d;
+    color: var(--text-ink);
     box-shadow: 0 5px 20px #d991a31a;
     font-size: 12px;
   }
@@ -114,7 +114,7 @@
     border-radius: 50%;
     padding: 10px;
     background: #ffb2d0;
-    color: #d32d72;
+    color: var(--text-rose);
     margin: 0;
   }
   .discovery .category-grid {
@@ -206,12 +206,12 @@
     font-size: clamp(13px, 1.1vw, 19px);
     font-weight: 600;
     letter-spacing: -0.03em;
-    color: #123b50;
+    color: var(--text-ink);
     margin: 0 0 7px;
     line-height: 1.15;
   }
   .discovery .category-card small {
-    color: #6d899e;
+    color: var(--text-copy);
     font-size: clamp(10px, 0.8vw, 13px);
     line-height: 1.45;
     max-width: none;

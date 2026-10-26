@@ -335,7 +335,7 @@ button:disabled {
   align-items: center;
   gap: 10px;
   font-size: 11px;
-  color: #6b7870;
+  color: var(--text-copy);
 }
 .hero-foot .heart-circle {
   width: 31px;
@@ -344,7 +344,7 @@ button:disabled {
   border-radius: 50%;
   display: grid;
   place-items: center;
-  color: #cd8292;
+  color: var(--text-rose);
 }
 .floating-tag {
   position: absolute;
@@ -534,7 +534,7 @@ button:disabled {
   width: 16px;
 }
 .wish.saved {
-  color: #d16a84;
+  color: var(--text-rose);
   background: #fde9ee;
 }
 .wish.saved svg {
@@ -546,7 +546,7 @@ button:disabled {
 .product-info > small {
   font-size: 9px;
   text-transform: uppercase;
-  color: #858b7f;
+  color: var(--text-copy);
   letter-spacing: 0.09em;
 }
 .product-info h3 {
@@ -688,7 +688,7 @@ button:disabled {
 .live {
   font-size: 9px;
   background: #fce7ed;
-  color: #ab435d;
+  color: var(--text-rose);
   padding: 5px 10px;
   border-radius: 5px;
 }
@@ -777,7 +777,7 @@ footer {
   display: flex;
   justify-content: space-between;
   font-size: 10px;
-  color: #7e8479;
+  color: var(--text-copy);
 }
 .contact-float {
   position: fixed;
@@ -1379,7 +1379,7 @@ input[type='checkbox'] {
   max-width: 260px;
 }
 .map-pin svg {
-  color: #d77b92;
+  color: var(--text-rose);
   width: 35px;
   height: 35px;
 }

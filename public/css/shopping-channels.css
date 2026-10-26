@@ -1,6 +1,6 @@
 .shopping-benefits,
 .shopping-channels {
-  color: #143d49;
+  color: var(--text-ink);
   padding: 48px 0;
 }
 .shopping-benefits {
@@ -24,18 +24,29 @@
 }
 .shopping-section-inner header p {
   margin: 0;
-  color: #728389;
+  color: var(--text-copy);
   font-size: 15px;
   line-height: 1.6;
 }
 .shopping-benefit-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 60px;
-  padding: 18px 16px 12px;
+  gap: 24px;
+  padding: 8px 0 12px;
 }
 .shopping-benefit-grid article {
   min-width: 0;
+  border: 1px solid #efd5de;
+  border-radius: 24px;
+  padding: 26px;
+  background: #fff;
+  box-shadow: 0 6px 22px #a8899910;
+}
+.shopping-benefit-grid article:nth-child(2) {
+  border-color: #cde4df;
+}
+.shopping-benefit-grid article:nth-child(3) {
+  border-color: #e0d8ee;
 }
 .shopping-benefit-icon {
   display: grid;
@@ -44,7 +55,7 @@
   height: 54px;
   border-radius: 15px;
   background: #fffdfa;
-  color: #f07891;
+  color: var(--text-rose);
   margin-bottom: 18px;
 }
 .shopping-benefit-icon svg {
@@ -68,7 +79,7 @@
 .shopping-channel > p {
   font-size: 14px;
   line-height: 1.65;
-  color: #718087;
+  color: var(--text-copy);
   margin: 0;
 }
 .shopping-channels {
@@ -106,7 +117,7 @@
   font-size: 10px;
   line-height: 1.4;
   letter-spacing: 1px;
-  color: #7e8488;
+  color: var(--text-copy);
   margin-bottom: 12px;
 }
 .shopping-channel h3 {
@@ -125,7 +136,7 @@
   border-radius: 8px;
   padding: 10px 13px;
   min-height: 42px;
-  color: #243e48;
+  color: var(--text-ink);
   font-size: 13px;
   font-weight: 600;
 }
@@ -187,6 +198,7 @@
   .shopping-benefit-grid article {
     display: grid;
     grid-template-columns: 45px minmax(0, 1fr);
+    padding: 20px;
     gap: 5px 14px;
   }
   .shopping-benefit-icon {

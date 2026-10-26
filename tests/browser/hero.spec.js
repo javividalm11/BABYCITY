@@ -76,7 +76,7 @@ test('hero adapts to mobile and respects reduced motion', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await expect(page.getByRole('link', { name: 'Explorar productos', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Compra aquí', exact: true })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Pausar animación' })).not.toBeVisible();
   expect(
     await page
@@ -110,12 +110,19 @@ test('mobile cover keeps its content readable without slideshow controls', async
       true,
     );
     const hero = await page.locator('.hero-showcase').boundingBox();
-    const cta = await page.locator('.hero-actions .btn').boundingBox();
+    const cta = await page.locator('.hero-actions .primary').boundingBox();
     const product = await page.locator('.hero-product-stage').boundingBox();
     expect(cta.x).toBeGreaterThanOrEqual(16);
     expect(cta.y + cta.height).toBeLessThan(hero.y + hero.height * 0.65);
     expect(product.y + product.height).toBeLessThanOrEqual(hero.y + hero.height);
-    expect(hero.height).toBeLessThanOrEqual(650);
+    expect(hero.height).toBeLessThanOrEqual(730);
+    await expect(page.locator('.hero-whatsapp')).toBeVisible();
+    await expect(page.locator('.hero-whatsapp')).toHaveAttribute(
+      'href',
+      /https:\/\/wa.me\/51937473120/,
+    );
+    const whatsapp = await page.locator('.hero-whatsapp').boundingBox();
+    expect(whatsapp.y + whatsapp.height).toBeLessThanOrEqual(product.y);
     await expect(page.getByRole('link', { name: 'Ver todas las categorías' })).toHaveAttribute(
       'href',
       '/tienda',

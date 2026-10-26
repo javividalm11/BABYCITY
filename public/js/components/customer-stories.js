@@ -30,5 +30,9 @@ export function renderAboutPurpose() {
 }
 
 export function renderPackageGallery() {
-  return `<section class="package-gallery" aria-labelledby="package-gallery-title"><header class="work-heading"><span>De BabyCity hasta ti</span><h2 id="package-gallery-title">Así preparamos tus pedidos</h2><p>Un vistazo a nuestros paquetes y al cuidado que ponemos en cada despacho.</p></header><div class="package-carousel" role="region" aria-roledescription="carrusel" aria-label="Galería de paquetes BabyCity"><div class="package-gallery-track customer-stories-track" tabindex="0" aria-label="Desliza o usa las flechas para ver los paquetes">${packagePhotos.map(({ image, alt, caption }) => photo(image, alt, caption)).join('')}</div><div class="customer-stories-controls"><button type="button" data-stories-prev aria-label="Paquetes anteriores">${icon('arrow')}</button><span data-stories-status aria-live="off"></span><button type="button" data-stories-next aria-label="Siguientes paquetes">${icon('arrow')}</button><button type="button" class="customer-stories-pause" data-stories-pause aria-pressed="false">Pausar</button></div></div></section>`;
+  const row = (photos, index) => {
+    const images = photos.map(({ image, alt, caption }) => photo(image, alt, caption)).join('');
+    return `<div class="package-lane" tabindex="0" role="region" aria-label="Fila ${index + 1} de paquetes: desliza o usa las flechas"><div class="package-ribbon"><div class="package-group">${images}</div><div class="package-group" aria-hidden="true" inert>${images}</div></div></div>`;
+  };
+  return `<section class="package-gallery" aria-labelledby="package-gallery-title"><header class="work-heading"><span>De BabyCity hasta ti</span><h2 id="package-gallery-title">As\u00ed preparamos tus pedidos</h2><p>Un vistazo a nuestros paquetes y al cuidado que ponemos en cada despacho.</p></header><div class="package-wall">${row(packagePhotos, 0)}${row([...packagePhotos.slice(3), ...packagePhotos.slice(0, 3)], 1)}</div><div class="package-gallery-controls"><span>Desliza para ver m\u00e1s detalles</span><button type="button" data-package-pause aria-pressed="false">Pausar</button></div></section>`;
 }

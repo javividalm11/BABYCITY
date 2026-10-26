@@ -6,10 +6,21 @@ test('footer preserves social destinations and opens the existing contact dialog
   await page.goto('/');
   const footer = page.locator('.babycity-footer');
   await footer.scrollIntoViewIfNeeded();
-  const payments = footer.getByRole('region', { name: 'Medios de pago oficiales' });
+  const payments = footer.getByRole('region', { name: 'Medios de pago' });
   await expect(payments.getByRole('img', { name: 'Yape Empresas' })).toBeVisible();
   await expect(payments.getByRole('img', { name: 'Transferencia BCP en soles' })).toBeVisible();
-  await expect(payments).not.toContainText(/Plin|Visa|Mastercard/i);
+  await expect(payments.getByRole('img', { name: 'Visa', exact: true })).toBeVisible();
+  await expect(payments.getByRole('img', { name: 'Mastercard', exact: true })).toBeVisible();
+  await expect(payments.locator('img')).toHaveCount(4);
+  await expect(payments).not.toContainText(
+    /Plin|Medios de pago oficiales|Env\u00edos a todo el Per\u00fa/i,
+  );
+  const admin = await footer.locator('.footer-floor-inner > a').boundingBox();
+  const logos = await payments.boundingBox();
+  expect(logos.y).toBeGreaterThanOrEqual(admin.y + admin.height);
+  expect(
+    Math.abs(logos.x + logos.width / 2 - (await page.evaluate(() => innerWidth)) / 2),
+  ).toBeLessThan(2);
   await expect(footer.locator('.footer-social-links a')).toHaveCount(4);
   const expected = [
     'https://www.tiktok.com/@babycityperu',

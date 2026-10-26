@@ -367,48 +367,99 @@
 }
 
 .package-gallery {
-  width: min(1440px, 88%);
+  width: min(1500px, 94%);
   margin: 24px auto 56px;
-  padding: 30px;
+  padding: 32px 0 20px;
   border: 1px solid #dce9e5;
   border-radius: 28px;
+  overflow: hidden;
   background: linear-gradient(120deg, #f4faf8, #fff 55%, #fdf5f8);
 }
-.package-gallery-track {
-  grid-auto-columns: calc((100% - 48px) / 3);
-  gap: 24px;
+.package-gallery .work-heading {
+  padding-inline: clamp(20px, 3vw, 40px);
+}
+.package-wall {
+  display: grid;
+  gap: 20px;
+}
+.package-lane {
+  overflow-x: auto;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+}
+.package-lane::-webkit-scrollbar {
+  display: none;
+}
+.package-ribbon {
+  display: flex;
+  width: max-content;
+}
+.package-group {
+  display: flex;
+  gap: 20px;
+  padding-right: 20px;
+  flex-shrink: 0;
+}
+.package-gallery .work-photo {
+  width: clamp(240px, 28vw, 360px);
 }
 .package-gallery .work-photo > a {
-  padding: 8px;
+  padding: 0;
+  overflow: hidden;
   border-color: #e2e9e5;
   background: #fff;
 }
 .package-gallery .work-photo img {
-  height: 300px;
-  background: #f3f5f4;
+  height: clamp(320px, 35vw, 460px);
+  border-radius: 19px;
+  object-fit: cover;
 }
 .package-gallery .work-photo figcaption {
-  padding: 12px 5px;
-  font-size: 14px;
+  padding: 10px 6px 0;
+  font-size: 13px;
   color: var(--text-ink);
 }
-@media (max-width: 1000px) {
-  .package-gallery-track {
-    grid-auto-columns: calc((100% - 24px) / 2);
-  }
+.package-gallery-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 16px 0;
+  color: var(--text-copy);
+  font-size: 12px;
+}
+.package-gallery-controls button {
+  border: 1px solid #cde4df;
+  border-radius: 24px;
+  background: #fff;
+  color: var(--text-ink);
+  padding: 9px 20px;
+  min-height: 44px;
+}
+.package-lane:focus-visible,
+.package-gallery-controls button:focus-visible {
+  outline: 2px solid #477b80;
+  outline-offset: -3px;
 }
 @media (max-width: 680px) {
   .package-gallery {
-    width: calc(100% - 40px);
-    padding: 20px 14px;
+    width: calc(100% - 24px);
     margin-block: 12px 36px;
     border-radius: 22px;
+    padding-top: 24px;
   }
-  .package-gallery-track {
-    grid-auto-columns: 100%;
+  .package-wall {
     gap: 16px;
   }
+  .package-group {
+    gap: 14px;
+    padding-right: 14px;
+  }
+  .package-gallery .work-photo {
+    width: 240px;
+  }
   .package-gallery .work-photo img {
-    height: 290px;
+    height: 320px;
   }
 }

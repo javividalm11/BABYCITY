@@ -1,18 +1,34 @@
-import { test, expect } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
-test('package gallery slides, wraps, respects reduced motion and fits each viewport', async ({
+test('package rows move in opposite directions and stop for reduced motion or interaction', async ({
   page,
 }) => {
-  await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/');
-  const gallery = page.locator('.package-carousel');
-  const track = gallery.locator('.customer-stories-track');
-  const status = gallery.locator('[data-stories-status]');
-  await expect(gallery.locator('figure')).toHaveCount(6);
-  await expect(status).toHaveText('1–3 de 6');
-  await expect(gallery.locator('[data-stories-pause]')).toHaveText('Reanudar');
-  await gallery.locator('img').evaluateAll((images) =>
+  const gallery = page.locator('.package-gallery');
+  const rows = gallery.locator('.package-lane');
+  await expect(rows).toHaveCount(2);
+  await gallery.scrollIntoViewIfNeeded();
+  await page.mouse.move(0, 0);
+  await expect.poll(() => rows.first().evaluate((el) => el.scrollLeft)).toBeGreaterThan(5);
+  const before = await rows.evaluateAll((els) => els.map((el) => el.scrollLeft));
+  await expect.poll(() => rows.last().evaluate((el) => el.scrollLeft)).toBeLessThan(before[1] - 3);
+  expect(await rows.first().evaluate((el) => el.scrollLeft)).toBeGreaterThan(before[0]);
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  const pause = gallery.locator('[data-package-pause]');
+  await expect(pause).toHaveText('Reanudar');
+  const stopped = await rows.first().evaluate((el) => el.scrollLeft);
+  await page.waitForTimeout(250);
+  expect(await rows.first().evaluate((el) => el.scrollLeft)).toBe(stopped);
+  await rows.first().focus();
+  await page.keyboard.press('ArrowRight');
+  expect(await rows.first().evaluate((el) => el.scrollLeft)).toBeGreaterThan(stopped);
+  await expect(pause).toHaveText('Reanudar');
+  const originals = gallery.locator('.package-group:not([inert]) img');
+  expect(
+    await originals.evaluateAll((images) => new Set(images.map((image) => image.src)).size),
+  ).toBe(6);
+  await originals.evaluateAll((images) =>
     Promise.all(
       images.map((image) => {
         image.loading = 'eager';
@@ -20,32 +36,15 @@ test('package gallery slides, wraps, respects reduced motion and fits each viewp
       }),
     ),
   );
-  await gallery.locator('[data-stories-next]').click();
-  await expect(status).toHaveText('4–6 de 6');
-  await gallery.locator('[data-stories-next]').click();
-  await expect(status).toHaveText('1–3 de 6');
-  for (const [width, visible] of [
-    [320, 1],
-    [390, 1],
-    [768, 2],
-    [1440, 3],
-  ]) {
-    await page.setViewportSize({ width, height: 900 });
-    await track.evaluate((element) => element.scrollTo({ left: 0, behavior: 'instant' }));
-    await expect(status).toHaveText(`1–${visible} de 6`);
+  for (const width of [320, 390, 768, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 1000 });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(
       true,
     );
-    await track.focus();
-    await page.keyboard.press('ArrowRight');
-    await expect(status).toHaveText(`${visible + 1}–${visible * 2} de 6`);
   }
-  await gallery.locator('[data-stories-pause]').click();
-  await expect(gallery.locator('[data-stories-pause]')).toHaveText('Pausar');
-  await track.dispatchEvent('pointerdown');
-  await expect(gallery.locator('[data-stories-pause]')).toHaveText('Reanudar');
+  await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await page.locator('.desktop-nav a[href="/servicios"]').click();
   await expect(gallery).toHaveCount(0);
   await page.locator('.site-brand').click();
-  await expect(page.locator('.package-carousel')).toHaveCount(1);
+  await expect(page.locator('.package-gallery')).toHaveCount(1);
 });

@@ -666,85 +666,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
-  gap: 18px 30px;
   min-height: var(--footer-payments-height);
-  padding: 14px 24px;
-  border-top: 1px solid #eee9e4;
-  background: #fff;
-  color: #5a6e77;
-}
-.footer-payment-trust {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  font-size: 12px;
-}
-.footer-payment-trust i {
-  display: flex;
-  font-style: normal;
+  padding: 8px 24px 18px;
 }
 .footer-payment-methods {
   display: flex;
   align-items: center;
-  gap: 26px;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: clamp(20px, 3vw, 32px);
   margin: 0;
-  padding: 0 26px;
+  padding: 0;
   list-style: none;
-  border-inline: 1px solid #eee9e4;
 }
-.footer-payment-yape {
-  display: inline-block;
-  color: #86129d;
-  font-family: cursive;
-  font-style: italic;
-  font-size: 27px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -1.5px;
-}
-.footer-payment-bcp {
-  display: inline-block;
-  color: #004b9c;
-  font-family: var(--body);
-  font-size: 23px;
-  font-style: italic;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -1px;
-}
-.footer-payment-bcp i {
-  color: #ff8525;
-  font-style: normal;
+.footer-payment-methods img {
+  display: block;
+  object-fit: contain;
 }
 .babycity-footer .footer-rocking-horse {
   bottom: calc(64px + var(--footer-payments-height));
-}
-@media (max-width: 540px) {
-  .babycity-footer {
-    --footer-payments-height: 98px;
-  }
-  .footer-payments {
-    gap: 12px 20px;
-    padding: 14px 12px;
-  }
-  .footer-payment-trust:first-child {
-    justify-content: center;
-    width: 100%;
-  }
-  .footer-payment-trust {
-    font-size: 10px;
-    gap: 6px;
-  }
-  .footer-payment-methods {
-    gap: 18px;
-    padding: 0 16px 0 0;
-    border-inline-start: 0;
-  }
-  .footer-payment-yape {
-    font-size: 24px;
-  }
-  .footer-payment-bcp {
-    font-size: 20px;
-  }
 }

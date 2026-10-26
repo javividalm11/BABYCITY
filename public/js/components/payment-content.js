@@ -4,8 +4,8 @@ import { icon } from '../lib/icons.js';
 
 function paymentBrand(method) {
   const brands = {
-    yape: '<span class="payment-yape-currency">S/</span><span class="payment-yape-word">yape</span>',
-    bcp: '<span class="payment-bcp-word"><i>›</i>BCP<i>›</i></span>',
+    yape: '<img src="/assets/payments/yape.png" alt="" width="80" height="80">',
+    bcp: '<img src="/assets/payments/bcp.svg" alt="" width="80" height="80">',
     coordinate: icon('whatsapp'),
   };
   return `<span class="payment-brand payment-brand-${method.id}" aria-hidden="true">${brands[method.id]}</span>`;

@@ -498,47 +498,17 @@
   box-shadow: inset 0 1px 1px #ffffff40;
   overflow: hidden;
 }
-.payment-brand-yape {
-  background: linear-gradient(140deg, #b10cce, #8200a9);
-}
-.payment-yape-currency {
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  background: #00d4b7;
-  color: #8a00a8;
-  font-size: 12px;
-  font-weight: 800;
-}
-.payment-yape-word {
-  font-family: cursive;
-  font-size: 22px;
-  font-style: italic;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -1.5px;
-  white-space: nowrap;
-}
-:is(#cartDialog, .purchase-page) .payment-brand > span {
-  flex: none;
-}
-:is(#cartDialog, .purchase-page) .payment-yape-currency {
-  display: grid;
-}
+.payment-brand-yape,
 .payment-brand-bcp {
-  background: linear-gradient(140deg, #0050aa, #003782);
+  background: #fff;
+  border: 1px solid #e4e8e8;
+  box-shadow: none;
 }
-.payment-bcp-word {
-  font-size: 19px;
-  font-style: italic;
-  font-weight: 800;
-  letter-spacing: -1px;
-}
-.payment-bcp-word i {
-  color: #ff8a20;
-  font-style: normal;
+.payment-brand > img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
 }
 .payment-brand-coordinate {
   background: linear-gradient(145deg, #44de85, #00b657);

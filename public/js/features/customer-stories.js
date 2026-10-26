@@ -1,3 +1,5 @@
+import { mountPackageGallery } from './package-gallery.js';
+
 let cleanup = () => {};
 
 export function destroyCustomerStories() {
@@ -7,9 +9,11 @@ export function destroyCustomerStories() {
 
 export function mountCustomerStories(root) {
   destroyCustomerStories();
-  const cleanups = [
-    ...root.querySelectorAll('.customer-stories-carousel, .dispatch-carousel, .package-carousel'),
-  ].map(mountCarousel);
+  const cleanups = [...root.querySelectorAll('.customer-stories-carousel, .dispatch-carousel')].map(
+    mountCarousel,
+  );
+  for (const gallery of root.querySelectorAll('.package-gallery'))
+    cleanups.push(mountPackageGallery(gallery));
   cleanup = () => cleanups.forEach((dispose) => dispose());
 }
 
